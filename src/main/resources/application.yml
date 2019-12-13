@@ -9,3 +9,18 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
+
+
+insert-data:
+  roleList:
+    - id: 1
+      roleId: employee
+      roleDescription: 雇员
+    - id: 2
+      roleId: employer
+      roleDescription: 雇主
+    - id: 3
+      roleId: admin
+      roleDescription: 管理员
+
+

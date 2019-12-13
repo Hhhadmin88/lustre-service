@@ -2,7 +2,10 @@ package com.evan.homemaking.common.model.entity;
 
 import lombok.Data;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 /**
  * @ClassName Role
@@ -16,7 +19,6 @@ import javax.persistence.*;
 @Table(name = "role")
 public class Role {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Integer id;
 

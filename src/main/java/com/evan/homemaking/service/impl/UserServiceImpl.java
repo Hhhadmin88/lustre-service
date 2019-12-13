@@ -2,12 +2,8 @@ package com.evan.homemaking.service.impl;
 
 import cn.hutool.core.lang.Validator;
 import cn.hutool.crypto.digest.BCrypt;
-import com.evan.homemaking.common.exception.InternalException;
-import com.evan.homemaking.common.exception.NotFoundException;
 import com.evan.homemaking.common.model.entity.User;
-import com.evan.homemaking.common.model.param.LoginParam;
 import com.evan.homemaking.common.model.param.RegisterParam;
-import com.evan.homemaking.common.utils.JsonUtil;
 import com.evan.homemaking.repository.UserRepository;
 import com.evan.homemaking.security.authentication.AuthenticationImpl;
 import com.evan.homemaking.security.context.SecurityContextHolder;
@@ -22,9 +18,6 @@ import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
-import javax.servlet.http.HttpServletRequest;
-import java.io.BufferedReader;
-import java.io.IOException;
 import java.util.Optional;
 
 /**

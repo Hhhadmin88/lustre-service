@@ -2,6 +2,10 @@ package com.evan.homemaking.aspect;
 
 import com.evan.homemaking.common.annotation.Authentication;
 import com.evan.homemaking.common.enums.Role;
+import com.evan.homemaking.common.exception.NoSuchAnnotationException;
+import com.evan.homemaking.common.exception.UnAuthorizedException;
+import com.evan.homemaking.security.context.SecurityContextHolder;
+import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
@@ -20,6 +24,7 @@ import java.lang.reflect.Method;
  */
 @Component
 @Aspect
+@Slf4j
 public class AuthorityControlAspect {
     /**
      * 用户信息增删改查权限，修改订单权限，发布招聘信息权限(管理员)
@@ -30,20 +35,19 @@ public class AuthorityControlAspect {
     }
 
     @Before("authenticate()")
-    public void doAuthenticate(JoinPoint joinPoint) throws NoSuchMethodException {
-        //被注解标记的方法 所在的controller
-        Object target = joinPoint.getTarget();
-        //被注解标记的方法签名(被代理)
+    public void doAuthenticate(JoinPoint joinPoint) {
         MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
-        //注解标记的方法名
-        String methodName = joinPoint.getSignature().getName();
-        //被注解标记的Method对象
         Method method = methodSignature.getMethod();
-        //方法上标记的注解
         Authentication authentication = method.getAnnotation(Authentication.class);
-        if (authentication != null) {
-            Role value = authentication.value();
-            value.getRole();
+        if (authentication == null) {
+            log.error("Not found the annotation of the method that need to authenticate");
+            throw new NoSuchAnnotationException("没有找到权限验证方法上的注解");
+        }
+        String role = SecurityContextHolder.getContext().getAuthentication().getUserDetail().getUser().getRole();
+        if (!(Role.ADMIN.getRole()).equals(role)) {
+            String methodName = method.getName();
+            log.error("Current user is not have {} authority", methodName);
+            throw new UnAuthorizedException("当前登录用户没有" + methodName + "操作权限");
         }
     }
 
