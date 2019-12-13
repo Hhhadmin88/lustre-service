@@ -1,9 +1,6 @@
 package com.evan.homemaking.service.base;
 
-import com.evan.homemaking.common.cache.Cache;
-import com.evan.homemaking.common.cache.UserCache;
 import com.evan.homemaking.common.exception.NotFoundException;
-import com.evan.homemaking.common.model.entity.User;
 import com.evan.homemaking.repository.base.BaseRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;

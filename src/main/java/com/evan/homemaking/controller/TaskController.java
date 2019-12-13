@@ -8,7 +8,6 @@ import com.evan.homemaking.common.model.param.TaskParam;
 import com.evan.homemaking.common.model.vo.ResponseVO;
 import com.evan.homemaking.common.utils.ParamTransformUtil;
 import com.evan.homemaking.common.utils.ResponseUtil;
-import com.evan.homemaking.security.context.SecurityContext;
 import com.evan.homemaking.security.context.SecurityContextHolder;
 import com.evan.homemaking.service.TaskService;
 import io.swagger.annotations.ApiOperation;
@@ -62,7 +61,7 @@ public class TaskController {
     @ApiOperation("delete multiple tasks")
     public ResponseEntity<ResponseVO> deleteMultiple(@RequestBody @Valid List<Integer> taskIds) {
         taskService.removeInBatch(taskIds);
-        log.info("验证通过，任务删除成功,taskId:{}", taskIds.toString());
+        log.info("验证通过，任务删除成功,taskIds:{}", taskIds.toString());
         return ResponseUtil.successResponse();
     }
 

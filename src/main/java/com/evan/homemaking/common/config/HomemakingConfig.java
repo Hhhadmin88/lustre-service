@@ -1,6 +1,7 @@
 package com.evan.homemaking.common.config;
 
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
 /**
  * @ClassName HomemakingConfig
@@ -10,5 +11,6 @@ import org.springframework.context.annotation.Configuration;
  * @Date 2019/12/4 20:22
  */
 @Configuration
+@EnableAspectJAutoProxy
 public class HomemakingConfig {
 }
