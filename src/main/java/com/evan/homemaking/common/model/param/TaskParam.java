@@ -25,12 +25,4 @@ public class TaskParam {
     @NotBlank(message = "任务标题不能为空")
     @Size(max = 50, message = "任务内容长度不能超过 {max}")
     private String title;
-
-    private Boolean isAccepted;
-
-    private Boolean isFinished;
-
-    private Date createTime;
-
-    private Date updateTime;
 }

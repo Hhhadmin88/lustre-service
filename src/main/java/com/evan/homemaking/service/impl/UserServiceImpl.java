@@ -84,4 +84,10 @@ public class UserServiceImpl extends AbstractCrudService<User, Integer> implemen
     public void storeCurrentUser(@NonNull User user) {
         SecurityContextHolder.setContext(new SecurityContextImpl(new AuthenticationImpl(new UserDetail(user))));
     }
+
+    @NonNull
+    @Override
+    public User getCurrentUser() {
+        return SecurityContextHolder.getContext().getAuthentication().getUserDetail().getUser();
+    }
 }

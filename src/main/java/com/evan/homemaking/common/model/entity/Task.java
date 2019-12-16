@@ -39,9 +39,9 @@ public class Task {
     @Column(name = "isFinished", columnDefinition = "tinyint not null")
     private Boolean isFinished;
 
-    @Column(name = "createTime", columnDefinition = "timestamp default CURRENT_TIMESTAMP")
-    private Date createTime;
+    @Column(name = "createTime", columnDefinition = "varchar(50)")
+    private String createTime;
 
-    @Column(name = "updateTime", columnDefinition = "timestamp default CURRENT_TIMESTAMP")
-    private Date updateTime;
+    @Column(name = "updateTime", columnDefinition = "varchar(50)")
+    private String updateTime;
 }
