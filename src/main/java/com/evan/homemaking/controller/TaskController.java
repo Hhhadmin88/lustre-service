@@ -1,5 +1,6 @@
 package com.evan.homemaking.controller;
 
+import cn.hutool.core.date.DateUtil;
 import com.evan.homemaking.common.annotation.Authentication;
 import com.evan.homemaking.common.enums.RoleEnum;
 import com.evan.homemaking.common.model.entity.Task;
@@ -10,6 +11,7 @@ import com.evan.homemaking.common.utils.ParamTransformUtil;
 import com.evan.homemaking.common.utils.ResponseUtil;
 import com.evan.homemaking.security.context.SecurityContextHolder;
 import com.evan.homemaking.service.TaskService;
+import com.evan.homemaking.service.UserService;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -37,15 +39,12 @@ public class TaskController {
      */
     private final TaskService taskService;
 
+    private final UserService userService;
+
     @PostMapping("publish")
     @ApiOperation("publish a task")
     public ResponseEntity<ResponseVO> publish(@RequestBody @Valid TaskParam taskParam) {
-        long createTimestamp = System.currentTimeMillis();
-        taskParam.setCreateTime(new Date(createTimestamp));
-        Task task = ParamTransformUtil.copyProperties(taskParam, Task.class);
-        User user = SecurityContextHolder.getContext().getAuthentication().getUserDetail().getUser();
-        task.setEmployeeId(user.getId());
-        taskService.create(task);
+        taskService.createTask(taskParam);
         return ResponseUtil.successResponse();
     }
 
@@ -79,10 +78,11 @@ public class TaskController {
     @ApiOperation("modify task information")
     @Authentication(RoleEnum.ADMIN)
     public ResponseEntity<ResponseVO> modify(@RequestBody @Valid TaskParam taskParam) {
+        User currentUser = userService.getCurrentUser();
         long updateTimestamp = System.currentTimeMillis();
-        taskParam.setCreateTime(new Date(updateTimestamp));
         Task task = ParamTransformUtil.copyProperties(taskParam, Task.class);
+        task.setUpdateTime(DateUtil.now());
         taskService.update(task);
-        return ResponseUtil.successResponse(taskService);
+        return ResponseUtil.successResponse();
     }
 }

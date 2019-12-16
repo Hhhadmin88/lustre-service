@@ -36,7 +36,7 @@ public class SecurityContextHolder {
     }
 
     /**
-     * Sets security context.
+     * Sets security context.git
      *
      * @param context security context
      */

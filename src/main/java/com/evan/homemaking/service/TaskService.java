@@ -3,6 +3,7 @@ package com.evan.homemaking.service;
 import com.evan.homemaking.common.model.entity.Task;
 import com.evan.homemaking.common.model.param.TaskParam;
 import com.evan.homemaking.service.base.CrudService;
+import org.springframework.lang.NonNull;
 
 import java.util.List;
 
@@ -67,4 +68,10 @@ public interface TaskService extends CrudService<Task, Integer> {
      */
     void retrieveAll();
 
+    /**
+     * Create a task.
+     *
+     * @param taskParam taskParam.
+     */
+    void createTask(@NonNull TaskParam taskParam);
 }

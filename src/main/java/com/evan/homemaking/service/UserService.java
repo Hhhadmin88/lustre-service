@@ -21,7 +21,7 @@ public interface UserService extends CrudService<User, Integer> {
     /**
      * Gets user by accountId.
      *
-     * @param accountId
+     * @param accountId accountId of user.
      * @return an user.
      */
     @NonNull
@@ -30,7 +30,7 @@ public interface UserService extends CrudService<User, Integer> {
     /**
      * Gets user by email.
      *
-     * @param email
+     * @param email email of user.
      * @return an user.
      */
     @NonNull
@@ -48,7 +48,7 @@ public interface UserService extends CrudService<User, Integer> {
      *
      * @param user          user info must not be null.
      * @param plainPassword The password in loginParam.
-     * @return
+     * @return boolean result of match.
      */
     boolean matchPassword(@NonNull User user, @NonNull String plainPassword);
 
@@ -68,11 +68,18 @@ public interface UserService extends CrudService<User, Integer> {
     @NonNull
     Optional<User> getCurrentRequestUser(@NonNull String userName);
 
+    /**
+     * Get currently logged in user into SecurityContextHolder.
+     *
+     * @return a user that current has been logged in.
+     */
+    @NonNull
+    User getCurrentUser();
 
     /**
-     * Put the currently logged in user into threadLocal.
+     * Put the currently logged in user from SecurityContextHolder.
      *
-     * @param user current user.
+     * @param user current user that has been logged in.
      */
     void storeCurrentUser(@NonNull User user);
 
