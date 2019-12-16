@@ -9,12 +9,12 @@ import org.springframework.http.HttpStatus;
  * @Version 1.0.0
  * @Date 2019/12/7 20:28
  */
-public class AuthenticateException extends HomemakingException {
-    public AuthenticateException(String message) {
+public class AuthenticateFailedException extends HomemakingException {
+    public AuthenticateFailedException(String message) {
         super(message);
     }
 
-    public AuthenticateException(String message, Throwable cause) {
+    public AuthenticateFailedException(String message, Throwable cause) {
         super(message, cause);
     }
 

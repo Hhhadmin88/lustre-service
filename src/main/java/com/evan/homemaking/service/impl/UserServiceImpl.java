@@ -2,6 +2,8 @@ package com.evan.homemaking.service.impl;
 
 import cn.hutool.core.lang.Validator;
 import cn.hutool.crypto.digest.BCrypt;
+import com.alibaba.druid.sql.repository.SchemaResolveVisitor;
+import com.evan.homemaking.common.exception.NotFoundException;
 import com.evan.homemaking.common.model.entity.User;
 import com.evan.homemaking.common.model.param.RegisterParam;
 import com.evan.homemaking.repository.UserRepository;
@@ -72,7 +74,10 @@ public class UserServiceImpl extends AbstractCrudService<User, Integer> implemen
     @NonNull
     @Override
     public Optional<User> getCurrentRequestUser(@NonNull String userName) {
-        return Optional.of(Validator.isEmail(userName) ? getByEmail(userName) : getByAccountId(userName));
+        User user = Validator.isEmail(userName) ?
+                getByEmail(userName) : getByAccountId(userName);
+        Optional.ofNullable(user).orElseThrow(() -> new NotFoundException("当前登录用户" + userName + "不存在"));
+        return Optional.of(user);
     }
 
     @Override

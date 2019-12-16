@@ -7,6 +7,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
@@ -18,15 +19,20 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  */
 @Slf4j
 @Configuration
-@EnableWebMvc
 @ComponentScan(basePackages = "com.evan.homemaking.controller")
 public class WebMvcAutoConfig implements WebMvcConfigurer {
 
-    @Autowired
-    LoginInterceptor loginInterceptor;
+
+    private final LoginInterceptor loginInterceptor;
+
+    public WebMvcAutoConfig(LoginInterceptor loginInterceptor) {
+        this.loginInterceptor = loginInterceptor;
+    }
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(loginInterceptor).excludePathPatterns("/error");
+        registry.addInterceptor(loginInterceptor)
+                .excludePathPatterns("/error")
+                .excludePathPatterns("/swagger-resources/**", "/webjars/**", "/swagger-ui.html/**");
     }
 }

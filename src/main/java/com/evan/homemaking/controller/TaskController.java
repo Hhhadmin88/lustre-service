@@ -1,7 +1,7 @@
 package com.evan.homemaking.controller;
 
 import com.evan.homemaking.common.annotation.Authentication;
-import com.evan.homemaking.common.enums.Role;
+import com.evan.homemaking.common.enums.RoleEnum;
 import com.evan.homemaking.common.model.entity.Task;
 import com.evan.homemaking.common.model.entity.User;
 import com.evan.homemaking.common.model.param.TaskParam;
@@ -59,6 +59,7 @@ public class TaskController {
 
     @DeleteMapping("delete/multiple")
     @ApiOperation("delete multiple tasks")
+    @Authentication(RoleEnum.ADMIN)
     public ResponseEntity<ResponseVO> deleteMultiple(@RequestBody @Valid List<Integer> taskIds) {
         taskService.removeInBatch(taskIds);
         log.info("验证通过，任务删除成功,taskIds:{}", taskIds.toString());
@@ -67,6 +68,7 @@ public class TaskController {
 
     @DeleteMapping("delete/all")
     @ApiOperation("delete all tasks")
+    @Authentication(RoleEnum.ADMIN)
     public ResponseEntity<ResponseVO> deleteAll() {
         taskService.removeAll();
         log.info("验证通过，任务全部删除成功");
@@ -75,13 +77,12 @@ public class TaskController {
 
     @PutMapping("modify")
     @ApiOperation("modify task information")
-    @Authentication(Role.ADMIN)
+    @Authentication(RoleEnum.ADMIN)
     public ResponseEntity<ResponseVO> modify(@RequestBody @Valid TaskParam taskParam) {
         long updateTimestamp = System.currentTimeMillis();
         taskParam.setCreateTime(new Date(updateTimestamp));
         Task task = ParamTransformUtil.copyProperties(taskParam, Task.class);
         taskService.update(task);
-        return ResponseUtil.successResponse();
+        return ResponseUtil.successResponse(taskService);
     }
-
 }

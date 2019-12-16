@@ -16,51 +16,51 @@ public class ResponseUtil {
     }
 
     /**
-     * 构造response对象
+     * Build ResponseVO
      *
-     * @param data   返回数据
-     * @param status 状态码
-     * @return 结果
+     * @param data   The data need to return
+     * @param status status code
+     * @return ResponseVO
      */
     public static ResponseEntity<ResponseVO> constructResponse(Object data, String message, HttpStatus status) {
         return new ResponseEntity<>(new ResponseVO(status.value(), message, data), status);
     }
 
     /**
-     * 构建entity
+     * Build entity
      *
-     * @param vo response封装对象
-     * @return 实体
+     * @param vo ResponseVO
+     * @return ResponseVO and status
      */
     public static ResponseEntity<ResponseVO> constructEntity(ResponseVO vo) {
         return new ResponseEntity<>(vo, HttpStatus.valueOf(vo.getCode()));
     }
 
     /**
-     * 构造成功response对象
+     * Build successful ResponseVO
      * getReasonPhrase() is explanation of the status code.
      *
-     * @param data 数据
-     * @return 结果
+     * @param data The data need to return
+     * @return ResponseVO
      */
     public static ResponseEntity<ResponseVO> successResponse(Object data) {
         return constructResponse(data, HttpStatus.OK.getReasonPhrase(), HttpStatus.OK);
     }
 
     /**
-     * 构造成功response对象
+     * Build successful ResponseVO
      *
-     * @return 结果
+     * @return ResponseVO
      */
     public static ResponseEntity<ResponseVO> successResponse() {
         return constructResponse(HttpStatus.OK.getReasonPhrase(), HttpStatus.OK.getReasonPhrase(), HttpStatus.OK);
     }
 
     /**
-     * 构建内部错误对象
+     * Build 500 internal error ResponseVO
      *
-     * @param message 错误信息
-     * @return 对象
+     * @param message Error message.
+     * @return ResponseVO
      */
     public static ResponseEntity<ResponseVO> internalErrorResponse(String message) {
         return constructResponse(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(),
@@ -68,12 +68,42 @@ public class ResponseUtil {
     }
 
     /**
-     * 构建 404 not found 对象
+     * Build 404 not found ResponseVO
      *
-     * @param message 错误信息
-     * @return 对象
+     * @param message error message
+     * @return ResponseVO
      */
     public static ResponseEntity<ResponseVO> notFoundResponse(String message) {
         return constructResponse(HttpStatus.NOT_FOUND.getReasonPhrase(), message, HttpStatus.NOT_FOUND);
+    }
+
+    /**
+     * Build 401 unauthorized ResponseVO.
+     *
+     * @param message error message.
+     * @return ResponseVO
+     */
+    public static ResponseEntity<ResponseVO> authenticateFailedResponse(String message) {
+        return constructResponse(HttpStatus.UNAUTHORIZED.getReasonPhrase(), message, HttpStatus.UNAUTHORIZED);
+    }
+
+    /**
+     * Build 400 badRequest ResponseVO.
+     *
+     * @param message error message.
+     * @return ResponseVO
+     */
+    public static ResponseEntity<ResponseVO> badRequestResponse(String message) {
+        return constructResponse(HttpStatus.BAD_REQUEST.getReasonPhrase(), message, HttpStatus.BAD_REQUEST);
+    }
+
+    /**
+     * Build 403 badRequest ResponseVO.
+     *
+     * @param message error message.
+     * @return ResponseVO
+     */
+    public static ResponseEntity<ResponseVO> notLoginRequestResponse(String message) {
+        return constructResponse(HttpStatus.FORBIDDEN, message, HttpStatus.FORBIDDEN);
     }
 }

@@ -1,7 +1,7 @@
 package com.evan.homemaking.aspect;
 
 import com.evan.homemaking.common.annotation.Authentication;
-import com.evan.homemaking.common.enums.Role;
+import com.evan.homemaking.common.enums.RoleEnum;
 import com.evan.homemaking.common.exception.NoSuchAnnotationException;
 import com.evan.homemaking.common.exception.UnAuthorizedException;
 import com.evan.homemaking.security.context.SecurityContextHolder;
@@ -43,8 +43,9 @@ public class AuthorityControlAspect {
             log.error("Not found the annotation of the method that need to authenticate");
             throw new NoSuchAnnotationException("没有找到权限验证方法上的注解");
         }
-        String role = SecurityContextHolder.getContext().getAuthentication().getUserDetail().getUser().getRole();
-        if (!(Role.ADMIN.getRole()).equals(role)) {
+        String currentUserRole = SecurityContextHolder.getContext().getAuthentication().getUserDetail().getUser().getRole();
+        if (!(authentication.value().getRole()).equals(currentUserRole)) {
+            System.out.println(currentUserRole);
             String methodName = method.getName();
             log.error("Current user is not have {} authority", methodName);
             throw new UnAuthorizedException("当前登录用户没有" + methodName + "操作权限");

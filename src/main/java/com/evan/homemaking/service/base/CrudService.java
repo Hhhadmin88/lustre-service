@@ -1,5 +1,6 @@
 package com.evan.homemaking.service.base;
 
+import com.evan.homemaking.common.exception.NotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
