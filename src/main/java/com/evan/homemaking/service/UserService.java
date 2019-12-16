@@ -68,8 +68,9 @@ public interface UserService extends CrudService<User, Integer> {
     @NonNull
     Optional<User> getCurrentRequestUser(@NonNull String userName);
 
+
     /**
-     * Put current user into threadLocal.
+     * Put the currently logged in user into threadLocal.
      *
      * @param user current user.
      */

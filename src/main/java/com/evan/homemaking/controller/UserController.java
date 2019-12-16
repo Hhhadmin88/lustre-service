@@ -1,7 +1,7 @@
 package com.evan.homemaking.controller;
 
 import com.evan.homemaking.common.annotation.Authentication;
-import com.evan.homemaking.common.enums.Role;
+import com.evan.homemaking.common.enums.RoleEnum;
 import com.evan.homemaking.common.exception.BadRequestException;
 import com.evan.homemaking.common.model.param.LoginParam;
 import com.evan.homemaking.common.model.param.RegisterParam;
@@ -44,7 +44,7 @@ public class UserController {
     @PostMapping("register")
     @ApiOperation("Register an user")
     public ResponseEntity<ResponseVO> register(@RequestBody @Valid RegisterParam registerParam) {
-        if (Role.ADMIN.getRole().equals(registerParam.getRole())) {
+        if (RoleEnum.ADMIN.getRole().equals(registerParam.getRole())) {
             throw new BadRequestException("无法通过注册成为管理员，请直接从后台添加");
         }
         userService.registerUser(registerParam);
@@ -59,7 +59,7 @@ public class UserController {
 
     @DeleteMapping("delete/{userId}")
     @ApiOperation("Delete a user")
-    @Authentication(Role.ADMIN)
+    @Authentication(RoleEnum.ADMIN)
     public ResponseEntity<ResponseVO> deleteOne(@PathVariable Integer userId) {
         userService.removeById(userId);
         log.info("权限验证通过，用户删除成功,userId:{}", userId.toString());
@@ -68,7 +68,7 @@ public class UserController {
 
     @DeleteMapping("delete/multiple")
     @ApiOperation("Delete multiple users")
-    @Authentication(Role.ADMIN)
+    @Authentication(RoleEnum.ADMIN)
     public ResponseEntity<ResponseVO> deleteMultiple(@RequestBody @Valid List<Integer> userIds) {
         userService.removeInBatch(userIds);
         log.info("权限验证通过，用户删除成功,userIds:{}", userIds.toString());
@@ -77,7 +77,7 @@ public class UserController {
 
     @DeleteMapping("delete/all")
     @ApiOperation("Delete all user")
-    @Authentication(Role.ADMIN)
+    @Authentication(RoleEnum.ADMIN)
     public ResponseEntity<ResponseVO> deleteAll() {
         userService.removeAll();
         log.info("权限验证通过，用户全部删除成功");
@@ -86,7 +86,7 @@ public class UserController {
 
     @PostMapping("add")
     @ApiOperation("Add a user")
-    @Authentication(Role.ADMIN)
+    @Authentication(RoleEnum.ADMIN)
     public ResponseEntity<ResponseVO> addUser(@RequestBody @Valid RegisterParam registerParam) {
         userService.registerUser(registerParam);
         return ResponseUtil.successResponse();

@@ -12,12 +12,13 @@ import lombok.Getter;
  */
 @AllArgsConstructor
 @Getter
-public enum Role {
+public enum RoleEnum {
     /**
      * Role of user.
      */
-    EMPLOYEE("employee"),
-    EMPLOYER("employer"),
-    ADMIN("admin");
+    EMPLOYEE("1", "employee"),
+    EMPLOYER("2", "employer"),
+    ADMIN("3", "admin");
     private String role;
+    private String description;
 }

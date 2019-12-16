@@ -17,3 +17,5 @@ if (authentication != null) {
     Role value = authentication.value();
     value.getRole();
 }
+//springMVC自动配置文档
+https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#boot-features-spring-mvc-auto-configuration

@@ -53,17 +53,17 @@ public class AuthenticateServiceImpl implements AuthenticateService {
             log.error("Failed to find user by userName: " + userName, e);
             throw new BadRequestException(mismatchTip);
         }
-        Optional.ofNullable(user).orElseThrow(()->new BadRequestException("该用户不存在"));
+        Optional.ofNullable(user).orElseThrow(() -> new BadRequestException("该用户不存在"));
         if (!userService.matchPassword(user, loginParam.getPassword())) {
             log.error("The password of loginParam is not match to the user password");
 
             throw new BadRequestException(mismatchTip);
         }
-        if (SecurityContextHolder.getContext().isAuthenticated()) {
+        if (userCache.getMultiple(SecurityUtil.buildAccessTokenKey(user), String.class).isPresent()) {
             //If this user is already logged in
             throw new BadRequestException("您已登录，请不要重复登录");
         }
-
+        //现在有一个清除时机问题
         return buildAuthToken(user);
     }
 

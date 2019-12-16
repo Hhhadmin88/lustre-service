@@ -31,7 +31,7 @@ public class SecurityContextHolder {
             // Set to thread local
             CONTEXT_HOLDER.set(context);
         }
-        System.out.println("当前线程:"+Thread.currentThread());
+        System.out.println("Get:当前线程:"+Thread.currentThread());
         return context;
     }
 
@@ -41,7 +41,7 @@ public class SecurityContextHolder {
      * @param context security context
      */
     public static void setContext(@Nullable SecurityContext context) {
-        System.out.println("当前线程:"+Thread.currentThread());
+        System.out.println("Set:当前线程:"+Thread.currentThread());
         CONTEXT_HOLDER.set(context);
     }
 

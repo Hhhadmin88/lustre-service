@@ -1,6 +1,6 @@
 package com.evan.homemaking.common.annotation;
 
-import com.evan.homemaking.common.enums.Role;
+import com.evan.homemaking.common.enums.RoleEnum;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -17,5 +17,5 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Authentication {
-    Role value();
+    RoleEnum value();
 }

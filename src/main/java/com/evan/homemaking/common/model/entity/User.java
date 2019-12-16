@@ -40,7 +40,7 @@ public class User {
     /**
      * This Role is the foreign key of the RoleId in the Role entity.
      */
-    @Column(name = "role", columnDefinition = "int(32) not null")
+    @Column(name = "role", columnDefinition = "varchar(50) not null")
     private String role;
 
     @Column(name = "score", columnDefinition = "double(2,1) default null")
