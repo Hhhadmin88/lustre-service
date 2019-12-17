@@ -1,11 +1,20 @@
 package com.evan.homemaking.event;
 
-import com.evan.homemaking.common.model.dto.RoleDTO;
+import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.util.CharsetUtil;
+import com.evan.homemaking.common.model.entity.Role;
+import com.evan.homemaking.common.utils.JsonUtil;
 import com.evan.homemaking.repository.RoleRepository;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.event.ContextClosedEvent;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
 
 /**
  * @ClassName InsertRoleDataEvent
@@ -17,13 +26,22 @@ import org.springframework.stereotype.Component;
 @Component
 @Slf4j
 public class InsertRoleEvent extends ContextClosedEvent {
-
-    public InsertRoleEvent(ApplicationContext source) {
+    public InsertRoleEvent(ApplicationContext source) throws JsonProcessingException {
         super(source);
         RoleRepository roleRepository = source.getBean(RoleRepository.class);
-        RoleDTO roleDto = source.getBean(RoleDTO.class);
+
+        //ResourceUtils.getFile()
+        ClassPathResource classPathResource = new ClassPathResource("init/role.json");
+        List<Role> roleList = null;
+        try {
+            File roleJsonFile = classPathResource.getFile();
+            String roleJson = FileUtil.readString(roleJsonFile, CharsetUtil.UTF_8);
+            roleList = JsonUtil.jsonArrayToList(roleJson,Role.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         roleRepository.deleteAll();
-        roleRepository.saveAll(roleDto.getRoleList());
+        roleRepository.saveAll(roleList);
         log.info("Role data insert success");
     }
 }

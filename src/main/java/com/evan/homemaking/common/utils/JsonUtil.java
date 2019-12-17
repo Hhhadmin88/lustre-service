@@ -2,6 +2,7 @@ package com.evan.homemaking.common.utils;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import org.springframework.lang.NonNull;
@@ -9,6 +10,8 @@ import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -180,5 +183,42 @@ public class JsonUtil {
 
         // Deserialize the json
         return jsonToObject(json, Map.class, objectMapper);
+    }
+
+    /**
+     * Converts a jsonArray to list that object specified targetType.
+     *
+     * @param json       json content must not be blank
+     * @param listType   list type
+     * @param targetType object targetType must not be null
+     * @param <T>        target object targetType
+     * @return a List containing the specified targetType
+     * @throws IOException io exception
+     */
+    @NonNull
+    public static <T> List<T> jsonArrayToList(@NonNull String json, Class<? extends List> listType, Class<T> targetType) throws IOException {
+        Assert.hasText(json, "Json content must not be blank");
+        Assert.notNull(targetType, "Target targetType must not be null");
+        JavaType javaType = getCollectionType(DEFAULT_JSON_MAPPER, listType, targetType);
+        return DEFAULT_JSON_MAPPER.readValue(json, javaType);
+    }
+
+    /**
+     * Converts a jsonArray to list that object specified targetType,default list type is ArrayList.
+     *
+     * @param json       json content must not be blank
+     * @param targetType object targetType must not be null
+     * @param <T>        target object targetType
+     * @return a List containing the specified targetType
+     * @throws IOException io exception
+     */
+    @NonNull
+    public static <T> List<T> jsonArrayToList(@NonNull String json, Class<T> targetType) throws IOException {
+        return jsonArrayToList(json, ArrayList.class, targetType);
+    }
+
+
+    private static JavaType getCollectionType(ObjectMapper mapper, Class<?> collectionClass, Class<?>... elementClasses) {
+        return mapper.getTypeFactory().constructParametricType(collectionClass, elementClasses);
     }
 }
