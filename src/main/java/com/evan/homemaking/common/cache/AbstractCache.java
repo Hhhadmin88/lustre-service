@@ -7,6 +7,7 @@ import org.springframework.util.Assert;
 import java.util.Date;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @ClassName AbstractCache
@@ -68,9 +69,14 @@ public abstract class AbstractCache<K, V> implements Cache<K, V> {
         // Build cache wrapper
         CacheWrapper<V> cacheWrapper = new CacheWrapper<>();
         cacheWrapper.setCreateTime(new Date());
-        cacheWrapper.setExpireTime(new Date(System.currentTimeMillis() + timeout));
+        long timeoutMillis = TimeUnit.SECONDS.toMillis(timeout);
+        cacheWrapper.setExpireTime(new Date(System.currentTimeMillis() + timeoutMillis));
         cacheWrapper.setData(value);
 
         return cacheWrapper;
+    }
+
+    public ConcurrentHashMap<K, CacheWrapper<V>> getCache() {
+        return CACHE_CONTAINER;
     }
 }

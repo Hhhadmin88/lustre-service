@@ -9,7 +9,6 @@ import com.evan.homemaking.common.model.param.TaskParam;
 import com.evan.homemaking.common.model.vo.ResponseVO;
 import com.evan.homemaking.common.utils.ParamTransformUtil;
 import com.evan.homemaking.common.utils.ResponseUtil;
-import com.evan.homemaking.security.context.SecurityContextHolder;
 import com.evan.homemaking.service.TaskService;
 import com.evan.homemaking.service.UserService;
 import io.swagger.annotations.ApiOperation;
@@ -19,7 +18,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.Date;
 import java.util.List;
 
 /**

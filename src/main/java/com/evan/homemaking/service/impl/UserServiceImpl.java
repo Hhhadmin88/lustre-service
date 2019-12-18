@@ -2,7 +2,6 @@ package com.evan.homemaking.service.impl;
 
 import cn.hutool.core.lang.Validator;
 import cn.hutool.crypto.digest.BCrypt;
-import com.alibaba.druid.sql.repository.SchemaResolveVisitor;
 import com.evan.homemaking.common.exception.NotFoundException;
 import com.evan.homemaking.common.model.entity.User;
 import com.evan.homemaking.common.model.param.RegisterParam;

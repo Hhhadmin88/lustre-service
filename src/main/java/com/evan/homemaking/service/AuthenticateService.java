@@ -15,7 +15,7 @@ public interface AuthenticateService {
     /**
      * Expired seconds.
      */
-    int ACCESS_TOKEN_EXPIRED_SECONDS = 24 * 3600;
+    int ACCESS_TOKEN_EXPIRED_SECONDS = 3600;
 
     int REFRESH_TOKEN_EXPIRED_DAYS = 30;
 

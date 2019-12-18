@@ -21,7 +21,7 @@ public class Security {
     /**
      * Token expire time.
      */
-    public static final int ACCESS_TOKEN_EXPIRED_SECONDS = 24 * 3600;
+    public static final int ACCESS_TOKEN_EXPIRED_SECONDS = 3600;
 
     /**
      * Register request uri.
@@ -39,7 +39,12 @@ public class Security {
     public static final String REQUEST_ACCESS_TOKEN = "access_token";
 
     /**
-     * Request username in header
+     * Request username in header.
      */
     public static final String REQUEST_USERNAME_IN_HEADER = "header_username";
+
+    /**
+     * Cache check expiration interval.
+     */
+    public static final int CACHE_CHECK_EXPIRATION_INTERVAL = 5 * 3600;
 }

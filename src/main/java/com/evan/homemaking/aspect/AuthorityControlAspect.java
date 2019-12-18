@@ -1,7 +1,6 @@
 package com.evan.homemaking.aspect;
 
 import com.evan.homemaking.common.annotation.Authentication;
-import com.evan.homemaking.common.enums.RoleEnum;
 import com.evan.homemaking.common.exception.NoSuchAnnotationException;
 import com.evan.homemaking.common.exception.UnAuthorizedException;
 import com.evan.homemaking.security.context.SecurityContextHolder;

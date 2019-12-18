@@ -8,7 +8,6 @@ import com.evan.homemaking.common.exception.NotFoundException;
 import com.evan.homemaking.common.model.entity.User;
 import com.evan.homemaking.common.model.param.LoginParam;
 import com.evan.homemaking.common.utils.SecurityUtil;
-import com.evan.homemaking.security.context.SecurityContextHolder;
 import com.evan.homemaking.security.token.AuthToken;
 import com.evan.homemaking.service.AuthenticateService;
 import com.evan.homemaking.service.UserService;

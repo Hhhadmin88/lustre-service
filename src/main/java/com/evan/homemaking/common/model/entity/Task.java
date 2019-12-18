@@ -3,7 +3,6 @@ package com.evan.homemaking.common.model.entity;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.util.Date;
 
 /**
  * @ClassName Task
