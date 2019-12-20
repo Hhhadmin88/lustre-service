@@ -1,15 +1,15 @@
 package com.evan.homemaking.interceptor;
 
 import com.evan.homemaking.common.cache.UserCache;
-import com.evan.homemaking.common.exception.*;
+import com.evan.homemaking.common.exception.BadRequestException;
+import com.evan.homemaking.common.exception.NotLoginException;
+import com.evan.homemaking.common.exception.UnAuthorizedException;
 import com.evan.homemaking.common.model.entity.User;
 import com.evan.homemaking.common.utils.SecurityUtil;
 import com.evan.homemaking.security.context.SecurityContextHolder;
-import com.evan.homemaking.service.AuthenticateService;
 import com.evan.homemaking.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;

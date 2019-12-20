@@ -13,13 +13,6 @@ import org.springframework.lang.NonNull;
  */
 public interface AuthenticateService {
     /**
-     * Expired seconds.
-     */
-    int ACCESS_TOKEN_EXPIRED_SECONDS = 24 * 3600;
-
-    int REFRESH_TOKEN_EXPIRED_DAYS = 30;
-
-    /**
      * Authenticates.
      *
      * @param loginParam login param must not be null

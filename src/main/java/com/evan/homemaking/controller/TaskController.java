@@ -9,7 +9,6 @@ import com.evan.homemaking.common.model.param.TaskParam;
 import com.evan.homemaking.common.model.vo.ResponseVO;
 import com.evan.homemaking.common.utils.ParamTransformUtil;
 import com.evan.homemaking.common.utils.ResponseUtil;
-import com.evan.homemaking.security.context.SecurityContextHolder;
 import com.evan.homemaking.service.TaskService;
 import com.evan.homemaking.service.UserService;
 import io.swagger.annotations.ApiOperation;
@@ -19,7 +18,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -74,15 +72,17 @@ public class TaskController {
         return ResponseUtil.successResponse();
     }
 
-    @PutMapping("modify")
+    @PutMapping("modify/{taskId}")
     @ApiOperation("modify task information")
-    @Authentication(RoleEnum.ADMIN)
-    public ResponseEntity<ResponseVO> modify(@RequestBody @Valid TaskParam taskParam) {
-        User currentUser = userService.getCurrentUser();
-        long updateTimestamp = System.currentTimeMillis();
-        Task task = ParamTransformUtil.copyProperties(taskParam, Task.class);
-        task.setUpdateTime(DateUtil.now());
-        taskService.update(task);
+    public ResponseEntity<ResponseVO> modify(@RequestBody @Valid TaskParam taskParam, @PathVariable Integer taskId) {
+        taskService.updateTask(taskParam, taskId);
+        return ResponseUtil.successResponse();
+    }
+
+    @PutMapping("modify/status/{taskId}")
+    @ApiOperation("modify task information")
+    public ResponseEntity<ResponseVO> changeStatus(@RequestBody @Valid TaskParam taskParam, @PathVariable Integer taskId) {
+        taskService.updateTaskStatus(taskParam, taskId);
         return ResponseUtil.successResponse();
     }
 }

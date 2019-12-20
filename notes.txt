@@ -19,3 +19,13 @@ if (authentication != null) {
 }
 //springMVC自动配置文档
 https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#boot-features-spring-mvc-auto-configuration
+
+
+  /**
+     * God dammit,i am a genius
+     * task status
+     * 0 未接受 未提交 未完成
+     * 1 已接受 未提交 未完成
+     * 2 已接受 已提交 待确认
+     * 3 已接受 已提交 已完成
+     */

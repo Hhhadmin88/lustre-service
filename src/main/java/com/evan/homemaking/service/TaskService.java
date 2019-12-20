@@ -74,4 +74,20 @@ public interface TaskService extends CrudService<Task, Integer> {
      * @param taskParam taskParam.
      */
     void createTask(@NonNull TaskParam taskParam);
+
+    /**
+     * Update a task.
+     *
+     * @param taskParam taskParam.
+     * @param taskId    task id.
+     */
+    void updateTask(@NonNull TaskParam taskParam, @NonNull Integer taskId);
+
+    /**
+     * Update status of task.
+     *
+     * @param taskParam taskParam.
+     * @param taskId    task id.
+     */
+    void updateTaskStatus(@NonNull TaskParam taskParam, @NonNull Integer taskId);
 }
