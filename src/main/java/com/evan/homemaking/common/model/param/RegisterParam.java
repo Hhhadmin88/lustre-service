@@ -42,6 +42,6 @@ public class RegisterParam {
     private String email;
 
     @NotBlank(message = "角色标识不能为空")
-    @Size(max = 50, message = "角色标识字符长度不能超过 {max}")
+    @Size(max = 1, message = "角色标识字符长度不能超过 {max}")
     private String role;
 }

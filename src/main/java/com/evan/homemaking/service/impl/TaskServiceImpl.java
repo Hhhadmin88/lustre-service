@@ -1,6 +1,10 @@
 package com.evan.homemaking.service.impl;
 
 import cn.hutool.core.date.DateUtil;
+import com.evan.homemaking.common.consts.TaskStatus;
+import com.evan.homemaking.common.enums.RoleEnum;
+import com.evan.homemaking.common.exception.BadRequestException;
+import com.evan.homemaking.common.exception.UnAuthorizedException;
 import com.evan.homemaking.common.model.entity.Task;
 import com.evan.homemaking.common.model.entity.User;
 import com.evan.homemaking.common.model.param.TaskParam;
@@ -9,6 +13,7 @@ import com.evan.homemaking.repository.TaskRepository;
 import com.evan.homemaking.service.TaskService;
 import com.evan.homemaking.service.UserService;
 import com.evan.homemaking.service.base.AbstractCrudService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +27,7 @@ import java.util.List;
  * @Date 2019/12/5 23:07
  */
 @Service
+@Slf4j
 public class TaskServiceImpl extends AbstractCrudService<Task, Integer> implements TaskService {
 
     private final TaskRepository taskRepository;
@@ -66,7 +72,6 @@ public class TaskServiceImpl extends AbstractCrudService<Task, Integer> implemen
 
     @Override
     public void retrieveMultiple(List<Integer> ids) {
-
     }
 
     @Override
@@ -79,6 +84,52 @@ public class TaskServiceImpl extends AbstractCrudService<Task, Integer> implemen
         create(buildPersistentTask(taskParam));
     }
 
+    @Override
+    public void updateTask(@NonNull TaskParam taskParam, @NonNull Integer taskId) {
+        taskUpdateProcessor(taskParam, taskId);
+    }
+
+    private void taskUpdateProcessor(@NonNull TaskParam taskParam, @NonNull Integer taskId) {
+        Task task = taskRepository.findTaskById(taskId);
+        User currentUser = userService.getCurrentUser();
+        checkOwnerOfTask(task, taskId, currentUser);
+        if (RoleEnum.ADMIN.getRole().equals(currentUser.getRole())) {
+            update(ParamTransformUtil.copyProperties(taskParam, Task.class));
+        } else if (RoleEnum.EMPLOYEE.getRole().equals(currentUser.getRole())) {
+            updateTaskByEmployee(task, taskParam, currentUser);
+        } else {
+            updateTaskByEmployer(task, taskParam, currentUser);
+        }
+    }
+
+    private void updateTaskByEmployee(Task task, @NonNull TaskParam taskParam, User user) {
+        changeTaskStatus(task, taskParam, user);
+    }
+
+    private void updateTaskByEmployer(Task task, @NonNull TaskParam taskParam, User user) {
+        changeTaskStatus(task, taskParam, user);
+
+    }
+
+    private void changeTaskStatus(Task task, @NonNull TaskParam taskParam, @NonNull User user) {
+        if (task.getStatus() == taskParam.getStatus() - 1 && setUserId(task, user.getId())) {
+            task.setStatus(taskParam.getStatus());
+            task.setUpdateTime(DateUtil.now());
+            update(task);
+        } else {
+            log.error("This operate is illegal,taskParam.status:{}", taskParam.getStatus());
+            throw new BadRequestException("当前对任务的状态修改不合法或任务已经提交不可修改");
+        }
+    }
+
+    private boolean setUserId(Task task, Integer userId) {
+        if (task.getEmployeeId() == null) {
+            task.setEmployeeId(userId);
+        }
+        return true;
+    }
+
+
     /**
      * Build a task persistent object.
      *
@@ -87,11 +138,43 @@ public class TaskServiceImpl extends AbstractCrudService<Task, Integer> implemen
      */
     public Task buildPersistentTask(TaskParam taskParam) {
         Task task = ParamTransformUtil.copyProperties(taskParam, Task.class);
-        User user = userService.getCurrentUser();
-        task.setEmployerId(user.getId());
+        User currentUser = userService.getCurrentUser();
+        if (RoleEnum.EMPLOYEE.getRole().equals(currentUser.getRole())) {
+            log.error("Employee is not authorized to publish task");
+            throw new UnAuthorizedException("当前用户的角色无权发布任务");
+        }
+        task.setEmployerId(currentUser.getId());
         task.setCreateTime(DateUtil.now());
-        task.setIsAccepted(false);
-        task.setIsFinished(false);
+        task.setStatus(0);
         return task;
+    }
+
+    private void checkOwnerOfTask(Task task, @NonNull Integer taskId, @NonNull User currentUser) {
+        //if the task have not been accepted and current user is employee,the request will be passed.
+        if (task.getEmployeeId() == null && currentUser.getRole().equals(RoleEnum.EMPLOYEE.getRole())) {
+            return;
+        }
+        boolean result = task.getEmployerId().equals(currentUser.getId())
+                || task.getEmployeeId().equals(currentUser.getId())
+                || currentUser.getRole().equals(RoleEnum.ADMIN.getRole());
+        if (!result) {
+            log.error("The current user is not authorized to modify tasks posted by other user");
+            throw new UnAuthorizedException("当前用户无权修改其他用户发布的任务");
+        }
+    }
+
+    @Override
+    public void updateTaskStatus(@NonNull TaskParam taskParam, @NonNull Integer taskId) {
+        Task task = taskRepository.findTaskById(taskId);
+        User currentUser = userService.getCurrentUser();
+        checkOwnerOfTask(task, taskId, currentUser);
+        if (RoleEnum.EMPLOYER.getRole().equals(currentUser.getRole())) {
+            if (!task.getStatus().equals(TaskStatus.ACCEPTED_FINISHED_NOT_CONFIRMED)) {
+                log.error("The status of the current task cannot be confirmed");
+                throw new BadRequestException("当前任务的状态不可确认");
+            }
+        }
+        changeTaskStatus(task, taskParam, currentUser);
+
     }
 }

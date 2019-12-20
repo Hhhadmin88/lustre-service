@@ -44,9 +44,6 @@ public class UserController {
     @PostMapping("register")
     @ApiOperation("Register an user")
     public ResponseEntity<ResponseVO> register(@RequestBody @Valid RegisterParam registerParam) {
-        if (RoleEnum.ADMIN.getRole().equals(registerParam.getRole())) {
-            throw new BadRequestException("无法通过注册成为管理员，请直接从后台添加");
-        }
         userService.registerUser(registerParam);
         return ResponseUtil.successResponse();
     }

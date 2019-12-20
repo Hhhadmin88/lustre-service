@@ -21,7 +21,7 @@ public class Security {
     /**
      * Token expire time.
      */
-    public static final int ACCESS_TOKEN_EXPIRED_SECONDS = 3600;
+    public static final int ACCESS_TOKEN_EXPIRED_SECONDS = 86400;
 
     /**
      * Register request uri.
@@ -46,5 +46,5 @@ public class Security {
     /**
      * Cache check expiration interval.
      */
-    public static final int CACHE_CHECK_EXPIRATION_INTERVAL = 5 * 3600;
+    public static final int CACHE_CHECK_EXPIRATION_INTERVAL_MILLI = 60 * 1000 * 10;
 }

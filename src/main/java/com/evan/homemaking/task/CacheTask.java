@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 import java.util.Date;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static com.evan.homemaking.common.consts.Security.ACCESS_TOKEN_EXPIRED_SECONDS;
+import static com.evan.homemaking.common.consts.Security.CACHE_CHECK_EXPIRATION_INTERVAL_MILLI;
 
 /**
  * @ClassName CacheTask
@@ -30,7 +30,7 @@ public class CacheTask {
     }
 
     @Async
-    @Scheduled(fixedRate = ACCESS_TOKEN_EXPIRED_SECONDS)
+    @Scheduled(fixedRate =CACHE_CHECK_EXPIRATION_INTERVAL_MILLI)
     void checkCacheExpire() {
         ConcurrentHashMap cache = abstractCache.getCache();
         for (Object key : cache.keySet()) {

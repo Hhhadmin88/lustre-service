@@ -18,6 +18,8 @@ import org.springframework.util.Assert;
 
 import java.util.Optional;
 
+import static com.evan.homemaking.common.consts.Security.ACCESS_TOKEN_EXPIRED_SECONDS;
+
 /**
  * @ClassName AuthenticateServiceImpl
  * @Description

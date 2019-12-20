@@ -32,11 +32,8 @@ public class Task {
     @Column(name = "content", columnDefinition = "varchar(255) not null")
     private String content;
 
-    @Column(name = "isAccepted", columnDefinition = "tinyint not null")
-    private Boolean isAccepted;
-
-    @Column(name = "isFinished", columnDefinition = "tinyint not null")
-    private Boolean isFinished;
+    @Column(name = "status", columnDefinition = "int(4) not null")
+    private Integer status;
 
     @Column(name = "createTime", columnDefinition = "varchar(50)")
     private String createTime;

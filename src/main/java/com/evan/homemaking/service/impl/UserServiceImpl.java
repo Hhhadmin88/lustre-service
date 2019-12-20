@@ -2,6 +2,8 @@ package com.evan.homemaking.service.impl;
 
 import cn.hutool.core.lang.Validator;
 import cn.hutool.crypto.digest.BCrypt;
+import com.evan.homemaking.common.enums.RoleEnum;
+import com.evan.homemaking.common.exception.BadRequestException;
 import com.evan.homemaking.common.exception.NotFoundException;
 import com.evan.homemaking.common.model.entity.User;
 import com.evan.homemaking.common.model.param.RegisterParam;
@@ -19,6 +21,8 @@ import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.util.Optional;
 
 /**
@@ -51,6 +55,7 @@ public class UserServiceImpl extends AbstractCrudService<User, Integer> implemen
 
     @Override
     public void registerUser(RegisterParam registerParam) {
+        checkRoleParam(registerParam.getRole());
         User user = new User();
         BeanUtils.copyProperties(registerParam, user);
         setPassword(user);
@@ -88,5 +93,17 @@ public class UserServiceImpl extends AbstractCrudService<User, Integer> implemen
     @Override
     public User getCurrentUser() {
         return SecurityContextHolder.getContext().getAuthentication().getUserDetail().getUser();
+    }
+
+    private void checkRoleParam(@NonNull String role) {
+        if (RoleEnum.ADMIN.getRole().equals(role)) {
+
+            log.error("User can not register to be an admin.");
+            throw new BadRequestException("无法通过注册成为管理员，请从后台添加");
+        }
+        if (Integer.parseInt(role) > Integer.parseInt(RoleEnum.ADMIN.getRole())) {
+            log.error("User role param is illegal.");
+            throw new BadRequestException("用户角色标识参数不合法，请重新填写");
+        }
     }
 }

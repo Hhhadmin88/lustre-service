@@ -72,15 +72,17 @@ public class TaskController {
         return ResponseUtil.successResponse();
     }
 
-    @PutMapping("modify")
+    @PutMapping("modify/{taskId}")
     @ApiOperation("modify task information")
-    @Authentication(RoleEnum.ADMIN)
-    public ResponseEntity<ResponseVO> modify(@RequestBody @Valid TaskParam taskParam) {
-        User currentUser = userService.getCurrentUser();
-        long updateTimestamp = System.currentTimeMillis();
-        Task task = ParamTransformUtil.copyProperties(taskParam, Task.class);
-        task.setUpdateTime(DateUtil.now());
-        taskService.update(task);
+    public ResponseEntity<ResponseVO> modify(@RequestBody @Valid TaskParam taskParam, @PathVariable Integer taskId) {
+        taskService.updateTask(taskParam, taskId);
+        return ResponseUtil.successResponse();
+    }
+
+    @PutMapping("modify/status/{taskId}")
+    @ApiOperation("modify task information")
+    public ResponseEntity<ResponseVO> changeStatus(@RequestBody @Valid TaskParam taskParam, @PathVariable Integer taskId) {
+        taskService.updateTaskStatus(taskParam, taskId);
         return ResponseUtil.successResponse();
     }
 }
