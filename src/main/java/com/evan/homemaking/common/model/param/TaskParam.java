@@ -2,7 +2,6 @@ package com.evan.homemaking.common.model.param;
 
 import lombok.Data;
 
-import javax.persistence.Column;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;

@@ -94,22 +94,24 @@ public class TaskServiceImpl extends AbstractCrudService<Task, Integer> implemen
         User currentUser = userService.getCurrentUser();
         checkOwnerOfTask(task, taskId, currentUser);
         if (RoleEnum.ADMIN.getRole().equals(currentUser.getRole())) {
-            update(ParamTransformUtil.copyProperties(taskParam, Task.class));
-        } else if (RoleEnum.EMPLOYEE.getRole().equals(currentUser.getRole())) {
-            updateTaskByEmployee(task, taskParam, currentUser);
+            commonUpdate(ParamTransformUtil.copyProperties(taskParam, Task.class));
+        } else if (RoleEnum.EMPLOYER.getRole().equals(currentUser.getRole())) {
+            updateTaskByEmployer(task, taskParam);
         } else {
-            updateTaskByEmployer(task, taskParam, currentUser);
+            updateTaskByEmployee(task, taskParam);
         }
     }
 
-    private void updateTaskByEmployee(Task task, @NonNull TaskParam taskParam, User user) {
-        changeTaskStatus(task, taskParam, user);
+    private void updateTaskByEmployer(Task task, @NonNull TaskParam taskParam) {
+        task.setContent(taskParam.getContent());
+        task.setTitle(taskParam.getTitle());
+        commonUpdate(task);
     }
 
-    private void updateTaskByEmployer(Task task, @NonNull TaskParam taskParam, User user) {
-        changeTaskStatus(task, taskParam, user);
-
+    private void updateTaskByEmployee(Task task, @NonNull TaskParam taskParam) {
+        //TODO employee update function and code logic waiting design
     }
+
 
     private void changeTaskStatus(Task task, @NonNull TaskParam taskParam, @NonNull User user) {
         if (task.getStatus() == taskParam.getStatus() - 1 && setUserId(task, user.getId())) {
@@ -136,7 +138,7 @@ public class TaskServiceImpl extends AbstractCrudService<Task, Integer> implemen
      * @param taskParam task param.
      * @return persistent task object
      */
-    public Task buildPersistentTask(TaskParam taskParam) {
+    private Task buildPersistentTask(TaskParam taskParam) {
         Task task = ParamTransformUtil.copyProperties(taskParam, Task.class);
         User currentUser = userService.getCurrentUser();
         if (RoleEnum.EMPLOYEE.getRole().equals(currentUser.getRole())) {
@@ -176,5 +178,15 @@ public class TaskServiceImpl extends AbstractCrudService<Task, Integer> implemen
         }
         changeTaskStatus(task, taskParam, currentUser);
 
+    }
+
+    /**
+     * Update task common method.
+     *
+     * @param task task
+     */
+    private void commonUpdate(Task task) {
+        task.setUpdateTime(DateUtil.now());
+        update(task);
     }
 }

@@ -2,7 +2,6 @@ package com.evan.homemaking.controller;
 
 import com.evan.homemaking.common.annotation.Authentication;
 import com.evan.homemaking.common.enums.RoleEnum;
-import com.evan.homemaking.common.exception.BadRequestException;
 import com.evan.homemaking.common.model.param.LoginParam;
 import com.evan.homemaking.common.model.param.RegisterParam;
 import com.evan.homemaking.common.model.vo.ResponseVO;
@@ -55,7 +54,7 @@ public class UserController {
     }
 
     @DeleteMapping("delete/{userId}")
-    @ApiOperation("Delete a user")
+    @ApiOperation("Delete an user")
     @Authentication(RoleEnum.ADMIN)
     public ResponseEntity<ResponseVO> deleteOne(@PathVariable Integer userId) {
         userService.removeById(userId);
@@ -73,7 +72,7 @@ public class UserController {
     }
 
     @DeleteMapping("delete/all")
-    @ApiOperation("Delete all user")
+    @ApiOperation("Delete all users")
     @Authentication(RoleEnum.ADMIN)
     public ResponseEntity<ResponseVO> deleteAll() {
         userService.removeAll();
@@ -82,7 +81,7 @@ public class UserController {
     }
 
     @PostMapping("add")
-    @ApiOperation("Add a user")
+    @ApiOperation("Add an user")
     @Authentication(RoleEnum.ADMIN)
     public ResponseEntity<ResponseVO> addUser(@RequestBody @Valid RegisterParam registerParam) {
         userService.registerUser(registerParam);

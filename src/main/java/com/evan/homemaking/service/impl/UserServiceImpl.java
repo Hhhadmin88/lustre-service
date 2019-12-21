@@ -21,8 +21,6 @@ import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
 import java.util.Optional;
 
 /**
@@ -44,23 +42,34 @@ public class UserServiceImpl extends AbstractCrudService<User, Integer> implemen
     }
 
     @Override
-    public User getByAccountId(String accountId) {
+    @NonNull
+    public User getByAccountId(@NonNull String accountId) {
         return userRepository.findByAccountId(accountId);
     }
 
     @Override
-    public User getByEmail(String email) {
+    @NonNull
+    public User getByEmail(@NonNull String email) {
         return userRepository.findByEmail(email);
     }
 
     @Override
-    public void registerUser(RegisterParam registerParam) {
+    public void registerUser(@NonNull RegisterParam registerParam) {
         checkRoleParam(registerParam.getRole());
+        checkAccountIdAndEmailDuplicated(registerParam);
         User user = new User();
         BeanUtils.copyProperties(registerParam, user);
         setPassword(user);
-        //TODO Verify username and password are duplicates
         userRepository.save(user);
+    }
+
+    private void checkAccountIdAndEmailDuplicated(RegisterParam registerParam) {
+        if (userRepository.findByAccountId(registerParam.getAccountId()) != null) {
+            throw new BadRequestException("用户名不能重复");
+        }
+        if (userRepository.findByEmail(registerParam.getEmail()) != null) {
+            throw new BadRequestException("邮箱不能重复");
+        }
     }
 
     @Override
@@ -69,7 +78,7 @@ public class UserServiceImpl extends AbstractCrudService<User, Integer> implemen
     }
 
     @Override
-    public boolean matchPassword(User user, String plainPassword) {
+    public boolean matchPassword(@NonNull User user, @NonNull String plainPassword) {
         Assert.notNull(user, "User must not be null");
 
         return StringUtils.isNotBlank(user.getPassword()) && BCrypt.checkpw(plainPassword, user.getPassword());
