@@ -38,7 +38,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler
     public ResponseEntity<ResponseVO> badRequestException(BadRequestException e) {
         log.error(EXCEPTION_DETAIL_HINT, e.toString());
-        return ResponseUtil.notFoundResponse(e.getMessage());
+        return ResponseUtil.badRequestResponse(e.getMessage());
     }
 
     @ExceptionHandler

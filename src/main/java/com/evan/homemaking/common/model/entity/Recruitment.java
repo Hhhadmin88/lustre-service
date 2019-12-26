@@ -3,7 +3,7 @@ package com.evan.homemaking.common.model.entity;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.math.BigDecimal;
 
 /**
  * @ClassName Recruitment
@@ -21,30 +21,33 @@ public class Recruitment {
     @Column(name = "id")
     private Integer id;
 
-    @Column(name = "ageLimitFrom", columnDefinition = "varchar(50) not null")
-    private String ageLimitFrom;
+    @Column(name = "ageLimitFrom", columnDefinition = "int(32)")
+    private Integer ageLimitFrom;
 
-    @Column(name = "ageLimitTo", columnDefinition = "varchar(50) not null")
-    private String ageLimitTo;
+    @Column(name = "ageLimitTo", columnDefinition = "int4(32)")
+    private Integer ageLimitTo;
 
-    @Column(name = "genderConstraint", columnDefinition = "int(4) not null")
+    @Column(name = "genderConstraint", columnDefinition = "int(32)")
     private Integer genderConstraint;
 
-    @Column(name = "salary", columnDefinition = "varchar(50) not null")
-    private String salary;
+    @Column(name = "salary", columnDefinition = "decimal(50) not null")
+    private BigDecimal salary;
 
-    @Column(name = "workingTime", columnDefinition = "varchar(255) not null")
-    private String workingTime;
+    @Column(name = "workingTimeNumber", columnDefinition = "varchar(255) not null")
+    private Integer workingTimeNumber;
 
-    @Column(name = "numberOfApplicants", columnDefinition = "int default 0")
-    private Integer numberOfApplicants;
+    @Column(name = "timeUnit", columnDefinition = "varchar(20) not null")
+    private String timeUnit;
+
+    @Column(name = "applicantsNumber", columnDefinition = "int(32) default 0")
+    private Integer applicantsNumber;
 
     @Column(name = "requirement", columnDefinition = "varchar(255) not null")
     private String requirement;
 
     @Column(name = "createTime", columnDefinition = "timestamp default CURRENT_TIMESTAMP")
-    private Date createTime;
+    private String createTime;
 
     @Column(name = "updateTime", columnDefinition = "timestamp default CURRENT_TIMESTAMP")
-    private Date updateTime;
+    private String updateTime;
 }
