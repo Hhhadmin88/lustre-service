@@ -53,6 +53,13 @@ public class UserController {
         return ResponseUtil.successResponse(authenticateService.authenticate(loginParam));
     }
 
+    @PostMapping("logout")
+    @ApiOperation("Logout")
+    public ResponseEntity<ResponseVO> logout() {
+        authenticateService.clearToken();
+        return ResponseUtil.successResponse();
+    }
+
     @DeleteMapping("delete/{userId}")
     @ApiOperation("Delete an user")
     @Authentication(RoleEnum.ADMIN)

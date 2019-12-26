@@ -14,7 +14,7 @@ import java.lang.annotation.Target;
  * @Version 1.0.0
  * @Date 2019/12/5 11:27
  */
-@Target(ElementType.METHOD)
+@Target({ElementType.TYPE, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Authentication {
     RoleEnum value();

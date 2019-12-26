@@ -36,6 +36,7 @@ public class UserServiceImpl extends AbstractCrudService<User, Integer> implemen
 
     private final UserRepository userRepository;
 
+
     public UserServiceImpl(UserRepository userRepository) {
         super(userRepository);
         this.userRepository = userRepository;
@@ -89,8 +90,9 @@ public class UserServiceImpl extends AbstractCrudService<User, Integer> implemen
     public Optional<User> getCurrentRequestUser(@NonNull String userName) {
         User user = Validator.isEmail(userName) ?
                 getByEmail(userName) : getByAccountId(userName);
-        Optional.ofNullable(user).orElseThrow(() -> new NotFoundException("当前登录用户" + userName + "不存在"));
-        return Optional.of(user);
+        Optional<User> optionalUser = Optional.ofNullable(user);
+        optionalUser.orElseThrow(() -> new NotFoundException("当前登录用户" + userName + "不存在"));
+        return optionalUser;
     }
 
     @Override

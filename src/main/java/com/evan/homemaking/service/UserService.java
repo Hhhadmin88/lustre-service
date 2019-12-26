@@ -4,7 +4,6 @@ import com.evan.homemaking.common.model.entity.User;
 import com.evan.homemaking.common.model.param.RegisterParam;
 import com.evan.homemaking.service.base.CrudService;
 import org.springframework.lang.NonNull;
-import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
@@ -15,7 +14,6 @@ import java.util.Optional;
  * @Version 1.0.0
  * @Date 2019/12/5 14:20
  */
-@Service
 public interface UserService extends CrudService<User, Integer> {
 
     /**
@@ -82,5 +80,4 @@ public interface UserService extends CrudService<User, Integer> {
      * @param user current user that has been logged in.
      */
     void storeCurrentUser(@NonNull User user);
-
 }

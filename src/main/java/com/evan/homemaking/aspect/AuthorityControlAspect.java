@@ -28,7 +28,7 @@ public class AuthorityControlAspect {
     /**
      * 用户信息增删改查权限，修改订单权限，发布招聘信息权限(管理员)
      */
-    @Pointcut("@annotation(com.evan.homemaking.common.annotation.Authentication)")
+    @Pointcut("@within(com.evan.homemaking.common.annotation.Authentication)||@annotation(com.evan.homemaking.common.annotation.Authentication)")
     private void authenticate() {
 
     }
@@ -37,17 +37,20 @@ public class AuthorityControlAspect {
     public void doAuthenticate(JoinPoint joinPoint) {
         MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
         Method method = methodSignature.getMethod();
-        Authentication authentication = method.getAnnotation(Authentication.class);
-        if (authentication == null) {
-            log.error("Not found the annotation of the method that need to authenticate");
-            throw new NoSuchAnnotationException("没有找到权限验证方法上的注解");
+        Class<?> declaringClass = method.getDeclaringClass();
+        Authentication authenticationOnClass = declaringClass.getAnnotation(Authentication.class);
+        Authentication authenticationOnMethod = method.getAnnotation(Authentication.class);
+        if (authenticationOnMethod == null && authenticationOnClass == null) {
+            log.error("Not found the annotation of the class or method  that need to authenticate");
+            throw new NoSuchAnnotationException("未找到需要权限验证类或方法上标注的注解");
         }
+        Authentication authentication = authenticationOnClass == null ? authenticationOnMethod : authenticationOnClass;
         String currentUserRole = SecurityContextHolder.getContext().getAuthentication().getUserDetail().getUser().getRole();
         if (!(authentication.value().getRole()).equals(currentUserRole)) {
-            System.out.println(currentUserRole);
             String methodName = method.getName();
-            log.error("Current user is not have {} authority", methodName);
-            throw new UnAuthorizedException("当前登录用户没有" + methodName + "操作权限");
+            String className = declaringClass.getName();
+            log.error("Current user is not have {}.{} authority", className, methodName);
+            throw new UnAuthorizedException("当前登录用户没有" + className + "." + methodName + "操作权限");
         }
     }
 

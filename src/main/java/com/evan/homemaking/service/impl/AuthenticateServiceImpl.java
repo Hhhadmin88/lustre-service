@@ -64,13 +64,14 @@ public class AuthenticateServiceImpl implements AuthenticateService {
             //If this user is already logged in
             throw new BadRequestException("您已登录，请不要重复登录");
         }
-        //现在有一个清除时机问题
         return buildAuthToken(user);
     }
 
     @Override
     public void clearToken() {
-
+        User currentUser = userService.getCurrentUser();
+        userCache.delete(SecurityUtil.buildAccessTokenKey(currentUser));
+        log.info("用户缓存清除成功，userId:{}", currentUser.getId());
     }
 
     @NonNull
