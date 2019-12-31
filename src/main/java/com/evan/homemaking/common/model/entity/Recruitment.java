@@ -1,9 +1,13 @@
 package com.evan.homemaking.common.model.entity;
 
 import lombok.Data;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.Date;
 
 /**
  * @ClassName Recruitment
@@ -15,6 +19,7 @@ import java.math.BigDecimal;
 @Data
 @Entity
 @Table(name = "recruitment")
+@EntityListeners(AuditingEntityListener.class)
 public class Recruitment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -45,9 +50,11 @@ public class Recruitment {
     @Column(name = "requirement", columnDefinition = "varchar(255) not null")
     private String requirement;
 
-    @Column(name = "createTime", columnDefinition = "timestamp default CURRENT_TIMESTAMP")
-    private String createTime;
+    @CreatedDate
+    @Column(name = "createTime", columnDefinition = "timestamp not null default current_timestamp")
+    private Date createTime;
 
-    @Column(name = "updateTime", columnDefinition = "timestamp default CURRENT_TIMESTAMP")
-    private String updateTime;
+    @LastModifiedDate
+    @Column(name = "updateTime", columnDefinition = "timestamp not null default current_timestamp")
+    private Date updateTime;
 }

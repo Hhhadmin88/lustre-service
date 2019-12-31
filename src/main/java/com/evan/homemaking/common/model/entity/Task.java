@@ -1,8 +1,12 @@
 package com.evan.homemaking.common.model.entity;
 
 import lombok.Data;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.util.Date;
 
 /**
  * @ClassName Task
@@ -14,6 +18,7 @@ import javax.persistence.*;
 @Data
 @Entity
 @Table(name = "task")
+@EntityListeners(AuditingEntityListener.class)
 public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,9 +40,11 @@ public class Task {
     @Column(name = "status", columnDefinition = "int(4) not null")
     private Integer status;
 
-    @Column(name = "createTime", columnDefinition = "varchar(50)")
-    private String createTime;
+    @CreatedDate
+    @Column(name = "createTime", columnDefinition = "timestamp not null default current_timestamp")
+    private Date createTime;
 
-    @Column(name = "updateTime", columnDefinition = "varchar(50)")
-    private String updateTime;
+    @LastModifiedDate
+    @Column(name = "updateTime", columnDefinition = "timestamp not null default current_timestamp")
+    private Date updateTime;
 }
