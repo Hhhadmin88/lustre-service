@@ -1,6 +1,5 @@
 package com.evan.homemaking.service.impl;
 
-import cn.hutool.core.date.DateUtil;
 import com.evan.homemaking.common.model.entity.Recruitment;
 import com.evan.homemaking.common.model.param.RecruitmentParam;
 import com.evan.homemaking.common.utils.ParamTransformUtil;
@@ -32,7 +31,6 @@ public class RecruitmentServiceImpl extends AbstractCrudService<Recruitment, Int
     @Override
     public void createRecruitment(@NonNull RecruitmentParam recruitmentParam) {
         Recruitment recruitment = ParamTransformUtil.copyProperties(recruitmentParam, Recruitment.class);
-        recruitment.setCreateTime(DateUtil.now());
         recruitmentRepository.save(recruitment);
     }
 }

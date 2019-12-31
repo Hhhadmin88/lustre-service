@@ -1,6 +1,9 @@
 package com.evan.homemaking.common.model.entity;
 
 import lombok.Data;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -15,6 +18,7 @@ import java.util.Date;
 @Data
 @Entity
 @Table(name = "messageboard")
+@EntityListeners(AuditingEntityListener.class)
 public class MessageBoard {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,9 +34,11 @@ public class MessageBoard {
     @Column(name = "content", columnDefinition = "varchar(50) not null")
     private String content;
 
-    @Column(name = "createTime", columnDefinition = "timestamp default CURRENT_TIMESTAMP")
+    @CreatedDate
+    @Column(name = "createTime", columnDefinition = "timestamp not null default current_timestamp")
     private Date createTime;
 
-    @Column(name = "updateTime", columnDefinition = "timestamp default CURRENT_TIMESTAMP")
+    @LastModifiedDate
+    @Column(name = "updateTime", columnDefinition = "timestamp not null default current_timestamp")
     private Date updateTime;
 }

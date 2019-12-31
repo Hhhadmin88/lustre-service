@@ -1,6 +1,5 @@
 package com.evan.homemaking.service.impl;
 
-import cn.hutool.core.date.DateUtil;
 import com.evan.homemaking.common.consts.TaskStatus;
 import com.evan.homemaking.common.enums.RoleEnum;
 import com.evan.homemaking.common.exception.BadRequestException;
@@ -116,7 +115,6 @@ public class TaskServiceImpl extends AbstractCrudService<Task, Integer> implemen
     private void changeTaskStatus(Task task, @NonNull TaskParam taskParam, @NonNull User user) {
         if (task.getStatus() == taskParam.getStatus() - 1 && setUserId(task, user.getId())) {
             task.setStatus(taskParam.getStatus());
-            task.setUpdateTime(DateUtil.now());
             update(task);
         } else {
             log.error("This operate is illegal,taskParam.status:{}", taskParam.getStatus());
@@ -146,7 +144,6 @@ public class TaskServiceImpl extends AbstractCrudService<Task, Integer> implemen
             throw new UnAuthorizedException("当前用户的角色无权发布任务");
         }
         task.setEmployerId(currentUser.getId());
-        task.setCreateTime(DateUtil.now());
         task.setStatus(0);
         return task;
     }
@@ -186,7 +183,6 @@ public class TaskServiceImpl extends AbstractCrudService<Task, Integer> implemen
      * @param task task
      */
     private void commonUpdate(Task task) {
-        task.setUpdateTime(DateUtil.now());
         update(task);
     }
 }
