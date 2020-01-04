@@ -2,18 +2,17 @@ package com.evan.homemaking.controller;
 
 import com.evan.homemaking.common.annotation.Authentication;
 import com.evan.homemaking.common.enums.RoleEnum;
+import com.evan.homemaking.common.model.entity.Recruitment;
 import com.evan.homemaking.common.model.param.RecruitmentParam;
 import com.evan.homemaking.common.model.vo.ResponseVO;
 import com.evan.homemaking.common.utils.ResponseUtil;
 import com.evan.homemaking.service.RecruitmentService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 /**
  * @ClassName RecruitmentController
@@ -36,9 +35,37 @@ public class RecruitmentController {
     }
 
     @PostMapping("publish")
-    @ApiOperation("Publish a task")
+    @ApiOperation("Publish a recruitment")
     public ResponseEntity<ResponseVO> publish(@RequestBody @Valid RecruitmentParam recruitmentParam) {
         recruitmentService.createRecruitment(recruitmentParam);
         return ResponseUtil.successResponse();
+    }
+
+    @PutMapping("modify")
+    @ApiOperation("Modify a recruitment")
+    public ResponseEntity<ResponseVO> modify(@RequestBody @Valid RecruitmentParam recruitmentParam) {
+        recruitmentService.updateRecruitment(recruitmentParam);
+        return ResponseUtil.successResponse();
+    }
+
+    @DeleteMapping("delete/{recruitmentId}")
+    @ApiOperation("Delete a recruitment")
+    public ResponseEntity<ResponseVO> delete(@PathVariable Integer recruitmentId) {
+        recruitmentService.deleteRecruitment(recruitmentId);
+        return ResponseUtil.successResponse();
+    }
+
+    @GetMapping("get/all")
+    @ApiOperation("Get all recruitment")
+    public ResponseEntity<ResponseVO> getAll() {
+        List<Recruitment> recruitmentList = recruitmentService.findAllRecruitment();
+        return ResponseUtil.successResponse(recruitmentList);
+    }
+
+    @GetMapping("get/{recruitmentId}")
+    @ApiOperation("Get one recruitment")
+    public ResponseEntity<ResponseVO> getOne(@PathVariable Integer recruitmentId) {
+        Recruitment recruitment = recruitmentService.findOneRecruitment(recruitmentId);
+        return ResponseUtil.successResponse(recruitment);
     }
 }
