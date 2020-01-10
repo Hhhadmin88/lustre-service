@@ -4,25 +4,24 @@ import org.springframework.http.HttpStatus;
 import org.springframework.lang.NonNull;
 
 /**
- * @ClassName NotFoundException
+ * @ClassName BeanUtilsException
  * @Description
  * @Author EvanWang
  * @Version 1.0.0
- * @Date 2019/12/5 14:31
+ * @Date 2020/1/11 3:10
  */
-public class NotFoundException extends HomemakingException {
-
-    public NotFoundException(String message) {
+public class BeanUtilException extends HomemakingException {
+    public BeanUtilException(String message) {
         super(message);
     }
 
-    public NotFoundException(String message, Throwable cause) {
+    public BeanUtilException(String message, Throwable cause) {
         super(message, cause);
     }
 
     @NonNull
     @Override
     public HttpStatus getStatus() {
-        return HttpStatus.NOT_FOUND;
+        return HttpStatus.INTERNAL_SERVER_ERROR;
     }
 }
