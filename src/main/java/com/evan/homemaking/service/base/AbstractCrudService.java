@@ -29,6 +29,11 @@ public class AbstractCrudService<DOMAIN, ID> implements CrudService<DOMAIN, ID> 
 
     private final BaseRepository<DOMAIN, ID> repository;
 
+    /**
+     * when classA extends this class,the constructor will set this repository is the autowired repository in classA.
+     *
+     * @param repository repository in the abstract class.
+     */
     protected AbstractCrudService(BaseRepository<DOMAIN, ID> repository) {
         this.repository = repository;
 

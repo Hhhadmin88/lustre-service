@@ -1,6 +1,7 @@
 package com.evan.homemaking.common.exception;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.lang.NonNull;
 
 /**
  * @ClassName InternalException
@@ -18,6 +19,7 @@ public class InternalException extends HomemakingException {
         super(message, cause);
     }
 
+    @NonNull
     @Override
     public HttpStatus getStatus() {
         return HttpStatus.INTERNAL_SERVER_ERROR;

@@ -1,6 +1,7 @@
 package com.evan.homemaking.common.exception;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.lang.NonNull;
 
 /**
  * @ClassName AuthenticateException
@@ -18,6 +19,7 @@ public class AuthenticateFailedException extends HomemakingException {
         super(message, cause);
     }
 
+    @NonNull
     @Override
     public HttpStatus getStatus() {
         return HttpStatus.UNAUTHORIZED;

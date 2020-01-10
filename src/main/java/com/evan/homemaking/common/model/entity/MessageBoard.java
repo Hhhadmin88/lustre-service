@@ -25,11 +25,11 @@ public class MessageBoard {
     @Column(name = "id")
     private Integer id;
 
-    @Column(name = "sender", columnDefinition = "varchar(50) not null")
+    @Column(name = "sender", columnDefinition = "int(32) not null")
     private String sender;
 
-    @Column(name = "receiver", columnDefinition = "varchar(50) not null")
-    private String receiver;
+    @Column(name = "receiver", columnDefinition = "int(32) not null")
+    private Integer receiver;
 
     @Column(name = "content", columnDefinition = "varchar(50) not null")
     private String content;

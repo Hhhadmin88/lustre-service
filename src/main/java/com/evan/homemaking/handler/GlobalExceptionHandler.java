@@ -71,4 +71,10 @@ public class GlobalExceptionHandler {
         return ResponseUtil.notLoginRequestResponse(e.getMessage());
     }
 
+    @ExceptionHandler
+    public ResponseEntity<ResponseVO> beanUtilException(BeanUtilException e) {
+        log.error(EXCEPTION_DETAIL_HINT, e.toString());
+        return ResponseUtil.internalErrorResponse(e.getMessage());
+    }
+
 }
