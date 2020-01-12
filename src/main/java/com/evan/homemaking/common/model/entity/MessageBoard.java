@@ -1,6 +1,5 @@
 package com.evan.homemaking.common.model.entity;
 
-import com.evan.homemaking.common.model.dto.base.InputConverter;
 import lombok.Data;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;

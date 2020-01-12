@@ -2,7 +2,6 @@ package com.evan.homemaking.service;
 
 import com.evan.homemaking.common.model.dto.MessageBoardDTO;
 import com.evan.homemaking.common.model.entity.MessageBoard;
-import com.evan.homemaking.common.model.entity.Recruitment;
 import com.evan.homemaking.common.model.param.MessageBoardParam;
 import com.evan.homemaking.service.base.CrudService;
 import org.springframework.lang.NonNull;
