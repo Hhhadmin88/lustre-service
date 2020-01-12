@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import java.util.Optional;
+import java.util.function.Function;
 
 /**
  * @ClassName UserServiceImpl
@@ -90,7 +91,7 @@ public class UserServiceImpl extends AbstractCrudService<User, Integer> implemen
     public Optional<User> getCurrentRequestUser(@NonNull String userName) {
         User user = Validator.isEmail(userName) ?
                 getByEmail(userName) : getByAccountId(userName);
-        Optional<User> optionalUser = Optional.ofNullable(user);
+        Optional<User> optionalUser = Optional.of(user);
         optionalUser.orElseThrow(() -> new NotFoundException("当前登录用户" + userName + "不存在"));
         return optionalUser;
     }

@@ -1,3 +1,5 @@
+server:
+  port: 8090
 application:
   formatted-version: 1.0.0
 spring:
@@ -6,10 +8,18 @@ spring:
     url: jdbc:mysql://localhost:3306/homemaking?useUnicode=yes&characterEncoding=UTF-8&useInformationSchema=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
     username: root
     password: 123456
-    type: com.alibaba.druid.pool.DruidDataSource
+    type: com.zaxxer.hikari.HikariDataSource
   jpa:
     hibernate:
       ddl-auto: update
     show-sql: true
-server:
-  port: 8090
+management:
+  endpoints:
+    web:
+      base-path: /api/actuator
+      exposure:
+        include: ['httptrace', 'metrics','env','logfile','health']
+logging:
+  level:
+    com.evan.homemaking: INFO
+  file: ${user.home}/.homemaking/logs

@@ -2,7 +2,6 @@ package com.evan.homemaking.service.impl;
 
 import com.evan.homemaking.common.model.dto.MessageBoardDTO;
 import com.evan.homemaking.common.model.dto.base.InputConverter;
-import com.evan.homemaking.common.model.dto.base.OutputConverter;
 import com.evan.homemaking.common.model.entity.MessageBoard;
 import com.evan.homemaking.common.model.entity.User;
 import com.evan.homemaking.common.model.param.MessageBoardParam;
