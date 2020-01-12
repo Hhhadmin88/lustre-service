@@ -98,7 +98,7 @@ public class ResponseUtil {
     }
 
     /**
-     * Build 403 badRequest ResponseVO.
+     * Build 403 notLoginRequest ResponseVO.
      *
      * @param message error message.
      * @return ResponseVO

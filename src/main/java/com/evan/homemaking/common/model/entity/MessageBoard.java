@@ -1,5 +1,6 @@
 package com.evan.homemaking.common.model.entity;
 
+import com.evan.homemaking.common.model.dto.base.InputConverter;
 import lombok.Data;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -25,11 +26,11 @@ public class MessageBoard {
     @Column(name = "id")
     private Integer id;
 
-    @Column(name = "sender", columnDefinition = "int(32) not null")
-    private String sender;
+    @Column(name = "senderId", columnDefinition = "int(32) not null")
+    private Integer senderId;
 
-    @Column(name = "receiver", columnDefinition = "int(32) not null")
-    private Integer receiver;
+    @Column(name = "receiverId", columnDefinition = "int(32) not null")
+    private Integer receiverId;
 
     @Column(name = "content", columnDefinition = "varchar(50) not null")
     private String content;

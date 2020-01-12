@@ -13,7 +13,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 /**
  * @ClassName Evaluation
- * @Description Visit http://localhost:8080/swagger-ui.html You can get detailed interface documents.
+ * @Description Visit http://localhost:8090/swagger-ui.html You can get detailed interface documents.
  * @Author EvanWang
  * @Version 1.0.0
  * @Date 2019/12/3 14:20
