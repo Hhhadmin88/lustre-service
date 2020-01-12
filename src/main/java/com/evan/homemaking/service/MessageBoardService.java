@@ -1,5 +1,6 @@
 package com.evan.homemaking.service;
 
+import com.evan.homemaking.common.model.dto.MessageBoardDTO;
 import com.evan.homemaking.common.model.entity.MessageBoard;
 import com.evan.homemaking.common.model.entity.Recruitment;
 import com.evan.homemaking.common.model.param.MessageBoardParam;
@@ -15,13 +16,36 @@ import java.util.List;
  * @Version 1.0.0
  * @Date 2020/1/11 3:22
  */
-public interface MessageService extends CrudService<MessageBoard, Integer> {
+public interface MessageBoardService extends CrudService<MessageBoard, Integer> {
     /**
      * Add a message.
      *
      * @param messageBoardParam messageBoardParam.
      */
     void add(@NonNull MessageBoardParam messageBoardParam);
+
+    /**
+     * Get one message.
+     *
+     * @param id message id.
+     * @return messageBoard dto.
+     */
+    MessageBoardDTO getOne(@NonNull Integer id);
+
+    /**
+     * Get multiple messages.
+     *
+     * @param idList id list.
+     * @return messageBoard dto list.
+     */
+    List<MessageBoardDTO> getMultiple(@NonNull List<Integer> idList);
+
+    /**
+     * Get all messages.
+     *
+     * @return messageBoard dto list all.
+     */
+    List<MessageBoardDTO> getAll();
 
     /**
      * Update a message.

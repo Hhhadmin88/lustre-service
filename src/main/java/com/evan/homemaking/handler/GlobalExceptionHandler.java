@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.persistence.EntityNotFoundException;
+
 import static com.evan.homemaking.common.consts.Message.EXCEPTION_DETAIL_HINT;
 
 /**
@@ -63,6 +65,12 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ResponseVO> unAuthorizedException(UnAuthorizedException e) {
         log.error(EXCEPTION_DETAIL_HINT, e.toString());
         return ResponseUtil.authenticateFailedResponse(e.getMessage());
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<ResponseVO> entityNotFoundException(EntityNotFoundException e) {
+        log.error(EXCEPTION_DETAIL_HINT, e.toString());
+        return ResponseUtil.notFoundResponse("找不到当前id对应的数据，请检查后重新填写");
     }
 
     @ExceptionHandler

@@ -6,7 +6,7 @@ import static com.evan.homemaking.common.utils.BeanUtil.updateProperties;
 
 /**
  * @ClassName OutputConverter
- * @Description
+ * @Description Converter interface for output DTO.
  * @Author EvanWang
  * @Version 1.0.0
  * @Date 2020/1/11 2:45

@@ -1,23 +1,79 @@
 package com.evan.homemaking.common.utils;
 
 import com.evan.homemaking.common.exception.BeanUtilException;
+import com.evan.homemaking.common.model.dto.base.InputConverter;
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.BeansException;
 import org.springframework.lang.NonNull;
+import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
+import org.springframework.util.CollectionUtils;
 
 import java.beans.PropertyDescriptor;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
- * @ClassName BeanUtils
+ * @ClassName BeanUtil
  * @Description
  * @Author EvanWang
  * @Version 1.0.0
  * @Date 2020/1/11 2:47
  */
 public class BeanUtil {
+
+
+    /**
+     * Transform from the source object. (copy same properties only)
+     *
+     * @param source      source data
+     * @param targetClass target class must not be null
+     * @param <T>         target class type
+     * @return instance with specified type copying from source data; or null if source data is null
+     * @throws BeanUtilException if newing target instance failed or copying failed
+     */
+    @Nullable
+    public static <T> T transformFrom(@Nullable Object source, @NonNull Class<T> targetClass) {
+        Assert.notNull(targetClass, "Target class must not be null");
+
+        if (source == null) {
+            return null;
+        }
+
+        // Init the instance
+        try {
+            // New instance for the target class
+            T targetInstance = targetClass.newInstance();
+            // Copy properties
+            org.springframework.beans.BeanUtils.copyProperties(source, targetInstance, getNullPropertyNames(source));
+            // Return the target instance
+            return targetInstance;
+        } catch (Exception e) {
+            throw new BeanUtilException("Failed to new " + targetClass.getName() + " instance or copy properties", e);
+        }
+    }
+
+    /**
+     * Transforms from source data collection in batch.
+     *
+     * @param sources     source data collection
+     * @param targetClass target class must not be null
+     * @param <T>         target class type
+     * @return target collection transforming from source data collection.
+     * @throws BeanUtilException if newing target instance failed or copying failed
+     */
+    @NonNull
+    public static <T> List<T> transformFromInBatch(Collection<?> sources, @NonNull Class<T> targetClass) {
+        if (CollectionUtils.isEmpty(sources)) {
+            return Collections.emptyList();
+        }
+
+        // Transform in batch
+        return sources.stream()
+                .map(source -> transformFrom(source, targetClass))
+                .collect(Collectors.toList());
+    }
+
     /**
      * Update properties (non null).
      *
@@ -73,7 +129,6 @@ public class BeanUtil {
                 emptyNames.add(propertyName);
             }
         }
-
         return emptyNames;
     }
 }
