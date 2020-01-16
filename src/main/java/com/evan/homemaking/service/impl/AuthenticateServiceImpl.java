@@ -39,8 +39,9 @@ public class AuthenticateServiceImpl implements AuthenticateService {
         this.userCache = userCache;
     }
 
+    @NonNull
     @Override
-    public AuthToken authenticate(LoginParam loginParam) {
+    public AuthToken authenticate(@NonNull LoginParam loginParam) {
         Assert.notNull(loginParam, "Login param must not be null");
 
         String mismatchTip = "用户名或者密码不正确";
@@ -54,7 +55,7 @@ public class AuthenticateServiceImpl implements AuthenticateService {
             log.error("Failed to find user by userName: " + userName, e);
             throw new BadRequestException(mismatchTip);
         }
-        Optional.ofNullable(user).orElseThrow(() -> new BadRequestException("该用户不存在"));
+        Optional.of(user).orElseThrow(() -> new BadRequestException("该用户不存在"));
         if (!userService.matchPassword(user, loginParam.getPassword())) {
             log.error("The password of loginParam is not match to the user password");
 

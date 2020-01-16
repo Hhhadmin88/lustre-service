@@ -68,14 +68,28 @@ public class MessageBoardController {
     @DeleteMapping("/delete/list")
     @ApiOperation("Delete multiple message")
     public ResponseEntity<ResponseVO> getAll(@RequestBody List<Integer> idList) {
-        messageBoardService.getMultiple(idList);
+        messageBoardService.deleteMultiple(idList);
         return ResponseUtil.successResponse();
     }
 
     @DeleteMapping("/delete/all")
     @ApiOperation("Delete all message")
     public ResponseEntity<ResponseVO> deleteAll() {
-        messageBoardService.removeAll();
+        messageBoardService.deleteAll();
+        return ResponseUtil.successResponse();
+    }
+
+    @PutMapping("{id:\\d+}")
+    @ApiOperation("Update a message")
+    public ResponseEntity<ResponseVO> updateOne(@PathVariable("id") Integer id, @RequestBody MessageBoardParam messageBoardParam) {
+        messageBoardService.update(id, messageBoardParam);
+        return ResponseUtil.successResponse();
+    }
+
+    @PutMapping("/update/list")
+    @ApiOperation("Update multiple messages")
+    public ResponseEntity<ResponseVO> updateMultiple(@RequestBody List<MessageBoardParam> messageBoardParamList) {
+        messageBoardService.updateMultiple(messageBoardParamList);
         return ResponseUtil.successResponse();
     }
 }
