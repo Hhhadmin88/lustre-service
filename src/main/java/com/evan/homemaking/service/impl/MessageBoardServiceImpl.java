@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -78,9 +79,15 @@ public class MessageBoardServiceImpl extends AbstractCrudService<MessageBoard, I
         return messageBoardDTO;
     }
 
+
     @Override
-    public void update(@NonNull MessageBoardParam messageBoardParam) {
-        update(messageBoardParam.convertTo());
+    public void update(@NonNull Integer messageBoardId, @NonNull MessageBoardParam messageBoardParam) {
+        Optional<MessageBoard> messageBoardOptional = messageBoardRepository.findById(messageBoardId);
+        messageBoardOptional.map(messageBoard -> {
+            messageBoardParam.update(messageBoard);
+            messageBoardRepository.saveAndFlush(messageBoard);
+            return messageBoard;
+        });
     }
 
     @Override

@@ -46,12 +46,14 @@ public interface MessageBoardService extends CrudService<MessageBoard, Integer> 
      */
     List<MessageBoardDTO> getAll();
 
+
     /**
      * Update a message.
      *
+     * @param messageBoardId    message board id.
      * @param messageBoardParam messageBoardParam.
      */
-    void update(@NonNull MessageBoardParam messageBoardParam);
+    void update(@NonNull Integer messageBoardId, @NonNull MessageBoardParam messageBoardParam);
 
     /**
      * Update multiple messages.
