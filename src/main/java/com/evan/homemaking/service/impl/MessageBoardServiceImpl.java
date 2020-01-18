@@ -14,8 +14,7 @@ import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -46,13 +45,13 @@ public class MessageBoardServiceImpl extends AbstractCrudService<MessageBoard, I
     }
 
     @Override
-    public MessageBoardDTO getOne(@NonNull Integer id) {
-        return buildMessageBoardDTO(id);
+    public MessageBoardDTO getOne(@NonNull Integer messageBoardId) {
+        return buildMessageBoardDTO(messageBoardId);
     }
 
     @Override
-    public List<MessageBoardDTO> getMultiple(@NonNull List<Integer> idList) {
-        return idList.stream().map(this::buildMessageBoardDTO).collect(Collectors.toList());
+    public List<MessageBoardDTO> getMultiple(@NonNull List<Integer> messageBoardIdList) {
+        return messageBoardIdList.stream().map(this::buildMessageBoardDTO).collect(Collectors.toList());
     }
 
     @Override
@@ -63,22 +62,20 @@ public class MessageBoardServiceImpl extends AbstractCrudService<MessageBoard, I
     }
 
     @NonNull
-    private MessageBoardDTO buildMessageBoardDTO(Integer id) {
-        Assert.notNull(id, "Message id must not be null");
+    private MessageBoardDTO buildMessageBoardDTO(Integer messageBoardId) {
+        Assert.notNull(messageBoardId, "MessageBoardId must not be null");
 
-        MessageBoard messageBoard = messageBoardRepository.getOne(id);
-        Integer senderId = messageBoard.getSenderId();
-        Integer receiverId = messageBoard.getReceiverId();
-        User sender = userRepository.getOne(senderId);
-        User receiver = userRepository.getOne(receiverId);
-
-        MessageBoardDTO messageBoardDTO = new MessageBoardDTO();
-        messageBoardDTO.convertFrom(messageBoard);
-        messageBoardDTO.setSenderName(sender.getNickName());
-        messageBoardDTO.setReceiverName(receiver.getNickName());
-        return messageBoardDTO;
+        Optional<MessageBoard> messageBoardOptional = messageBoardRepository.findById(messageBoardId);
+        return messageBoardOptional.map(messageBoard -> {
+            MessageBoardDTO messageBoardDTO = new MessageBoardDTO();
+            messageBoardDTO.convertFrom(messageBoard);
+            String senderName = userRepository.getOne(messageBoard.getSenderId()).getNickName();
+            String receiverName = userRepository.getOne(messageBoard.getReceiverId()).getNickName();
+            messageBoardDTO.setSenderName(senderName);
+            messageBoardDTO.setReceiverName(receiverName);
+            return messageBoardDTO;
+        }).get();
     }
-
 
     @Override
     public void update(@NonNull Integer messageBoardId, @NonNull MessageBoardParam messageBoardParam) {
@@ -91,20 +88,27 @@ public class MessageBoardServiceImpl extends AbstractCrudService<MessageBoard, I
     }
 
     @Override
-    public void updateMultiple(@NonNull List<MessageBoardParam> messageBoardParamList) {
-        List<MessageBoard> messageBoardList = messageBoardParamList.stream()
-                .map(InputConverter::convertTo).collect(Collectors.toList());
+    public void updateMultiple(@NonNull List<Map<Integer, MessageBoardParam>> messageBoardParamListMap) {
+        List<MessageBoard> messageBoardList = new ArrayList<>();
+        messageBoardParamListMap.stream().peek(messageBoardParamMap ->
+                messageBoardParamMap.forEach((id, messageBoardParam) -> {
+                    Optional<MessageBoard> messageBoard = messageBoardRepository.findById(id);
+                    messageBoard.ifPresent(messageBoardInternal -> {
+                        messageBoardParam.update(messageBoardInternal);
+                        messageBoardList.add(messageBoardInternal);
+                    });
+                }));
         updateInBatch(messageBoardList);
     }
 
     @Override
-    public void deleteOne(@NonNull Integer messageId) {
-        removeById(messageId);
+    public void deleteOne(@NonNull Integer messageBoardId) {
+        removeById(messageBoardId);
     }
 
     @Override
-    public void deleteMultiple(@NonNull List<Integer> messageIdList) {
-        removeInBatch(messageIdList);
+    public void deleteMultiple(@NonNull List<Integer> messageBoardIdList) {
+        removeInBatch(messageBoardIdList);
     }
 
     @Override

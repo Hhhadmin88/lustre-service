@@ -20,6 +20,9 @@ public class Evaluation {
     @Column(name = "id")
     private Integer id;
 
+    @Column(name = "taskId", columnDefinition = "int(32) not null")
+    private Integer taskId;
+
     @Column(name = "employerId", columnDefinition = "int(32) not null")
     private Integer employerId;
 
