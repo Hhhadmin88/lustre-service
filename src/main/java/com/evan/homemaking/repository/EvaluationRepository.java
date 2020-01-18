@@ -16,10 +16,10 @@ import java.util.List;
 public interface EvaluationRepository extends BaseRepository<Evaluation, Integer> {
 
     /**
-     * Find all evaluations by employer id.
+     * Find all evaluations for this employee id.
      *
-     * @param employerId employer id.
+     * @param employeeId employee id.
      * @return evaluation list.
      */
-    List<Evaluation> findAllByEmployerId(@NonNull Integer employerId);
+    List<Evaluation> findAllByEmployeeId(@NonNull Integer employeeId);
 }

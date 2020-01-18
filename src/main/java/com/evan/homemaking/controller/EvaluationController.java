@@ -1,20 +1,18 @@
 package com.evan.homemaking.controller;
 
-import com.evan.homemaking.common.model.dto.MessageBoardDTO;
 import com.evan.homemaking.common.model.param.EvaluationParam;
-import com.evan.homemaking.common.model.param.MessageBoardParam;
-import com.evan.homemaking.common.model.vo.EmployerEvaluationVO;
 import com.evan.homemaking.common.model.vo.ResponseVO;
 import com.evan.homemaking.common.utils.ResponseUtil;
 import com.evan.homemaking.service.EvaluationService;
-import com.evan.homemaking.service.MessageBoardService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 /**
  * @ClassName EvaluationController
@@ -39,10 +37,38 @@ public class EvaluationController {
         return ResponseUtil.successResponse();
     }
 
-    @GetMapping("/get/{id:\\d+}")
+
+    @GetMapping("{id:\\d+}")
     @ApiOperation("Get a evaluation")
     public ResponseEntity<ResponseVO> getOne(@PathVariable Integer id) {
-        return ResponseUtil.successResponse(evaluationService.getOne(id));
+        return ResponseUtil.successResponse(evaluationService.getEvaluationsForOne(id));
+    }
+
+    @PutMapping("{id:\\d+}")
+    @ApiOperation("Update a evaluation")
+    public ResponseEntity<ResponseVO> updateOne(@PathVariable Integer id, @NonNull EvaluationParam evaluationParam) {
+        return ResponseUtil.successResponse(evaluationService.update(id, evaluationParam));
+    }
+
+    @DeleteMapping("{id:\\d+}")
+    @ApiOperation("Delete a evaluation")
+    public ResponseEntity<ResponseVO> deleteOne(@PathVariable Integer id) {
+        evaluationService.deleteOne(id);
+        return ResponseUtil.successResponse();
+    }
+
+    @DeleteMapping("delete/list")
+    @ApiOperation("Delete multiple evaluations")
+    public ResponseEntity<ResponseVO> deleteMultiple(@NonNull List<Integer> idList) {
+        evaluationService.deleteMultiple(idList);
+        return ResponseUtil.successResponse();
+    }
+
+    @DeleteMapping("delete/all")
+    @ApiOperation("Delete all evaluations")
+    public ResponseEntity<ResponseVO> deleteAll() {
+        evaluationService.deleteAll();
+        return ResponseUtil.successResponse();
     }
 }
 

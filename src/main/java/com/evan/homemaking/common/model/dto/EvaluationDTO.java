@@ -2,6 +2,7 @@ package com.evan.homemaking.common.model.dto;
 
 import com.evan.homemaking.common.model.dto.base.OutputConverter;
 import com.evan.homemaking.common.model.entity.Evaluation;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 import javax.persistence.Column;
@@ -19,7 +20,8 @@ public class EvaluationDTO implements OutputConverter<EvaluationDTO, Evaluation>
 
     private Integer id;
 
-    private String employeeNickName;
+    @JsonProperty("employer_name")
+    private String employerNickName;
 
     private String content;
 
