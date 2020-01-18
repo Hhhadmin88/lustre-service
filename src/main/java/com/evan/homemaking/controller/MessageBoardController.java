@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @ClassName MessageBoardController
@@ -37,7 +38,7 @@ public class MessageBoardController {
         return ResponseUtil.successResponse();
     }
 
-    @GetMapping("/get/{id}")
+    @GetMapping("/get/{id:\\d+}")
     @ApiOperation("Get a message")
     public ResponseEntity<ResponseVO> getOne(@PathVariable Integer id) {
         MessageBoardDTO messageBoardDTO = messageBoardService.getOne(id);
@@ -58,16 +59,16 @@ public class MessageBoardController {
         return ResponseUtil.successResponse(messageBoardDTOList);
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/delete/{id:\\d+}")
     @ApiOperation("Delete one message")
-    public ResponseEntity<ResponseVO> getAll(@PathVariable Integer id) {
+    public ResponseEntity<ResponseVO> deleteOne(@PathVariable Integer id) {
         messageBoardService.deleteOne(id);
         return ResponseUtil.successResponse();
     }
 
     @DeleteMapping("/delete/list")
     @ApiOperation("Delete multiple message")
-    public ResponseEntity<ResponseVO> getAll(@RequestBody List<Integer> idList) {
+    public ResponseEntity<ResponseVO> deleteMultiple(@RequestBody List<Integer> idList) {
         messageBoardService.deleteMultiple(idList);
         return ResponseUtil.successResponse();
     }
@@ -88,8 +89,8 @@ public class MessageBoardController {
 
     @PutMapping("/update/list")
     @ApiOperation("Update multiple messages")
-    public ResponseEntity<ResponseVO> updateMultiple(@RequestBody List<MessageBoardParam> messageBoardParamList) {
-        messageBoardService.updateMultiple(messageBoardParamList);
+    public ResponseEntity<ResponseVO> updateMultiple(@RequestBody List<Map<Integer, MessageBoardParam>> messageBoardParamListMap) {
+        messageBoardService.updateMultiple(messageBoardParamListMap);
         return ResponseUtil.successResponse();
     }
 }

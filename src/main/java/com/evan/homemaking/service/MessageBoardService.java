@@ -7,6 +7,7 @@ import com.evan.homemaking.service.base.CrudService;
 import org.springframework.lang.NonNull;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @ClassName MessageService
@@ -58,9 +59,9 @@ public interface MessageBoardService extends CrudService<MessageBoard, Integer> 
     /**
      * Update multiple messages.
      *
-     * @param messageBoardParamList messageBoardParam list.
+     * @param messageBoardParamListMap messageBoardParam list map.
      */
-    void updateMultiple(@NonNull List<MessageBoardParam> messageBoardParamList);
+    void updateMultiple(@NonNull List<Map<Integer, MessageBoardParam>> messageBoardParamListMap);
 
     /**
      * Delete a message.
