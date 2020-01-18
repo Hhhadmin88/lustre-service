@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.lang.NonNull;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 
@@ -60,6 +61,7 @@ public class AbstractCrudService<DOMAIN, ID> implements CrudService<DOMAIN, ID> 
      *
      * @return List
      */
+    @NonNull
     @Override
     public List<DOMAIN> listAll() {
         return repository.findAll();
@@ -71,8 +73,9 @@ public class AbstractCrudService<DOMAIN, ID> implements CrudService<DOMAIN, ID> 
      * @param sort sort
      * @return List
      */
+    @NonNull
     @Override
-    public List<DOMAIN> listAll(Sort sort) {
+    public List<DOMAIN> listAll(@NonNull Sort sort) {
         Assert.notNull(sort, "Sort info must not be null");
 
         return repository.findAll(sort);
@@ -84,8 +87,9 @@ public class AbstractCrudService<DOMAIN, ID> implements CrudService<DOMAIN, ID> 
      * @param pageable pageable
      * @return Page
      */
+    @NonNull
     @Override
-    public Page<DOMAIN> listAll(Pageable pageable) {
+    public Page<DOMAIN> listAll(@NonNull Pageable pageable) {
         Assert.notNull(pageable, "Pageable info must not be null");
 
         return repository.findAll(pageable);
@@ -97,6 +101,7 @@ public class AbstractCrudService<DOMAIN, ID> implements CrudService<DOMAIN, ID> 
      * @param ids ids
      * @return List
      */
+    @NonNull
     @Override
     public List<DOMAIN> listAllByIds(Collection<ID> ids) {
         return CollectionUtils.isEmpty(ids) ? Collections.emptyList() : repository.findAllById(ids);
@@ -109,8 +114,9 @@ public class AbstractCrudService<DOMAIN, ID> implements CrudService<DOMAIN, ID> 
      * @param sort sort
      * @return List
      */
+    @NonNull
     @Override
-    public List<DOMAIN> listAllByIds(Collection<ID> ids, Sort sort) {
+    public List<DOMAIN> listAllByIds(Collection<ID> ids, @NonNull Sort sort) {
         Assert.notNull(sort, "Sort info must not be null");
 
         return CollectionUtils.isEmpty(ids) ? Collections.emptyList() : repository.findAllByIdIn(ids, sort);
@@ -122,8 +128,9 @@ public class AbstractCrudService<DOMAIN, ID> implements CrudService<DOMAIN, ID> 
      * @param id id
      * @return Optional
      */
+    @NonNull
     @Override
-    public Optional<DOMAIN> fetchById(ID id) {
+    public Optional<DOMAIN> fetchById(@NonNull ID id) {
         Assert.notNull(id, domainName + " id must not be null");
 
         return repository.findById(id);
@@ -136,8 +143,9 @@ public class AbstractCrudService<DOMAIN, ID> implements CrudService<DOMAIN, ID> 
      * @return DOMAIN
      * @throws NotFoundException If the specified id does not exist
      */
+    @NonNull
     @Override
-    public DOMAIN getById(ID id) {
+    public DOMAIN getById(@NonNull ID id) {
         return fetchById(id).orElseThrow(() -> new NotFoundException(domainName + " was not found or has been deleted"));
     }
 
@@ -148,7 +156,7 @@ public class AbstractCrudService<DOMAIN, ID> implements CrudService<DOMAIN, ID> 
      * @return DOMAIN
      */
     @Override
-    public DOMAIN getByIdOfNullable(ID id) {
+    public DOMAIN getByIdOfNullable(@NonNull ID id) {
         return fetchById(id).orElse(null);
     }
 
@@ -159,7 +167,7 @@ public class AbstractCrudService<DOMAIN, ID> implements CrudService<DOMAIN, ID> 
      * @return boolean
      */
     @Override
-    public boolean existsById(ID id) {
+    public boolean existsById(@NonNull ID id) {
         Assert.notNull(id, domainName + " id must not be null");
 
         return repository.existsById(id);
@@ -172,7 +180,7 @@ public class AbstractCrudService<DOMAIN, ID> implements CrudService<DOMAIN, ID> 
      * @throws NotFoundException If the specified id does not exist
      */
     @Override
-    public void mustExistById(ID id) {
+    public void mustExistById(@NonNull ID id) {
         if (!existsById(id)) {
             throw new NotFoundException(domainName + " was not exist");
         }
@@ -194,8 +202,9 @@ public class AbstractCrudService<DOMAIN, ID> implements CrudService<DOMAIN, ID> 
      * @param domain domain
      * @return DOMAIN
      */
+    @NonNull
     @Override
-    public DOMAIN create(DOMAIN domain) {
+    public DOMAIN create(@NonNull DOMAIN domain) {
         Assert.notNull(domain, domainName + " data must not be null");
 
         return repository.save(domain);
@@ -207,8 +216,9 @@ public class AbstractCrudService<DOMAIN, ID> implements CrudService<DOMAIN, ID> 
      * @param domains domains
      * @return List
      */
+    @NonNull
     @Override
-    public List<DOMAIN> createInBatch(Collection<DOMAIN> domains) {
+    public List<DOMAIN> createInBatch(@NonNull Collection<DOMAIN> domains) {
         return CollectionUtils.isEmpty(domains) ? Collections.emptyList() : repository.saveAll(domains);
     }
 
@@ -218,8 +228,9 @@ public class AbstractCrudService<DOMAIN, ID> implements CrudService<DOMAIN, ID> 
      * @param domain domain
      * @return DOMAIN
      */
+    @NonNull
     @Override
-    public DOMAIN update(DOMAIN domain) {
+    public DOMAIN update(@NonNull DOMAIN domain) {
         Assert.notNull(domain, domainName + " data must not be null");
 
         return repository.saveAndFlush(domain);
@@ -236,8 +247,9 @@ public class AbstractCrudService<DOMAIN, ID> implements CrudService<DOMAIN, ID> 
      * @param domains domains
      * @return List
      */
+    @NonNull
     @Override
-    public List<DOMAIN> updateInBatch(Collection<DOMAIN> domains) {
+    public List<DOMAIN> updateInBatch(@NonNull Collection<DOMAIN> domains) {
         return CollectionUtils.isEmpty(domains) ? Collections.emptyList() : repository.saveAll(domains);
     }
 
@@ -248,8 +260,9 @@ public class AbstractCrudService<DOMAIN, ID> implements CrudService<DOMAIN, ID> 
      * @return DOMAIN
      * @throws NotFoundException If the specified id does not exist
      */
+    @NonNull
     @Override
-    public DOMAIN removeById(ID id) {
+    public DOMAIN removeById(@NonNull ID id) {
         // Get non null domain by id
         DOMAIN domain = getById(id);
 
@@ -267,7 +280,7 @@ public class AbstractCrudService<DOMAIN, ID> implements CrudService<DOMAIN, ID> 
      * @return DOMAIN
      */
     @Override
-    public DOMAIN removeByIdOfNullable(ID id) {
+    public DOMAIN removeByIdOfNullable(@NonNull ID id) {
         return fetchById(id).map(domain -> {
             remove(domain);
             return domain;
@@ -280,7 +293,7 @@ public class AbstractCrudService<DOMAIN, ID> implements CrudService<DOMAIN, ID> 
      * @param domain domain
      */
     @Override
-    public void remove(DOMAIN domain) {
+    public void remove(@NonNull DOMAIN domain) {
         Assert.notNull(domain, domainName + " data must not be null");
 
         repository.delete(domain);
@@ -292,7 +305,7 @@ public class AbstractCrudService<DOMAIN, ID> implements CrudService<DOMAIN, ID> 
      * @param ids ids
      */
     @Override
-    public void removeInBatch(Collection<ID> ids) {
+    public void removeInBatch(@NonNull Collection<ID> ids) {
         if (CollectionUtils.isEmpty(ids)) {
             log.warn(domainName + " id collection is empty");
             return;
@@ -307,7 +320,7 @@ public class AbstractCrudService<DOMAIN, ID> implements CrudService<DOMAIN, ID> 
      * @param domains domains
      */
     @Override
-    public void removeAll(Collection<DOMAIN> domains) {
+    public void removeAll(@NonNull Collection<DOMAIN> domains) {
         if (CollectionUtils.isEmpty(domains)) {
             log.warn(domainName + " collection is empty");
             return;

@@ -1,14 +1,13 @@
 package com.evan.homemaking.service.impl;
 
 import com.evan.homemaking.common.model.dto.EvaluationDTO;
-import com.evan.homemaking.common.model.vo.EmployerEvaluationVO;
+import com.evan.homemaking.common.model.vo.EvaluationVO;
 import com.evan.homemaking.common.model.entity.Evaluation;
 import com.evan.homemaking.common.model.entity.User;
 import com.evan.homemaking.common.model.param.EvaluationParam;
 import com.evan.homemaking.repository.EvaluationRepository;
 import com.evan.homemaking.repository.UserRepository;
 import com.evan.homemaking.service.EvaluationService;
-import com.evan.homemaking.service.UserService;
 import com.evan.homemaking.service.base.AbstractCrudService;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
@@ -32,16 +31,11 @@ public class EvaluationServiceImpl extends AbstractCrudService<Evaluation, Integ
 
     private final UserRepository userRepository;
 
-    private final UserService userService;
-
-
     public EvaluationServiceImpl(EvaluationRepository evaluationRepository,
-                                 UserRepository userRepository,
-                                 UserService userService) {
+                                 UserRepository userRepository) {
         super(evaluationRepository);
         this.evaluationRepository = evaluationRepository;
         this.userRepository = userRepository;
-        this.userService = userService;
     }
 
     @Override
@@ -51,51 +45,61 @@ public class EvaluationServiceImpl extends AbstractCrudService<Evaluation, Integ
     }
 
     @Override
-    public EmployerEvaluationVO getOne(@NonNull Integer employerId) {
-        EmployerEvaluationVO employerEvaluationVO = new EmployerEvaluationVO();
-        List<Evaluation> evaluationList = evaluationRepository.findAllByEmployerId(employerId);
+    public EvaluationVO getEvaluationsForOne(@NonNull Integer employeeId) {
+        List<Evaluation> evaluationList = evaluationRepository.findAllByEmployeeId(employeeId);
+        return buildEvaluationVO(employeeId, evaluationList);
+    }
+
+    @NonNull
+    private EvaluationVO buildEvaluationVO(@NonNull Integer employeeId, List<Evaluation> evaluationList) {
+        EvaluationVO evaluationVO = new EvaluationVO();
         List<EvaluationDTO> evaluationDTOList = evaluationList.stream()
-                .map(evaluation -> buildEvaluationDTO(evaluation.getId())).collect(Collectors.toList());
+                .map(evaluation -> convertUserIdToNickName(evaluation.getId())).collect(Collectors.toList());
         OptionalDouble averageScoreOptional = evaluationList.stream().mapToInt(Evaluation::getScore).average();
-        double averageScore = 0;
-        if (averageScoreOptional.isPresent()) {
-            averageScore = averageScoreOptional.getAsDouble();
-        }
-        employerEvaluationVO.setReceiveEvaluations(evaluationDTOList);
-        employerEvaluationVO.setAverageScore(averageScore);
-        employerEvaluationVO.setEmployerNickName(userRepository.getOne(employerId).getNickName());
-        return employerEvaluationVO;
+        averageScoreOptional.ifPresent(averageScore -> {
+                    evaluationVO.setAverageScore(averageScoreOptional.getAsDouble());
+                    evaluationVO.setReceiveEvaluations(evaluationDTOList);
+                    evaluationVO.setEmployerNickName(userRepository.getOne(employeeId).getNickName());
+                }
+        );
+        return evaluationVO;
     }
 
-    public EvaluationDTO buildEvaluationDTO(@NonNull Integer evaluationId) {
+    public EvaluationDTO convertUserIdToNickName(@NonNull Integer evaluationId) {
         Optional<Evaluation> evaluationOptional = evaluationRepository.findById(evaluationId);
-        return evaluationOptional.map(evaluation -> {
-            EvaluationDTO evaluationDTO = new EvaluationDTO();
-            EvaluationDTO evaluationDtoResult = evaluationDTO.convertFrom(evaluation);
-            Optional<User> employee = userRepository.findById(evaluation.getEmployeeId());
-            employee.ifPresent(user -> evaluationDtoResult.setEmployeeNickName(user.getNickName()));
-            return evaluationDtoResult;
-        }).get();
+        EvaluationDTO evaluationDTO = new EvaluationDTO();
+        evaluationOptional.ifPresent(evaluation -> {
+            evaluationDTO.convertFrom(evaluation);
+            userRepository.findById(evaluation.getEmployerId()).ifPresent(
+                    user -> evaluationDTO.setEmployerNickName(user.getNickName())
+            );
+        });
+        return evaluationDTO;
     }
-
 
     @Override
-    public void update(@NonNull Integer evaluationId, @NonNull EvaluationParam evaluationParam) {
-
+    public EvaluationDTO update(@NonNull Integer evaluationId, @NonNull EvaluationParam evaluationParam) {
+        Optional<Evaluation> evaluationOptional = evaluationRepository.findById(evaluationId);
+        EvaluationDTO evaluationDTO = new EvaluationDTO();
+        evaluationOptional.ifPresent(evaluation -> {
+            evaluationParam.update(evaluation);
+            evaluationDTO.convertFrom(evaluation);
+        });
+        return evaluationDTO;
     }
 
     @Override
     public void deleteOne(@NonNull Integer evaluationId) {
-
+        evaluationRepository.deleteById(evaluationId);
     }
 
     @Override
     public void deleteMultiple(@NonNull List<Integer> evaluationIdList) {
-
+        evaluationRepository.deleteByIdIn(evaluationIdList);
     }
 
     @Override
     public void deleteAll() {
-
+        evaluationRepository.deleteAll();
     }
 }

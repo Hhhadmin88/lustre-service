@@ -1,6 +1,7 @@
 package com.evan.homemaking.service;
 
-import com.evan.homemaking.common.model.vo.EmployerEvaluationVO;
+import com.evan.homemaking.common.model.dto.EvaluationDTO;
+import com.evan.homemaking.common.model.vo.EvaluationVO;
 import com.evan.homemaking.common.model.entity.Evaluation;
 import com.evan.homemaking.common.model.param.EvaluationParam;
 import com.evan.homemaking.service.base.CrudService;
@@ -24,20 +25,22 @@ public interface EvaluationService extends CrudService<Evaluation, Integer> {
     void add(@NonNull EvaluationParam evaluationParam);
 
     /**
-     * Get a evaluation dto.
+     * Get all evaluations for one employee.
      *
-     * @param id evaluation id.
-     * @return evaluation dto.
+     * @param employeeId employeeId.
+     * @return evaluationVO.
      */
-    EmployerEvaluationVO getOne(@NonNull Integer id);
+    EvaluationVO getEvaluationsForOne(@NonNull Integer employeeId);
+
 
     /**
      * Update a evaluation.
      *
      * @param evaluationId    evaluation id.
      * @param evaluationParam evaluation param.
+     * @return evaluation dto.
      */
-    void update(@NonNull Integer evaluationId, @NonNull EvaluationParam evaluationParam);
+    EvaluationDTO update(@NonNull Integer evaluationId, @NonNull EvaluationParam evaluationParam);
 
     /**
      * Delete a evaluation.
