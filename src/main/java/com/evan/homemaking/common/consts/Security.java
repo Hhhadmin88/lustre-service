@@ -36,12 +36,12 @@ public class Security {
     /**
      * Request access token.
      */
-    public static final String REQUEST_ACCESS_TOKEN = "access_token";
+    public static final String REQUEST_ACCESS_TOKEN = "User-Authorization";
 
     /**
      * Request username in header.
      */
-    public static final String REQUEST_USERNAME_IN_HEADER = "header_username";
+    public static final String REQUEST_USER_ACCOUNT = "User-Account";
 
     /**
      * Cache check expiration interval.

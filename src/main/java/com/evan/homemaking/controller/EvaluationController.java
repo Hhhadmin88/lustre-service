@@ -38,33 +38,33 @@ public class EvaluationController {
     }
 
 
-    @GetMapping("{id:\\d+}")
+    @GetMapping("{employeeId:\\d+}")
     @ApiOperation("Get a evaluation")
-    public ResponseEntity<ResponseVO> getOne(@PathVariable Integer id) {
-        return ResponseUtil.successResponse(evaluationService.getEvaluationsForOne(id));
+    public ResponseEntity<ResponseVO> getOne(@PathVariable("employeeId") Integer employeeId) {
+        return ResponseUtil.successResponse(evaluationService.getEvaluationsForOne(employeeId));
     }
 
-    @PutMapping("{id:\\d+}")
+    @PutMapping("{evaluationId:\\d+}")
     @ApiOperation("Update a evaluation")
-    public ResponseEntity<ResponseVO> updateOne(@PathVariable Integer id, @NonNull EvaluationParam evaluationParam) {
-        return ResponseUtil.successResponse(evaluationService.update(id, evaluationParam));
+    public ResponseEntity<ResponseVO> updateOne(@PathVariable Integer evaluationId, @NonNull EvaluationParam evaluationParam) {
+        return ResponseUtil.successResponse(evaluationService.update(evaluationId, evaluationParam));
     }
 
-    @DeleteMapping("{id:\\d+}")
+    @DeleteMapping("{evaluationId:\\d+}")
     @ApiOperation("Delete a evaluation")
-    public ResponseEntity<ResponseVO> deleteOne(@PathVariable Integer id) {
-        evaluationService.deleteOne(id);
+    public ResponseEntity<ResponseVO> deleteOne(@PathVariable("evaluationId") Integer evaluationId) {
+        evaluationService.deleteOne(evaluationId);
         return ResponseUtil.successResponse();
     }
 
-    @DeleteMapping("delete/list")
+    @DeleteMapping("/list")
     @ApiOperation("Delete multiple evaluations")
-    public ResponseEntity<ResponseVO> deleteMultiple(@NonNull List<Integer> idList) {
-        evaluationService.deleteMultiple(idList);
+    public ResponseEntity<ResponseVO> deleteMultiple(@NonNull List<Integer> evaluationIdList) {
+        evaluationService.deleteMultiple(evaluationIdList);
         return ResponseUtil.successResponse();
     }
 
-    @DeleteMapping("delete/all")
+    @DeleteMapping("/all")
     @ApiOperation("Delete all evaluations")
     public ResponseEntity<ResponseVO> deleteAll() {
         evaluationService.deleteAll();

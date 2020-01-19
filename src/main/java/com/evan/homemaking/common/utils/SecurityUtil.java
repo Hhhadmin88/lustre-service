@@ -15,9 +15,16 @@ import static com.evan.homemaking.common.consts.Security.REFRESH_TOKEN_CACHE_PRE
  * @Date 2019/12/7 0:20
  */
 public class SecurityUtil {
+
     private SecurityUtil() {
     }
 
+    /**
+     * Build a  access token key.
+     *
+     * @param user user object.
+     * @return key of access token.
+     */
     @NonNull
     public static String buildAccessTokenKey(@NonNull User user) {
         Assert.notNull(user, "User must not be null");
@@ -25,11 +32,16 @@ public class SecurityUtil {
         return ACCESS_TOKEN_CACHE_PREFIX + user.getId();
     }
 
+    /**
+     * Build a refresh token key.
+     *
+     * @param user user object.
+     * @return key of refresh token.
+     */
     @NonNull
     public static String buildRefreshTokenKey(@NonNull User user) {
         Assert.notNull(user, "User must not be null");
 
         return REFRESH_TOKEN_CACHE_PREFIX + user.getId();
     }
-
 }

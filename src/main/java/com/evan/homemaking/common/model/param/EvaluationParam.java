@@ -2,13 +2,8 @@ package com.evan.homemaking.common.model.param;
 
 import com.evan.homemaking.common.model.dto.base.InputConverter;
 import com.evan.homemaking.common.model.entity.Evaluation;
-import com.evan.homemaking.common.model.entity.MessageBoard;
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.validation.constraints.*;
 
 /**

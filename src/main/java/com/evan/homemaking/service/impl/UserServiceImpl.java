@@ -22,7 +22,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import java.util.Optional;
-import java.util.function.Function;
 
 /**
  * @ClassName UserServiceImpl
@@ -55,6 +54,7 @@ public class UserServiceImpl extends AbstractCrudService<User, Integer> implemen
         return userRepository.findByEmail(email);
     }
 
+    //TODO check the nickname is duplicate or not and ncapsulating the returned results.
     @Override
     public void registerUser(@NonNull RegisterParam registerParam) {
         checkRoleParam(registerParam.getRole());
@@ -88,12 +88,10 @@ public class UserServiceImpl extends AbstractCrudService<User, Integer> implemen
 
     @NonNull
     @Override
-    public Optional<User> getCurrentRequestUser(@NonNull String userName) {
+    public User getCurrentRequestUser(@NonNull String userName) {
         User user = Validator.isEmail(userName) ?
                 getByEmail(userName) : getByAccountId(userName);
-        Optional<User> optionalUser = Optional.of(user);
-        optionalUser.orElseThrow(() -> new NotFoundException("当前登录用户" + userName + "不存在"));
-        return optionalUser;
+        return Optional.of(user).orElseThrow(() -> new NotFoundException("当前登录用户" + userName + "不存在"));
     }
 
     @Override

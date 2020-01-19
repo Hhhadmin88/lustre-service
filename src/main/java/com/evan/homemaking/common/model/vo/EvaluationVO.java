@@ -1,8 +1,6 @@
 package com.evan.homemaking.common.model.vo;
 
 import com.evan.homemaking.common.model.dto.EvaluationDTO;
-import com.evan.homemaking.common.model.dto.base.OutputConverter;
-import com.evan.homemaking.common.model.entity.Evaluation;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 

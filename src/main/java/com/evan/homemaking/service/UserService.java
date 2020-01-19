@@ -5,8 +5,6 @@ import com.evan.homemaking.common.model.param.RegisterParam;
 import com.evan.homemaking.service.base.CrudService;
 import org.springframework.lang.NonNull;
 
-import java.util.Optional;
-
 /**
  * @ClassName UserService
  * @Description
@@ -37,7 +35,7 @@ public interface UserService extends CrudService<User, Integer> {
     /**
      * Register an user.
      *
-     * @param registerParam
+     * @param registerParam registerParam.
      */
     void registerUser(@NonNull RegisterParam registerParam);
 
@@ -53,7 +51,7 @@ public interface UserService extends CrudService<User, Integer> {
     /**
      * Encrypt password.
      *
-     * @param user
+     * @param user user object.
      */
     void setPassword(@NonNull User user);
 
@@ -64,7 +62,7 @@ public interface UserService extends CrudService<User, Integer> {
      * @return optional user
      */
     @NonNull
-    Optional<User> getCurrentRequestUser(@NonNull String userName);
+    User getCurrentRequestUser(@NonNull String userName);
 
     /**
      * Get currently logged in user into SecurityContextHolder.

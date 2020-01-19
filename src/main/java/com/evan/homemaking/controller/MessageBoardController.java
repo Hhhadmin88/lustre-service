@@ -38,42 +38,42 @@ public class MessageBoardController {
         return ResponseUtil.successResponse();
     }
 
-    @GetMapping("/get/{id:\\d+}")
+    @GetMapping("{messageBoardId:\\d+}")
     @ApiOperation("Get a message")
-    public ResponseEntity<ResponseVO> getOne(@PathVariable Integer id) {
-        MessageBoardDTO messageBoardDTO = messageBoardService.getOne(id);
+    public ResponseEntity<ResponseVO> getOne(@PathVariable("messageBoardId") Integer messageBoardId) {
+        MessageBoardDTO messageBoardDTO = messageBoardService.getOne(messageBoardId);
         return ResponseUtil.successResponse(messageBoardDTO);
     }
 
     @PostMapping("/list")
     @ApiOperation("Get message list")
-    public ResponseEntity<ResponseVO> getList(@RequestBody List<Integer> idList) {
-        List<MessageBoardDTO> messageBoardDTOList = messageBoardService.getMultiple(idList);
+    public ResponseEntity<ResponseVO> getList(@RequestBody List<Integer> messageBoardIdList) {
+        List<MessageBoardDTO> messageBoardDTOList = messageBoardService.getMultiple(messageBoardIdList);
         return ResponseUtil.successResponse(messageBoardDTOList);
     }
 
-    @PostMapping("/list/all")
+    @PostMapping("/all")
     @ApiOperation("Get all messages")
     public ResponseEntity<ResponseVO> getAll() {
         List<MessageBoardDTO> messageBoardDTOList = messageBoardService.getAll();
         return ResponseUtil.successResponse(messageBoardDTOList);
     }
 
-    @DeleteMapping("/delete/{id:\\d+}")
+    @DeleteMapping("{messageBoardId:\\d+}")
     @ApiOperation("Delete one message")
-    public ResponseEntity<ResponseVO> deleteOne(@PathVariable Integer id) {
-        messageBoardService.deleteOne(id);
+    public ResponseEntity<ResponseVO> deleteOne(@PathVariable("messageBoardId") Integer messageBoardId) {
+        messageBoardService.deleteOne(messageBoardId);
         return ResponseUtil.successResponse();
     }
 
-    @DeleteMapping("/delete/list")
+    @DeleteMapping("/list")
     @ApiOperation("Delete multiple message")
-    public ResponseEntity<ResponseVO> deleteMultiple(@RequestBody List<Integer> idList) {
-        messageBoardService.deleteMultiple(idList);
+    public ResponseEntity<ResponseVO> deleteMultiple(@RequestBody List<Integer> messageBoardIdList) {
+        messageBoardService.deleteMultiple(messageBoardIdList);
         return ResponseUtil.successResponse();
     }
 
-    @DeleteMapping("/delete/all")
+    @DeleteMapping("/all")
     @ApiOperation("Delete all message")
     public ResponseEntity<ResponseVO> deleteAll() {
         messageBoardService.deleteAll();
@@ -87,7 +87,7 @@ public class MessageBoardController {
         return ResponseUtil.successResponse();
     }
 
-    @PutMapping("/update/list")
+    @PutMapping("/list")
     @ApiOperation("Update multiple messages")
     public ResponseEntity<ResponseVO> updateMultiple(@RequestBody List<Map<Integer, MessageBoardParam>> messageBoardParamListMap) {
         messageBoardService.updateMultiple(messageBoardParamListMap);
