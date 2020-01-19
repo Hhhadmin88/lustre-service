@@ -1,12 +1,12 @@
 package com.evan.homemaking.service.impl;
 
-import cn.hutool.core.lang.UUID;
 import cn.hutool.core.lang.Validator;
 import com.evan.homemaking.common.cache.UserCache;
 import com.evan.homemaking.common.exception.BadRequestException;
 import com.evan.homemaking.common.exception.NotFoundException;
 import com.evan.homemaking.common.model.entity.User;
 import com.evan.homemaking.common.model.param.LoginParam;
+import com.evan.homemaking.common.utils.HomemakingUtil;
 import com.evan.homemaking.common.utils.SecurityUtil;
 import com.evan.homemaking.security.token.AuthToken;
 import com.evan.homemaking.service.AuthenticateService;
@@ -15,8 +15,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
-
-import java.util.Optional;
 
 import static com.evan.homemaking.common.consts.Security.ACCESS_TOKEN_EXPIRED_SECONDS;
 
@@ -55,7 +53,7 @@ public class AuthenticateServiceImpl implements AuthenticateService {
             log.error("Failed to find user by userName: " + userName, e);
             throw new BadRequestException(mismatchTip);
         }
-        Optional.of(user).orElseThrow(() -> new BadRequestException("该用户不存在"));
+
         if (!userService.matchPassword(user, loginParam.getPassword())) {
             log.error("The password of loginParam is not match to the user password");
 
@@ -82,9 +80,9 @@ public class AuthenticateServiceImpl implements AuthenticateService {
         // Generate new token
         AuthToken token = new AuthToken();
 
-        token.setAccessToken(UUID.randomUUID().toString());
+        token.setAccessToken(HomemakingUtil.randomUUIDWithoutDash());
         token.setExpiredIn(ACCESS_TOKEN_EXPIRED_SECONDS);
-        token.setRefreshToken(UUID.randomUUID().toString());
+        token.setRefreshToken(HomemakingUtil.randomUUIDWithoutDash());
 
         userCache.putMultiple(SecurityUtil.buildAccessTokenKey(user), token.getAccessToken(), ACCESS_TOKEN_EXPIRED_SECONDS);
         return token;

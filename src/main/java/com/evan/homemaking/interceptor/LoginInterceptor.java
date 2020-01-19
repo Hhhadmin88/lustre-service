@@ -47,32 +47,36 @@ public class LoginInterceptor implements HandlerInterceptor {
         if (LOGIN_REQUEST_URI.equals(requestURI) || REGISTER_REQUEST_URI.equals(requestURI)) {
             return true;
         }
-        String userName = request.getHeader(REQUEST_USERNAME_IN_HEADER);
-        Optional.ofNullable(userName).orElseThrow(() -> new BadRequestException("请求中缺少用户名信息"));
-        //获取当前发起请求的user
-        Optional<User> currentRequestUser = userService.getCurrentRequestUser(userName);
-        String cachedToken = userCache.getMultiple(SecurityUtil.buildAccessTokenKey(currentRequestUser.get()), String.class)
-                .orElseThrow(() -> new NotLoginException("当前用户" + userName + "还未登录，请先进行登录"));
-        userService.storeCurrentUser(currentRequestUser.get());
-        String accessToken = request.getHeader(REQUEST_ACCESS_TOKEN);
-        if (StringUtils.isBlank(accessToken)) {
-            throw new BadRequestException("请求中缺少token验证信息");
-        }
-        if (accessToken.equals(cachedToken)) {
-            return true;
-        } else {
-            log.error("The current user is not authorized for this operation.");
-            throw new UnAuthorizedException("访问权限校验失败，请填写正确的校验信息");
-        }
+        String userName = request.getHeader(REQUEST_USER_ACCOUNT);
+
+        return Optional.of(userName).map(name -> {
+            //Get the current requesting user.
+            Optional<User> currentRequestUserOptional = Optional.of(userService.getCurrentRequestUser(userName));
+            String cachedToken = currentRequestUserOptional.map(currentRequestUser -> {
+                userService.storeCurrentUser(currentRequestUser);
+                return userCache.getMultiple(SecurityUtil.buildAccessTokenKey(currentRequestUser), String.class)
+                        .orElseThrow(() -> new NotLoginException("当前用户" + userName + "还未登录，请先进行登录"));
+            }).get();
+            String accessToken = request.getHeader(REQUEST_ACCESS_TOKEN);
+            if (StringUtils.isBlank(accessToken)) {
+                throw new BadRequestException("请求中缺少token验证信息");
+            }
+            if (accessToken.equals(cachedToken)) {
+                return true;
+            } else {
+                log.error("The current user is not authorized for this operation.");
+                throw new UnAuthorizedException("访问权限校验失败，请填写正确的token信息");
+            }
+        }).orElseThrow(() -> new BadRequestException("请求中缺少用户名信息"));
     }
 
     @Override
-    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, @Nullable ModelAndView modelAndView) throws Exception {
+    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, @Nullable ModelAndView modelAndView) {
 
     }
 
     @Override
-    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
+    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
         SecurityContextHolder.clearContext();
     }
 }

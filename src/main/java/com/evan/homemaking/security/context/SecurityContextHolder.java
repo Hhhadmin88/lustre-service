@@ -11,7 +11,7 @@ import org.springframework.lang.Nullable;
  * @Date 2019/12/7 20:35
  */
 public class SecurityContextHolder {
-    private static final ThreadLocal<SecurityContext> CONTEXT_HOLDER=new ThreadLocal<>();
+    private static final ThreadLocal<SecurityContext> CONTEXT_HOLDER = new ThreadLocal<>();
 
     private SecurityContextHolder() {
     }
@@ -22,16 +22,15 @@ public class SecurityContextHolder {
      * @return security context
      */
     @NonNull
-    public static SecurityContext getContext(){
+    public static SecurityContext getContext() {
         //Get from thread local
         SecurityContext context = CONTEXT_HOLDER.get();
-        if (context==null){
+        if (context == null) {
             // If no context is available now then create an empty context
             context = createEmptyContext();
             // Set to thread local
             CONTEXT_HOLDER.set(context);
         }
-        System.out.println("Get:当前线程:"+Thread.currentThread());
         return context;
     }
 
@@ -41,7 +40,6 @@ public class SecurityContextHolder {
      * @param context security context
      */
     public static void setContext(@Nullable SecurityContext context) {
-        System.out.println("Set:当前线程:"+Thread.currentThread());
         CONTEXT_HOLDER.set(context);
     }
 

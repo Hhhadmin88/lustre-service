@@ -1,9 +1,8 @@
 package com.evan.homemaking.service.impl;
 
+import com.evan.homemaking.common.exception.NotFoundException;
 import com.evan.homemaking.common.model.dto.MessageBoardDTO;
-import com.evan.homemaking.common.model.dto.base.InputConverter;
 import com.evan.homemaking.common.model.entity.MessageBoard;
-import com.evan.homemaking.common.model.entity.User;
 import com.evan.homemaking.common.model.param.MessageBoardParam;
 import com.evan.homemaking.repository.MessageBoardRepository;
 import com.evan.homemaking.repository.UserRepository;
@@ -14,7 +13,10 @@ import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -66,15 +68,17 @@ public class MessageBoardServiceImpl extends AbstractCrudService<MessageBoard, I
         Assert.notNull(messageBoardId, "MessageBoardId must not be null");
 
         Optional<MessageBoard> messageBoardOptional = messageBoardRepository.findById(messageBoardId);
-        return messageBoardOptional.map(messageBoard -> {
-            MessageBoardDTO messageBoardDTO = new MessageBoardDTO();
+        MessageBoardDTO messageBoardDTO = new MessageBoardDTO();
+        messageBoardOptional.map(messageBoard -> {
             messageBoardDTO.convertFrom(messageBoard);
             String senderName = userRepository.getOne(messageBoard.getSenderId()).getNickName();
             String receiverName = userRepository.getOne(messageBoard.getReceiverId()).getNickName();
-            messageBoardDTO.setSenderName(senderName);
+            messageBoardDTO.setReceiverName(senderName);
             messageBoardDTO.setReceiverName(receiverName);
-            return messageBoardDTO;
-        }).get();
+            return messageBoard;
+        }).orElseThrow(() ->
+                new NotFoundException("没有找到messageBoardId:" + messageBoardId + "对应的数据"));
+        return messageBoardDTO;
     }
 
     @Override
@@ -84,7 +88,7 @@ public class MessageBoardServiceImpl extends AbstractCrudService<MessageBoard, I
             messageBoardParam.update(messageBoard);
             messageBoardRepository.saveAndFlush(messageBoard);
             return messageBoard;
-        });
+        }).orElseThrow(() -> new NotFoundException("没有找到messageBoardId:" + messageBoardId + "对应的数据"));
     }
 
     @Override
@@ -93,10 +97,11 @@ public class MessageBoardServiceImpl extends AbstractCrudService<MessageBoard, I
         messageBoardParamListMap.stream().peek(messageBoardParamMap ->
                 messageBoardParamMap.forEach((id, messageBoardParam) -> {
                     Optional<MessageBoard> messageBoard = messageBoardRepository.findById(id);
-                    messageBoard.ifPresent(messageBoardInternal -> {
+                    messageBoard.map(messageBoardInternal -> {
                         messageBoardParam.update(messageBoardInternal);
                         messageBoardList.add(messageBoardInternal);
-                    });
+                        return messageBoardInternal;
+                    }).orElseThrow(() -> new NotFoundException("没有找到messageBoardId:" + id + "对应的数据"));
                 }));
         updateInBatch(messageBoardList);
     }

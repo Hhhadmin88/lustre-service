@@ -5,9 +5,6 @@ import com.evan.homemaking.common.model.entity.Evaluation;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
-import javax.persistence.Column;
-import java.util.List;
-
 /**
  * @ClassName EvaluationDTO
  * @Description

@@ -25,7 +25,7 @@ import static com.evan.homemaking.common.consts.Message.EXCEPTION_DETAIL_HINT;
 @Slf4j
 public class GlobalExceptionHandler {
     /**
-     * Handle a exception and response a result.
+     * Handle an exception and response a result.
      * If you not give a Exception.class to @ExceptionHandler,It will handle exceptions of the type of the method parameter it is labeling.
      *
      * @param e exception
