@@ -16,11 +16,11 @@ import com.evan.homemaking.service.UserService;
 import com.evan.homemaking.service.base.AbstractCrudService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.BeanUtils;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -35,7 +35,6 @@ import java.util.Optional;
 public class UserServiceImpl extends AbstractCrudService<User, Integer> implements UserService {
 
     private final UserRepository userRepository;
-
 
     public UserServiceImpl(UserRepository userRepository) {
         super(userRepository);
@@ -54,28 +53,29 @@ public class UserServiceImpl extends AbstractCrudService<User, Integer> implemen
         return userRepository.findByEmail(email);
     }
 
-    //TODO check the nickname is duplicate or not and ncapsulating the returned results.
     @Override
     public void registerUser(@NonNull RegisterParam registerParam) {
         checkRoleParam(registerParam.getRole());
-        checkAccountIdAndEmailDuplicated(registerParam);
-        User user = new User();
-        BeanUtils.copyProperties(registerParam, user);
-        setPassword(user);
+        checkPropertyDuplicated(registerParam);
+        User user = registerParam.convertTo();
+        setEncryptedPassword(user);
         userRepository.save(user);
     }
 
-    private void checkAccountIdAndEmailDuplicated(RegisterParam registerParam) {
-        if (userRepository.findByAccountId(registerParam.getAccountId()) != null) {
-            throw new BadRequestException("用户名不能重复");
-        }
-        if (userRepository.findByEmail(registerParam.getEmail()) != null) {
-            throw new BadRequestException("邮箱不能重复");
+    private void checkPropertyDuplicated(RegisterParam registerParam) {
+        if (userRepository.existsUserByAccountId(registerParam.getAccountId())) {
+            throw new BadRequestException("账户ID不能重复,请重新填写");
+        } else if (userRepository.existsUserByNickName(registerParam.getNickName())) {
+            throw new BadRequestException("当前昵称已被使用,请重新填写");
+        } else if (userRepository.existsUserByEmail(registerParam.getEmail())) {
+            throw new BadRequestException("当前邮箱已用于注册,请重新填写");
+        } else if (userRepository.existsUserByPhoneNumber(registerParam.getPhoneNumber())) {
+            throw new BadRequestException("当前电话已用于注册,请重新填写");
         }
     }
 
     @Override
-    public void setPassword(@NonNull User user) {
+    public void setEncryptedPassword(@NonNull User user) {
         user.setPassword(BCrypt.hashpw(user.getPassword(), BCrypt.gensalt()));
     }
 
@@ -102,12 +102,12 @@ public class UserServiceImpl extends AbstractCrudService<User, Integer> implemen
     @NonNull
     @Override
     public User getCurrentUser() {
-        return SecurityContextHolder.getContext().getAuthentication().getUserDetail().getUser();
+        return Objects.requireNonNull(SecurityContextHolder.getContext()
+                .getAuthentication()).getUserDetail().getUser();
     }
 
     private void checkRoleParam(@NonNull String role) {
         if (RoleEnum.ADMIN.getRole().equals(role)) {
-
             log.error("User can not register to be an admin.");
             throw new BadRequestException("无法通过注册成为管理员，请从后台添加");
         }

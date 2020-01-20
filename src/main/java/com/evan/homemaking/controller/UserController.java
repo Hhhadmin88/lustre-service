@@ -12,6 +12,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.context.properties.bind.BindResult;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -60,16 +61,16 @@ public class UserController {
         return ResponseUtil.successResponse();
     }
 
-    @DeleteMapping("delete/{userId}")
+    @DeleteMapping("{userId:\\d+}")
     @ApiOperation("Delete an user")
     @Authentication(RoleEnum.ADMIN)
-    public ResponseEntity<ResponseVO> deleteOne(@PathVariable Integer userId) {
+    public ResponseEntity<ResponseVO> deleteOne(@PathVariable("userId") Integer userId) {
         userService.removeById(userId);
         log.info("权限验证通过，用户删除成功,userId:{}", userId.toString());
         return ResponseUtil.successResponse();
     }
 
-    @DeleteMapping("delete/multiple")
+    @DeleteMapping("multiple")
     @ApiOperation("Delete multiple users")
     @Authentication(RoleEnum.ADMIN)
     public ResponseEntity<ResponseVO> deleteMultiple(@RequestBody @Valid List<Integer> userIds) {
@@ -78,7 +79,7 @@ public class UserController {
         return ResponseUtil.successResponse();
     }
 
-    @DeleteMapping("delete/all")
+    @DeleteMapping("all")
     @ApiOperation("Delete all users")
     @Authentication(RoleEnum.ADMIN)
     public ResponseEntity<ResponseVO> deleteAll() {

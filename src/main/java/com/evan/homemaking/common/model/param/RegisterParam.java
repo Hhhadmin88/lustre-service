@@ -1,9 +1,12 @@
 package com.evan.homemaking.common.model.param;
 
+import com.evan.homemaking.common.model.dto.base.InputConverter;
+import com.evan.homemaking.common.model.entity.User;
 import lombok.Data;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 /**
@@ -14,7 +17,7 @@ import javax.validation.constraints.Size;
  * @Date 2019/12/5 16:32
  */
 @Data
-public class RegisterParam {
+public class RegisterParam implements InputConverter<User> {
 
     @NotBlank(message = "用户名不能为空")
     @Size(min = 8, max = 50, message = "账号的字符长度必须在 {min} - {max} 之间")
@@ -32,8 +35,7 @@ public class RegisterParam {
     @Size(max = 255, message = "地址内容长度不能超过 {max}")
     private String address;
 
-    @NotBlank(message = "电话号码不能为空")
-    @Size(max = 50, message = "电话号码长度不能超过 {max}")
+    @Pattern(regexp = "^1[3456789]\\d{9}$",message = "输入手机号码格式不正确，请重新输入")
     private String phoneNumber;
 
     @Email(message = "电子邮件地址的格式不正确")

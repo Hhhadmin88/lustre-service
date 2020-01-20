@@ -39,6 +39,8 @@ public interface UserService extends CrudService<User, Integer> {
      */
     void registerUser(@NonNull RegisterParam registerParam);
 
+
+
     /**
      * Check the password of loginParam  is match the user password.
      *
@@ -53,7 +55,7 @@ public interface UserService extends CrudService<User, Integer> {
      *
      * @param user user object.
      */
-    void setPassword(@NonNull User user);
+    void setEncryptedPassword(@NonNull User user);
 
     /**
      * Get the user who is currently sending the request.
