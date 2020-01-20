@@ -1,7 +1,9 @@
 package com.evan.homemaking.service;
 
+import com.evan.homemaking.common.model.dto.UserDTO;
 import com.evan.homemaking.common.model.entity.User;
 import com.evan.homemaking.common.model.param.RegisterParam;
+import com.evan.homemaking.common.model.param.UserParam;
 import com.evan.homemaking.service.base.CrudService;
 import org.springframework.lang.NonNull;
 
@@ -39,7 +41,13 @@ public interface UserService extends CrudService<User, Integer> {
      */
     void registerUser(@NonNull RegisterParam registerParam);
 
-
+    /**
+     * Update an user.
+     *
+     * @param userParam userParam.
+     * @return an user dto that has been updated.
+     */
+    UserDTO updateOne(@NonNull UserParam userParam);
 
     /**
      * Check the password of loginParam  is match the user password.

@@ -5,8 +5,10 @@ import cn.hutool.crypto.digest.BCrypt;
 import com.evan.homemaking.common.enums.RoleEnum;
 import com.evan.homemaking.common.exception.BadRequestException;
 import com.evan.homemaking.common.exception.NotFoundException;
+import com.evan.homemaking.common.model.dto.UserDTO;
 import com.evan.homemaking.common.model.entity.User;
 import com.evan.homemaking.common.model.param.RegisterParam;
+import com.evan.homemaking.common.model.param.UserParam;
 import com.evan.homemaking.repository.UserRepository;
 import com.evan.homemaking.security.authentication.AuthenticationImpl;
 import com.evan.homemaking.security.context.SecurityContextHolder;
@@ -60,6 +62,12 @@ public class UserServiceImpl extends AbstractCrudService<User, Integer> implemen
         User user = registerParam.convertTo();
         setEncryptedPassword(user);
         userRepository.save(user);
+    }
+
+    //TODO complete update user code.
+    @Override
+    public UserDTO updateOne(@NonNull UserParam userParam) {
+        return null;
     }
 
     private void checkPropertyDuplicated(RegisterParam registerParam) {
