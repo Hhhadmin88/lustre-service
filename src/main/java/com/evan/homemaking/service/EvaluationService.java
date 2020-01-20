@@ -32,6 +32,13 @@ public interface EvaluationService extends CrudService<Evaluation, Integer> {
      */
     EvaluationVO getEvaluationsForOne(@NonNull Integer employeeId);
 
+    /**
+     * Get all evaluations.
+     *
+     * @return all evaluations.
+     */
+    @NonNull
+    List<Evaluation> getAll();
 
     /**
      * Update a evaluation.

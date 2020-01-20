@@ -26,7 +26,7 @@ import java.util.List;
 @Component
 @Slf4j
 public class InsertRoleEvent extends ContextClosedEvent {
-    public InsertRoleEvent(ApplicationContext source) throws JsonProcessingException {
+    public InsertRoleEvent(ApplicationContext source) {
         super(source);
         RoleRepository roleRepository = source.getBean(RoleRepository.class);
 
@@ -36,12 +36,15 @@ public class InsertRoleEvent extends ContextClosedEvent {
         try {
             File roleJsonFile = classPathResource.getFile();
             String roleJson = FileUtil.readString(roleJsonFile, CharsetUtil.UTF_8);
-            roleList = JsonUtil.jsonArrayToList(roleJson,Role.class);
+            roleList = JsonUtil.jsonArrayToList(roleJson, Role.class);
         } catch (IOException e) {
+            log.error("Read init role.json is failed");
             e.printStackTrace();
         }
-        roleRepository.deleteAll();
-        roleRepository.saveAll(roleList);
-        log.info("Role data insert success");
+        if (roleList != null) {
+            roleRepository.deleteAll();
+            roleRepository.saveAll(roleList);
+            log.info("Role data insert success");
+        }
     }
 }

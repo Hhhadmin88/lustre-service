@@ -2,12 +2,15 @@ package com.evan.homemaking.service.impl;
 
 import com.evan.homemaking.common.model.dto.EvaluationDTO;
 import com.evan.homemaking.common.model.entity.Evaluation;
+import com.evan.homemaking.common.model.entity.User;
 import com.evan.homemaking.common.model.param.EvaluationParam;
 import com.evan.homemaking.common.model.vo.EvaluationVO;
+import com.evan.homemaking.event.ScoreEvent;
 import com.evan.homemaking.repository.EvaluationRepository;
 import com.evan.homemaking.repository.UserRepository;
 import com.evan.homemaking.service.EvaluationService;
 import com.evan.homemaking.service.base.AbstractCrudService;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
@@ -30,17 +33,21 @@ public class EvaluationServiceImpl extends AbstractCrudService<Evaluation, Integ
 
     private final UserRepository userRepository;
 
+    private final ApplicationEventPublisher eventPublisher;
+
     public EvaluationServiceImpl(EvaluationRepository evaluationRepository,
-                                 UserRepository userRepository) {
+                                 UserRepository userRepository,
+                                 ApplicationEventPublisher eventPublisher) {
         super(evaluationRepository);
         this.evaluationRepository = evaluationRepository;
         this.userRepository = userRepository;
+        this.eventPublisher = eventPublisher;
     }
 
     @Override
     public void add(@NonNull EvaluationParam evaluationParam) {
-        Evaluation evaluation = evaluationParam.convertTo();
-        evaluationRepository.save(evaluation);
+        Evaluation evaluation = evaluationRepository.save(evaluationParam.convertTo());
+        eventPublisher.publishEvent(new ScoreEvent(this, evaluation.getEmployeeId()));
     }
 
     @Override
@@ -54,13 +61,12 @@ public class EvaluationServiceImpl extends AbstractCrudService<Evaluation, Integ
         EvaluationVO evaluationVO = new EvaluationVO();
         List<EvaluationDTO> evaluationDTOList = evaluationList.stream()
                 .map(evaluation -> convertUserIdToNickName(evaluation.getId())).collect(Collectors.toList());
-        OptionalDouble averageScoreOptional = evaluationList.stream().mapToInt(Evaluation::getScore).average();
-        averageScoreOptional.ifPresent(averageScore -> {
-                    evaluationVO.setAverageScore(averageScoreOptional.getAsDouble());
-                    evaluationVO.setReceiveEvaluations(evaluationDTOList);
-                    evaluationVO.setEmployerNickName(userRepository.getOne(employeeId).getNickName());
-                }
-        );
+
+        User employee = userRepository.getOne(employeeId);
+        evaluationVO.setAverageScore(employee.getScore());
+        evaluationVO.setEmployerNickName(employee.getNickName());
+        evaluationVO.setReceiveEvaluations(evaluationDTOList);
+
         return evaluationVO;
     }
 
@@ -74,6 +80,12 @@ public class EvaluationServiceImpl extends AbstractCrudService<Evaluation, Integ
             );
         });
         return evaluationDTO;
+    }
+
+    @NonNull
+    @Override
+    public List<Evaluation> getAll() {
+        return listAll();
     }
 
     @Override

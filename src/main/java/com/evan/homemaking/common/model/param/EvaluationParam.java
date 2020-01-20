@@ -20,10 +20,10 @@ public class EvaluationParam implements InputConverter<Evaluation> {
     private Integer taskId;
 
     @NotNull(message = "雇员id不能为空")
-    private Integer employerId;
+    private Integer employeeId;
 
     @NotNull(message = "雇主id不能为空")
-    private Integer employeeId;
+    private Integer employerId;
 
     @NotBlank(message = "评价内容不能为空")
     @Size(max = 255, message = "评价内容长度不能超过 {max}")
