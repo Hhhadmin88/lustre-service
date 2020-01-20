@@ -5,6 +5,7 @@ import com.evan.homemaking.common.model.vo.ResponseVO;
 import com.evan.homemaking.common.utils.ResponseUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -26,7 +27,7 @@ import static com.evan.homemaking.common.consts.Message.EXCEPTION_DETAIL_HINT;
 public class GlobalExceptionHandler {
     /**
      * Handle an exception and response a result.
-     * If you not give a Exception.class to @ExceptionHandler,It will handle exceptions of the type of the method parameter it is labeling.
+     * If you not give an exception class to @ExceptionHandler,It will handle exceptions of the type of the method parameter it is labeling.
      *
      * @param e exception
      * @return Response result(ResponseVO) from ResponseUtil.
@@ -83,6 +84,18 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ResponseVO> beanUtilException(BeanUtilException e) {
         log.error(EXCEPTION_DETAIL_HINT, e.toString());
         return ResponseUtil.internalErrorResponse(e.getMessage());
+    }
+
+    /**
+     * Unified handle exceptions which param is marked @Valid.
+     *
+     * @param e MethodArgumentNotValidException.
+     * @return exception message.
+     */
+    @ExceptionHandler
+    public ResponseEntity<ResponseVO> methodArgumentNotValidException(MethodArgumentNotValidException e) {
+        log.error(EXCEPTION_DETAIL_HINT, e.getBindingResult().getAllErrors().get(0).getDefaultMessage());
+        return ResponseUtil.badRequestResponse(e.getBindingResult().getAllErrors().get(0).getDefaultMessage());
     }
 
 }
