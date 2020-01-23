@@ -72,7 +72,6 @@ public interface UserService extends CrudService<User, Integer> {
      * @param userName the username.
      * @return optional user
      */
-    @NonNull
     User getCurrentRequestUser(@NonNull String userName);
 
     /**

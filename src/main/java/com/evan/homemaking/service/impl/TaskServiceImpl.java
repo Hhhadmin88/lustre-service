@@ -18,8 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import static com.evan.homemaking.common.consts.TaskStatus.ACCEPTED_BUT_NOT_FINISHED;
-import static com.evan.homemaking.common.consts.TaskStatus.NOT_ACCEPTED_AND_NOT_FINISHED;
+import static com.evan.homemaking.common.consts.TaskStatus.*;
 
 /**
  * @ClassName TaskServiceImpl
@@ -157,22 +156,28 @@ public class TaskServiceImpl extends AbstractCrudService<Task, Integer> implemen
         }
     }
 
-    //TODO check the role of user before update task status.
+    //TODO after update task need to return a taskDto.
     @Override
     public void changeTaskStatus(@NonNull String operation, @NonNull Integer taskId) {
         Task task = taskRepository.findTaskById(taskId);
         User currentUser = userService.getCurrentUser();
         checkOwnerOfTask(task, currentUser);
-        TaskOperationEnum taskOperationEnum = TaskOperationEnum.valueOf(operation);
-        if (RoleEnum.EMPLOYER.getRole().equals(currentUser.getRole())&&
-                taskOperationEnum.getStatusCode().equals(ACCEPTED_BUT_NOT_FINISHED)) {
-            if (!task.getStatus().equals(TaskStatus.ACCEPTED_FINISHED_NOT_CONFIRMED)) {
+        TaskOperationEnum taskOperationEnum = TaskOperationEnum.valueOf(operation.toUpperCase());
+        if (ACCEPTED_BUT_NOT_FINISHED.equals(taskOperationEnum.getTargetStatusCode())) {
+            task.setEmployeeId(currentUser.getId());
+        }
+        if (HAS_BEEN_CONFIRMED.equals(taskOperationEnum.getTargetStatusCode())) {
+            if (RoleEnum.EMPLOYEE.getRole().equals(currentUser.getRole())) {
+                log.error("Employee is not have the right that confirm the task.");
+                //when the task status is not equals 2,the task can't be confirmed.
+                throw new BadRequestException("雇员无权确认任务完成");
+            } else if (!task.getStatus().equals(TaskStatus.ACCEPTED_FINISHED_NOT_CONFIRMED)) {
                 log.error("The status of the current task cannot be confirmed");
                 //when the task status is not equals 2,the task can't be confirmed.
                 throw new BadRequestException("当前任务的状态不可确认");
             }
-            task.setEmployerId(currentUser.getId());
         }
-        checkAndUpdateStatus(task, taskOperationEnum.getStatusCode(), currentUser);
+
+        checkAndUpdateStatus(task, taskOperationEnum.getTargetStatusCode(), currentUser);
     }
 }

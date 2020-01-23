@@ -18,25 +18,20 @@ public enum TaskOperationEnum {
     /**
      * Accept a task.
      */
-    ACCEPT("accept", ACCEPTED_BUT_NOT_FINISHED),
+    ACCEPT(ACCEPTED_BUT_NOT_FINISHED),
 
     /**
      * finish a task.
      */
-    FINISH("finish", ACCEPTED_FINISHED_NOT_CONFIRMED),
+    FINISH(ACCEPTED_FINISHED_NOT_CONFIRMED),
 
     /**
      * confirm a task.
      */
-    CONFIRM("confirm", HAS_BEEN_CONFIRMED);
-
-    /**
-     * Operation name.
-     */
-    private String operation;
+    CONFIRM(HAS_BEEN_CONFIRMED);
 
     /**
      * Status code that should be modified
      */
-    private Integer statusCode;
+    private Integer targetStatusCode;
 }
