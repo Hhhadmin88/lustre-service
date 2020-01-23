@@ -110,12 +110,9 @@ public class UserServiceImpl extends AbstractCrudService<User, Integer> implemen
         return StringUtils.isNotBlank(user.getPassword()) && BCrypt.checkpw(plainPassword, user.getPassword());
     }
 
-    @NonNull
     @Override
     public User getCurrentRequestUser(@NonNull String userName) {
-        User user = Validator.isEmail(userName) ?
-                getByEmail(userName) : getByAccountId(userName);
-        return Optional.of(user).orElseThrow(() -> new NotFoundException("当前登录用户" + userName + "不存在"));
+        return Validator.isEmail(userName) ? getByEmail(userName) : getByAccountId(userName);
     }
 
     @Override

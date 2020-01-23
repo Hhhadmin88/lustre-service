@@ -70,15 +70,15 @@ public class TaskController {
 
     @PutMapping("modify/{taskId}")
     @ApiOperation("modify task information")
-    public ResponseEntity<ResponseVO> modify(@RequestBody @Valid TaskParam taskParam, @PathVariable Integer taskId) {
-        taskService.updateTask(taskParam, taskId);
+    public ResponseEntity<ResponseVO> modify(@PathVariable Integer taskId, @RequestBody @Valid TaskParam taskParam) {
+        taskService.updateTask(taskId, taskParam);
         return ResponseUtil.successResponse();
     }
 
-    @PutMapping("modify/status/{taskId}")
+    @PutMapping("status/{operation}/{taskId}")
     @ApiOperation("modify task information")
-    public ResponseEntity<ResponseVO> changeStatus(@RequestBody @Valid TaskParam taskParam, @PathVariable Integer taskId) {
-        taskService.updateTaskStatus(taskParam, taskId);
+    public ResponseEntity<ResponseVO> changeStatus(@PathVariable String operation, @PathVariable Integer taskId) {
+        taskService.changeTaskStatus(operation, taskId);
         return ResponseUtil.successResponse();
     }
 }
