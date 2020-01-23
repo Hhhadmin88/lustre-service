@@ -2,6 +2,7 @@ package com.evan.homemaking.interceptor;
 
 import com.evan.homemaking.common.cache.UserCache;
 import com.evan.homemaking.common.exception.BadRequestException;
+import com.evan.homemaking.common.exception.NotFoundException;
 import com.evan.homemaking.common.exception.NotLoginException;
 import com.evan.homemaking.common.exception.UnAuthorizedException;
 import com.evan.homemaking.common.model.entity.User;
@@ -48,26 +49,28 @@ public class LoginInterceptor implements HandlerInterceptor {
             return true;
         }
         String userName = request.getHeader(REQUEST_USER_ACCOUNT);
+        if (StringUtils.isBlank(userName)) {
+            throw new BadRequestException("用户名信息不能为空");
+        }
 
         return Optional.of(userName).map(name -> {
             //Get the current requesting user.
-            Optional<User> currentRequestUserOptional = Optional.of(userService.getCurrentRequestUser(userName));
-            String cachedToken = currentRequestUserOptional.map(currentRequestUser -> {
-                userService.storeCurrentUser(currentRequestUser);
-                return userCache.getMultiple(SecurityUtil.buildAccessTokenKey(currentRequestUser), String.class)
-                        .orElseThrow(() -> new NotLoginException("当前用户" + userName + "还未登录，请先进行登录"));
-            }).get();
+            User currentRequestUser = Optional.ofNullable(userService.getCurrentRequestUser(userName))
+                    .orElseThrow(() -> new NotFoundException("当前请求的用户不存在"));
+            String cachedToken = userCache.getMultiple(SecurityUtil.buildAccessTokenKey(currentRequestUser), String.class)
+                    .orElseThrow(() -> new NotLoginException("当前用户" + userName + "还未登录，请先进行登录"));
             String accessToken = request.getHeader(REQUEST_ACCESS_TOKEN);
             if (StringUtils.isBlank(accessToken)) {
                 throw new BadRequestException("请求中缺少token验证信息");
             }
             if (accessToken.equals(cachedToken)) {
+                userService.storeCurrentUser(currentRequestUser);
                 return true;
             } else {
                 log.error("The current user is not authorized for this operation.");
                 throw new UnAuthorizedException("访问权限校验失败，请填写正确的token信息");
             }
-        }).orElseThrow(() -> new BadRequestException("请求中缺少用户名信息"));
+        }).get();
     }
 
     @Override
