@@ -4,6 +4,7 @@ import com.evan.homemaking.common.annotation.Authentication;
 import com.evan.homemaking.common.enums.RoleEnum;
 import com.evan.homemaking.common.model.param.LoginParam;
 import com.evan.homemaking.common.model.param.RegisterParam;
+import com.evan.homemaking.common.model.param.UserParam;
 import com.evan.homemaking.common.model.vo.ResponseVO;
 import com.evan.homemaking.common.utils.ResponseUtil;
 import com.evan.homemaking.service.AuthenticateService;
@@ -12,7 +13,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.context.properties.bind.BindResult;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -59,6 +59,11 @@ public class UserController {
     public ResponseEntity<ResponseVO> logout() {
         authenticateService.clearToken();
         return ResponseUtil.successResponse();
+    }
+
+    @PutMapping("{userId:\\d+}")
+    public ResponseEntity<ResponseVO> updateOne(@PathVariable("userId") Integer userId, @RequestBody UserParam userParam) {
+        return ResponseUtil.successResponse(userService.updateOne(userId, userParam));
     }
 
     @DeleteMapping("{userId:\\d+}")

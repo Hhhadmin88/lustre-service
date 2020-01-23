@@ -5,6 +5,7 @@ import cn.hutool.crypto.digest.BCrypt;
 import com.evan.homemaking.common.enums.RoleEnum;
 import com.evan.homemaking.common.exception.BadRequestException;
 import com.evan.homemaking.common.exception.NotFoundException;
+import com.evan.homemaking.common.exception.UnAuthorizedException;
 import com.evan.homemaking.common.model.dto.UserDTO;
 import com.evan.homemaking.common.model.entity.User;
 import com.evan.homemaking.common.model.param.RegisterParam;
@@ -64,13 +65,28 @@ public class UserServiceImpl extends AbstractCrudService<User, Integer> implemen
         userRepository.save(user);
     }
 
-    //TODO complete update user code.
     @Override
-    public UserDTO updateOne(@NonNull UserParam userParam) {
-        return null;
+    public UserDTO updateOne(@NonNull Integer userId, @NonNull UserParam userParam) {
+        User currentUser = getCurrentUser();
+        Optional<User> targetUserOptional = userRepository.findById(userId);
+        Boolean checkResult = targetUserOptional.map(
+                user -> {
+                    boolean isCurrentUser = currentUser.getAccountId().equals(user.getAccountId());
+                    boolean isAdmin = RoleEnum.ADMIN.getRole().equals(currentUser.getRole());
+                    return isCurrentUser || isAdmin;
+                }
+        ).orElseThrow(() -> new NotFoundException("没有找到当前id对应的user"));
+        User targetUser = targetUserOptional.get();
+        if (!checkResult) {
+            log.error("Current user have not the right that update target user." +
+                    "current user Id:{},target user Id:{}", currentUser.getId(), targetUser.getId());
+            throw new UnAuthorizedException("更新失败，当前用户不具备更新目标用户的权限");
+        }
+        userParam.update(targetUser);
+        return new UserDTO().convertFrom(update(targetUser));
     }
 
-    private void checkPropertyDuplicated(RegisterParam registerParam) {
+    private void checkPropertyDuplicated(@NonNull RegisterParam registerParam) {
         if (userRepository.existsUserByAccountId(registerParam.getAccountId())) {
             throw new BadRequestException("账户ID不能重复,请重新填写");
         } else if (userRepository.existsUserByNickName(registerParam.getNickName())) {

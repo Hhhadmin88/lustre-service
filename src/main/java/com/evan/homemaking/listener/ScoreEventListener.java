@@ -2,15 +2,12 @@ package com.evan.homemaking.listener;
 
 import com.evan.homemaking.common.model.entity.Evaluation;
 import com.evan.homemaking.common.model.entity.User;
-import com.evan.homemaking.common.model.param.EvaluationParam;
 import com.evan.homemaking.event.ScoreEvent;
 import com.evan.homemaking.repository.EvaluationRepository;
-import com.evan.homemaking.service.EvaluationService;
 import com.evan.homemaking.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
-import org.springframework.lang.NonNull;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 

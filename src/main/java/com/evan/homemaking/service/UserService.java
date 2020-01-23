@@ -44,10 +44,11 @@ public interface UserService extends CrudService<User, Integer> {
     /**
      * Update an user.
      *
+     * @param userId    userId.
      * @param userParam userParam.
      * @return an user dto that has been updated.
      */
-    UserDTO updateOne(@NonNull UserParam userParam);
+    UserDTO updateOne(@NonNull Integer userId, @NonNull UserParam userParam);
 
     /**
      * Check the password of loginParam  is match the user password.
