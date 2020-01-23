@@ -16,7 +16,7 @@ public class UserDTO implements OutputConverter<UserDTO, User> {
 
     private Integer id;
 
-    private String nickname;
+    private String nickName;
 
     private String address;
 
@@ -26,5 +26,5 @@ public class UserDTO implements OutputConverter<UserDTO, User> {
 
     private String role;
 
-    private String score;
+    private Double score;
 }

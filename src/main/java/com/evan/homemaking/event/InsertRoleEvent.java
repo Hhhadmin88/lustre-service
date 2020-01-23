@@ -5,7 +5,6 @@ import cn.hutool.core.util.CharsetUtil;
 import com.evan.homemaking.common.model.entity.Role;
 import com.evan.homemaking.common.utils.JsonUtil;
 import com.evan.homemaking.repository.RoleRepository;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.event.ContextClosedEvent;
