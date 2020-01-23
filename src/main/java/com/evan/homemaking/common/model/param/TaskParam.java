@@ -1,5 +1,7 @@
 package com.evan.homemaking.common.model.param;
 
+import com.evan.homemaking.common.model.dto.base.InputConverter;
+import com.evan.homemaking.common.model.entity.Task;
 import lombok.Data;
 
 import javax.validation.constraints.Max;
@@ -15,7 +17,7 @@ import javax.validation.constraints.Size;
  * @Date 2019/12/5 19:56
  */
 @Data
-public class TaskParam {
+public class TaskParam implements InputConverter<Task> {
 
     @NotBlank(message = "任务内容不能为空")
     @Size(max = 255, message = "任务内容长度不能超过 {max}")
