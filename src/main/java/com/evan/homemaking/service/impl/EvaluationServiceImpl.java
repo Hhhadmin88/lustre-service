@@ -62,7 +62,7 @@ public class EvaluationServiceImpl extends AbstractCrudService<Evaluation, Integ
                 .map(evaluation -> convertUserIdToNickName(evaluation.getId())).collect(Collectors.toList());
 
         User employee = userRepository.getOne(employeeId);
-        evaluationVO.setAverageScore(employee.getScore());
+        evaluationVO.setAverageScore(employee.getAverageScore());
         evaluationVO.setEmployerNickName(employee.getNickName());
         evaluationVO.setReceiveEvaluations(evaluationDTOList);
 

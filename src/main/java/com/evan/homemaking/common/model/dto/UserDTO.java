@@ -26,5 +26,5 @@ public class UserDTO implements OutputConverter<UserDTO, User> {
 
     private String role;
 
-    private Double score;
+    private Double averageScore;
 }

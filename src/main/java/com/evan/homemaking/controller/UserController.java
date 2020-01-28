@@ -75,7 +75,7 @@ public class UserController {
         return ResponseUtil.successResponse();
     }
 
-    @DeleteMapping("multiple")
+    @DeleteMapping("list")
     @ApiOperation("Delete multiple users")
     @Authentication(RoleEnum.ADMIN)
     public ResponseEntity<ResponseVO> deleteMultiple(@RequestBody @Valid List<Integer> userIds) {

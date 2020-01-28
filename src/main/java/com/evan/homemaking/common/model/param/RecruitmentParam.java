@@ -1,5 +1,7 @@
 package com.evan.homemaking.common.model.param;
 
+import com.evan.homemaking.common.model.dto.base.InputConverter;
+import com.evan.homemaking.common.model.entity.Recruitment;
 import lombok.Data;
 
 import javax.validation.constraints.*;
@@ -13,7 +15,7 @@ import java.math.BigDecimal;
  * @Date 2019/12/26 20:43
  */
 @Data
-public class RecruitmentParam {
+public class RecruitmentParam implements InputConverter<Recruitment> {
 
     @Min(value = 18, message = "年龄不能小于 {value}")
     private Integer ageLimitFrom;

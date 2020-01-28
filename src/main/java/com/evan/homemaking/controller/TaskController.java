@@ -42,7 +42,7 @@ public class TaskController {
         return ResponseUtil.successResponse();
     }
 
-    @DeleteMapping("delete/{taskId}")
+    @DeleteMapping("{taskId:\\d+}")
     @ApiOperation("delete a task")
     public ResponseEntity<ResponseVO> deleteOne(@PathVariable Integer taskId) {
         taskService.removeById(taskId);
@@ -50,7 +50,7 @@ public class TaskController {
         return ResponseUtil.successResponse();
     }
 
-    @DeleteMapping("delete/multiple")
+    @DeleteMapping("list")
     @ApiOperation("delete multiple tasks")
     @Authentication(RoleEnum.ADMIN)
     public ResponseEntity<ResponseVO> deleteMultiple(@RequestBody @Valid List<Integer> taskIds) {
@@ -59,7 +59,7 @@ public class TaskController {
         return ResponseUtil.successResponse();
     }
 
-    @DeleteMapping("delete/all")
+    @DeleteMapping("all")
     @ApiOperation("delete all tasks")
     @Authentication(RoleEnum.ADMIN)
     public ResponseEntity<ResponseVO> deleteAll() {
@@ -68,7 +68,7 @@ public class TaskController {
         return ResponseUtil.successResponse();
     }
 
-    @PutMapping("modify/{taskId}")
+    @PutMapping("{taskId:\\d+}")
     @ApiOperation("modify task information")
     public ResponseEntity<ResponseVO> modify(@PathVariable Integer taskId, @RequestBody @Valid TaskParam taskParam) {
         taskService.updateTask(taskId, taskParam);
