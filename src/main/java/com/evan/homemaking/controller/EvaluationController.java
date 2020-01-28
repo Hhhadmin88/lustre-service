@@ -57,14 +57,14 @@ public class EvaluationController {
         return ResponseUtil.successResponse();
     }
 
-    @DeleteMapping("/list")
+    @DeleteMapping("list")
     @ApiOperation("Delete multiple evaluations")
     public ResponseEntity<ResponseVO> deleteMultiple(@NonNull List<Integer> evaluationIdList) {
         evaluationService.deleteMultiple(evaluationIdList);
         return ResponseUtil.successResponse();
     }
 
-    @DeleteMapping("/all")
+    @DeleteMapping("all")
     @ApiOperation("Delete all evaluations")
     public ResponseEntity<ResponseVO> deleteAll() {
         evaluationService.deleteAll();

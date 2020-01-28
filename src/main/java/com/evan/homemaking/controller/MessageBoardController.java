@@ -31,7 +31,7 @@ public class MessageBoardController {
      */
     private final MessageBoardService messageBoardService;
 
-    @PostMapping("/create")
+    @PostMapping("create")
     @ApiOperation("Create a message")
     public ResponseEntity<ResponseVO> create(@RequestBody @Valid MessageBoardParam messageBoardParam) {
         messageBoardService.add(messageBoardParam);

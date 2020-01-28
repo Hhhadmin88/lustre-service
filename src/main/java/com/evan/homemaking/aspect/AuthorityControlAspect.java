@@ -13,6 +13,7 @@ import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
+import java.util.Objects;
 
 /**
  * @ClassName AuthorityControlAspect
@@ -45,7 +46,7 @@ public class AuthorityControlAspect {
             throw new NoSuchAnnotationException("未找到需要权限验证类或方法上标注的注解");
         }
         Authentication authentication = authenticationOnClass == null ? authenticationOnMethod : authenticationOnClass;
-        String currentUserRole = SecurityContextHolder.getContext().getAuthentication().getUserDetail().getUser().getRole();
+        String currentUserRole = Objects.requireNonNull(SecurityContextHolder.getContext().getAuthentication()).getUserDetail().getUser().getRole();
         if (!(authentication.value().getRole()).equals(currentUserRole)) {
             String methodName = method.getName();
             String className = declaringClass.getName();

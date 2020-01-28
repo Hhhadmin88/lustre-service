@@ -37,7 +37,7 @@ public class ScoreEventListener {
         OptionalDouble averageScoreOptional = evaluations.stream().mapToInt(Evaluation::getScore).average();
         averageScoreOptional.ifPresent(averageScore -> {
             User employee = userService.getById(employeeId);
-            employee.setScore(averageScore);
+            employee.setAverageScore(averageScore);
             userService.update(employee);
         });
     }

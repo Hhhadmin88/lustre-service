@@ -48,21 +48,21 @@ public class RecruitmentController {
         return ResponseUtil.successResponse();
     }
 
-    @DeleteMapping("delete/{recruitmentId}")
+    @DeleteMapping("{recruitmentId:\\d+}")
     @ApiOperation("Delete a recruitment")
     public ResponseEntity<ResponseVO> delete(@PathVariable Integer recruitmentId) {
         recruitmentService.deleteRecruitment(recruitmentId);
         return ResponseUtil.successResponse();
     }
 
-    @GetMapping("get/all")
+    @GetMapping("all")
     @ApiOperation("Get all recruitment")
     public ResponseEntity<ResponseVO> getAll() {
         List<Recruitment> recruitmentList = recruitmentService.findAllRecruitment();
         return ResponseUtil.successResponse(recruitmentList);
     }
 
-    @GetMapping("get/{recruitmentId}")
+    @GetMapping("{recruitmentId::\\d+}")
     @ApiOperation("Get one recruitment")
     public ResponseEntity<ResponseVO> getOne(@PathVariable Integer recruitmentId) {
         Recruitment recruitment = recruitmentService.findOneRecruitment(recruitmentId);
