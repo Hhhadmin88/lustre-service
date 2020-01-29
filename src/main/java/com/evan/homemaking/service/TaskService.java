@@ -1,5 +1,6 @@
 package com.evan.homemaking.service;
 
+import com.evan.homemaking.common.model.dto.TaskDTO;
 import com.evan.homemaking.common.model.entity.Task;
 import com.evan.homemaking.common.model.param.TaskParam;
 import com.evan.homemaking.service.base.CrudService;
@@ -19,23 +20,23 @@ public interface TaskService extends CrudService<Task, Integer> {
     /**
      * Publish a task.
      *
-     * @param taskParam
+     * @param taskParam taskParam.
      */
     void publish(TaskParam taskParam);
 
     /**
      * Delete a task.
      *
-     * @param taskId
+     * @param taskId task id.
      */
     void delete(Integer taskId);
 
     /**
      * Delete Multiple tasks.
      *
-     * @param ids
+     * @param idList id list.
      */
-    void deleteMultiple(List<Integer> ids);
+    void deleteMultiple(List<Integer> idList);
 
     /**
      * Delete all tasks.
@@ -45,28 +46,32 @@ public interface TaskService extends CrudService<Task, Integer> {
     /**
      * Modify information about task.
      *
-     * @param taskParam
+     * @param taskParam taskParam.
      */
     void modify(TaskParam taskParam);
 
     /**
-     * Gets a task.
+     * Get a task.
      *
-     * @param id
+     * @param taskId task id.
+     * @return task dto.
      */
-    void retrieveOne(Integer id);
+    Object getOne(Integer taskId);
 
     /**
      * Gets Multiple tasks.
      *
-     * @param ids
+     * @param idList id list.
+     * @return task dto list.
      */
-    void retrieveMultiple(List<Integer> ids);
+    List<TaskDTO> getMultiple(List<Integer> idList);
 
     /**
      * Gets all tasks.
+     *
+     * @return task dto list.
      */
-    void retrieveAll();
+    List<TaskDTO> getAll();
 
     /**
      * Create a task.
@@ -80,8 +85,9 @@ public interface TaskService extends CrudService<Task, Integer> {
      *
      * @param taskId    task id.
      * @param taskParam taskParam.
+     * @return task dto.
      */
-    void updateTask(@NonNull Integer taskId, @NonNull TaskParam taskParam);
+    TaskDTO updateTask(@NonNull Integer taskId, @NonNull TaskParam taskParam);
 
     /**
      * Update status of task.
