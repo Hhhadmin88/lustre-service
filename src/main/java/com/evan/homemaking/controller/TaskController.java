@@ -42,6 +42,24 @@ public class TaskController {
         return ResponseUtil.successResponse();
     }
 
+    @GetMapping("{taskId:\\d+}")
+    @ApiOperation("Get a task")
+    public ResponseEntity<ResponseVO> getOne(@PathVariable Integer taskId) {
+        return ResponseUtil.successResponse(taskService.getOne(taskId));
+    }
+
+    @GetMapping("multiple")
+    @ApiOperation("Get multiple tasks")
+    public ResponseEntity<ResponseVO> getMultiple(@RequestBody List<Integer> taskIdList) {
+        return ResponseUtil.successResponse(taskService.getMultiple(taskIdList));
+    }
+
+    @GetMapping("all")
+    @ApiOperation("Get all tasks")
+    public ResponseEntity<ResponseVO> getAll() {
+        return ResponseUtil.successResponse(taskService.getAll());
+    }
+
     @DeleteMapping("{taskId:\\d+}")
     @ApiOperation("delete a task")
     public ResponseEntity<ResponseVO> deleteOne(@PathVariable Integer taskId) {
@@ -71,8 +89,7 @@ public class TaskController {
     @PutMapping("{taskId:\\d+}")
     @ApiOperation("modify task information")
     public ResponseEntity<ResponseVO> modify(@PathVariable Integer taskId, @RequestBody @Valid TaskParam taskParam) {
-        taskService.updateTask(taskId, taskParam);
-        return ResponseUtil.successResponse();
+        return ResponseUtil.successResponse(taskService.updateTask(taskId, taskParam));
     }
 
     @PutMapping("status/{operation}/{taskId}")

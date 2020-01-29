@@ -4,7 +4,9 @@ import com.evan.homemaking.common.consts.TaskStatus;
 import com.evan.homemaking.common.enums.RoleEnum;
 import com.evan.homemaking.common.enums.TaskOperationEnum;
 import com.evan.homemaking.common.exception.BadRequestException;
+import com.evan.homemaking.common.exception.NotFoundException;
 import com.evan.homemaking.common.exception.UnAuthorizedException;
+import com.evan.homemaking.common.model.dto.TaskDTO;
 import com.evan.homemaking.common.model.entity.Task;
 import com.evan.homemaking.common.model.entity.User;
 import com.evan.homemaking.common.model.param.TaskParam;
@@ -16,7 +18,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static com.evan.homemaking.common.consts.TaskStatus.*;
 
@@ -52,7 +57,7 @@ public class TaskServiceImpl extends AbstractCrudService<Task, Integer> implemen
     }
 
     @Override
-    public void deleteMultiple(List<Integer> ids) {
+    public void deleteMultiple(List<Integer> idList) {
 
     }
 
@@ -67,17 +72,22 @@ public class TaskServiceImpl extends AbstractCrudService<Task, Integer> implemen
     }
 
     @Override
-    public void retrieveOne(Integer id) {
-
+    public TaskDTO getOne(Integer taskId) {
+        Optional<Task> taskOptional = fetchById(taskId);
+        return taskOptional.map(this::setUserNameInTask)
+                .orElseThrow(() -> new NotFoundException("当前taskId:" + taskId + "对应的任务不存在"));
     }
 
     @Override
-    public void retrieveMultiple(List<Integer> ids) {
+    public List<TaskDTO> getMultiple(List<Integer> idList) {
+        List<Task> taskList = listAllByIds(idList);
+        return taskList.stream().map(this::setUserNameInTask).collect(Collectors.toList());
     }
 
     @Override
-    public void retrieveAll() {
-
+    public List<TaskDTO> getAll() {
+        List<Task> taskList = listAll();
+        return taskList.stream().map(this::setUserNameInTask).collect(Collectors.toList());
     }
 
     @Override
@@ -86,21 +96,33 @@ public class TaskServiceImpl extends AbstractCrudService<Task, Integer> implemen
     }
 
     @Override
-    public void updateTask(@NonNull Integer taskId, @NonNull TaskParam taskParam) {
-        taskUpdateProcessor(taskId, taskParam);
+    public TaskDTO updateTask(@NonNull Integer taskId, @NonNull TaskParam taskParam) {
+        return taskUpdateProcessor(taskId, taskParam);
     }
 
-    private void taskUpdateProcessor(@NonNull Integer taskId, @NonNull TaskParam taskParam) {
+    private TaskDTO taskUpdateProcessor(@NonNull Integer taskId, @NonNull TaskParam taskParam) {
         Task task = taskRepository.findTaskById(taskId);
         User currentUser = userService.getCurrentUser();
         checkOwnerOfTask(task, currentUser);
         if (RoleEnum.ADMIN.getRole().equals(currentUser.getRole())) {
-            update(taskParam.convertTo());
+            taskParam.update(task);
+            update(task);
         } else if (RoleEnum.EMPLOYER.getRole().equals(currentUser.getRole())) {
             updateTaskByEmployer(task, taskParam);
         } else {
             updateTaskByEmployee(task, taskParam);
         }
+        return setUserNameInTask(task);
+    }
+
+    private TaskDTO setUserNameInTask(@NonNull Task task) {
+        TaskDTO taskDTO = new TaskDTO();
+        taskDTO.convertFrom(task);
+        String employeeName = task.getEmployeeId() == null ? null : userService.convertUserIdToName(task.getEmployeeId());
+        String employerName = task.getEmployerId() == null ? null : userService.convertUserIdToName(task.getEmployerId());
+        taskDTO.setEmployeeName(employeeName);
+        taskDTO.setEmployerName(employerName);
+        return taskDTO;
     }
 
     private void updateTaskByEmployer(@NonNull Task task, @NonNull TaskParam taskParam) {
