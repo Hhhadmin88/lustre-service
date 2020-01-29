@@ -88,4 +88,12 @@ public interface UserService extends CrudService<User, Integer> {
      * @param user current user that has been logged in.
      */
     void storeCurrentUser(@NonNull User user);
+
+    /**
+     * Convert user id to nick name.
+     *
+     * @param userId employer id or employee id.
+     * @return employer name or employee name.
+     */
+    String convertUserIdToName(@NonNull Integer userId);
 }

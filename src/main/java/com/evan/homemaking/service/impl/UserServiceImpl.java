@@ -120,6 +120,13 @@ public class UserServiceImpl extends AbstractCrudService<User, Integer> implemen
         SecurityContextHolder.setContext(new SecurityContextImpl(new AuthenticationImpl(new UserDetail(user))));
     }
 
+    @Override
+    public String convertUserIdToName(Integer userId) {
+        Optional<User> userOptional = userRepository.findById(userId);
+        return userOptional.map(User::getNickName)
+                .orElseThrow(()->new NotFoundException("当前查找userId:"+userId+"对应的用户不存在"));
+    }
+
     @NonNull
     @Override
     public User getCurrentUser() {
