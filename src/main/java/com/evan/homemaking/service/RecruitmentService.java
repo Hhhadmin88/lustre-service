@@ -1,5 +1,6 @@
 package com.evan.homemaking.service;
 
+import com.evan.homemaking.common.model.dto.RecruitmentDTO;
 import com.evan.homemaking.common.model.entity.Recruitment;
 import com.evan.homemaking.common.model.param.RecruitmentParam;
 import com.evan.homemaking.service.base.CrudService;
@@ -21,28 +22,7 @@ public interface RecruitmentService extends CrudService<Recruitment, Integer> {
      *
      * @param recruitmentParam recruitmentParam.
      */
-    void createRecruitment(@NonNull RecruitmentParam recruitmentParam);
-
-    /**
-     * Update a recruitment.
-     *
-     * @param recruitmentParam recruitmentParam.
-     */
-    void updateRecruitment(@NonNull RecruitmentParam recruitmentParam);
-
-    /**
-     * Delete a recruitment by id.
-     *
-     * @param recruitmentId recruitment id.
-     */
-    void deleteRecruitment(@NonNull Integer recruitmentId);
-
-    /**
-     * Get All Recruitment.
-     *
-     * @return Recruitment list.
-     */
-    List<Recruitment> findAllRecruitment();
+    void create(@NonNull RecruitmentParam recruitmentParam);
 
     /**
      * Get One Recruitment.
@@ -50,5 +30,28 @@ public interface RecruitmentService extends CrudService<Recruitment, Integer> {
      * @param recruitmentId recruitment id.
      * @return One recruitment.
      */
-    Recruitment findOneRecruitment(@NonNull Integer recruitmentId);
+    RecruitmentDTO getOne(@NonNull Integer recruitmentId);
+
+    /**
+     * Get All Recruitment.
+     *
+     * @return Recruitment list.
+     */
+    List<RecruitmentDTO> getAll();
+
+    /**
+     * Update a recruitment.
+     *
+     * @param recruitmentId    recruitment id.
+     * @param recruitmentParam recruitmentParam.
+     * @return recruitment dto.
+     */
+    RecruitmentDTO updateOne(@NonNull Integer recruitmentId, @NonNull RecruitmentParam recruitmentParam);
+
+    /**
+     * Delete a recruitment by id.
+     *
+     * @param recruitmentId recruitment id.
+     */
+    void deleteOne(@NonNull Integer recruitmentId);
 }

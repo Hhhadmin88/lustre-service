@@ -8,8 +8,9 @@ import com.evan.homemaking.common.utils.ResponseUtil;
 import com.evan.homemaking.service.TaskService;
 import com.evan.homemaking.service.UserService;
 import io.swagger.annotations.ApiOperation;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,9 +24,9 @@ import java.util.List;
  * @Version 1.0.0
  * @Date 2019/12/4 21:26
  */
-@AllArgsConstructor
-@RequestMapping("/api/task")
 @RestController
+@RequestMapping("/api/task")
+@RequiredArgsConstructor(onConstructor_ = @Autowired)
 @Slf4j
 public class TaskController {
     /**
