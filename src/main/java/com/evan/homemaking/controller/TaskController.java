@@ -7,6 +7,7 @@ import com.evan.homemaking.common.model.vo.ResponseVO;
 import com.evan.homemaking.common.utils.ResponseUtil;
 import com.evan.homemaking.service.TaskService;
 import com.evan.homemaking.service.UserService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,6 +28,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/task")
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
+@Api(tags = "Task Module Interface")
 @Slf4j
 public class TaskController {
     /**

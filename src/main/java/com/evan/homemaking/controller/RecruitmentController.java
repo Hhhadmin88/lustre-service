@@ -6,6 +6,7 @@ import com.evan.homemaking.common.model.param.RecruitmentParam;
 import com.evan.homemaking.common.model.vo.ResponseVO;
 import com.evan.homemaking.common.utils.ResponseUtil;
 import com.evan.homemaking.service.RecruitmentService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,7 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/api/recruitment")
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
+@Api(tags = "Recruitment Module Interface")
 @Authentication(RoleEnum.ADMIN)
 public class RecruitmentController {
     /**
