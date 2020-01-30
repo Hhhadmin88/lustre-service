@@ -5,6 +5,7 @@ import com.evan.homemaking.common.model.param.MessageBoardParam;
 import com.evan.homemaking.common.model.vo.ResponseVO;
 import com.evan.homemaking.common.utils.ResponseUtil;
 import com.evan.homemaking.service.MessageBoardService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/message")
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
+@Api(tags = "Message Module Interface")
 public class MessageBoardController {
     /**
      * 用户留言管理模块：对员工的留言增删改查

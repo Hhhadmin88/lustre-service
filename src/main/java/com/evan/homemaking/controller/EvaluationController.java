@@ -4,6 +4,7 @@ import com.evan.homemaking.common.model.param.EvaluationParam;
 import com.evan.homemaking.common.model.vo.ResponseVO;
 import com.evan.homemaking.common.utils.ResponseUtil;
 import com.evan.homemaking.service.EvaluationService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/evaluation")
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
+@Api(tags = "Evaluation Module Interface")
 public class EvaluationController {
     /**
      * 用户留言管理模块：对员工的留言增删改查
