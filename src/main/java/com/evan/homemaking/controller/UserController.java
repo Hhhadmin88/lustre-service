@@ -11,8 +11,9 @@ import com.evan.homemaking.service.AuthenticateService;
 import com.evan.homemaking.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,9 +28,9 @@ import java.util.List;
  * @Date 2019/12/4 21:22
  */
 @Slf4j
-@AllArgsConstructor
 @RestController
 @RequestMapping("/api/user")
+@RequiredArgsConstructor(onConstructor_ = @Autowired)
 @Api(tags = "User Module Interface")
 public class UserController {
     /**

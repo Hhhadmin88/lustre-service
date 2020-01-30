@@ -1,9 +1,9 @@
 package com.evan.homemaking.service.impl;
 
 import com.evan.homemaking.common.exception.NotFoundException;
+import com.evan.homemaking.common.model.dto.RecruitmentDTO;
 import com.evan.homemaking.common.model.entity.Recruitment;
 import com.evan.homemaking.common.model.param.RecruitmentParam;
-import com.evan.homemaking.common.utils.ParamTransformUtil;
 import com.evan.homemaking.repository.RecruitmentRepository;
 import com.evan.homemaking.service.RecruitmentService;
 import com.evan.homemaking.service.base.AbstractCrudService;
@@ -12,6 +12,8 @@ import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * @ClassName RecruitmentServiceImpl
@@ -32,33 +34,36 @@ public class RecruitmentServiceImpl extends AbstractCrudService<Recruitment, Int
     }
 
     @Override
-    public void createRecruitment(@NonNull RecruitmentParam recruitmentParam) {
-        Recruitment recruitment = ParamTransformUtil.copyProperties(recruitmentParam, Recruitment.class);
-        recruitmentRepository.save(recruitment);
+    public void create(@NonNull RecruitmentParam recruitmentParam) {
+        recruitmentRepository.save(recruitmentParam.convertTo());
     }
 
     @Override
-    public void updateRecruitment(@NonNull RecruitmentParam recruitmentParam) {
-        Recruitment recruitment = ParamTransformUtil.copyProperties(recruitmentParam, Recruitment.class);
-        update(recruitment);
+    public RecruitmentDTO updateOne(@NonNull Integer recruitmentId, @NonNull RecruitmentParam recruitmentParam) {
+        Optional<Recruitment> recruitmentOptional = fetchById(recruitmentId);
+        return (RecruitmentDTO) recruitmentOptional.map(recruitment -> {
+            recruitmentParam.update(recruitment);
+            return new RecruitmentDTO().convertFrom(recruitment);
+        }).orElseThrow(() -> new NotFoundException("当前recruitmentId:" + recruitmentId + "对应的招聘信息不存在"));
     }
 
+
     @Override
-    public void deleteRecruitment(@NonNull Integer recruitmentId) {
+    public void deleteOne(@NonNull Integer recruitmentId) {
         removeById(recruitmentId);
     }
 
     @Override
-    public List<Recruitment> findAllRecruitment() {
-        return listAll();
+    public List<RecruitmentDTO> getAll() {
+        List<Recruitment> recruitmentList = listAll();
+        return recruitmentList.stream().map(recruitment -> (RecruitmentDTO)new RecruitmentDTO().convertFrom(recruitment)).collect(Collectors.toList());
     }
 
     @Override
-    public Recruitment findOneRecruitment(@NonNull Integer recruitmentId) {
-        if (!recruitmentRepository.findById(recruitmentId).isPresent()) {
-            log.error("The recruitment is not exist of current id");
-            throw new NotFoundException("当前Id对应的recruitment不存在");
-        }
-        return recruitmentRepository.findById(recruitmentId).get();
+    public RecruitmentDTO getOne(@NonNull Integer recruitmentId) {
+        Optional<Recruitment> recruitmentOptional = fetchById(recruitmentId);
+        return (RecruitmentDTO) recruitmentOptional.map(recruitment ->
+                new RecruitmentDTO().convertFrom(recruitment))
+                .orElseThrow(() -> new NotFoundException("当前recruitmentId:" + recruitmentId + "对应的招聘信息不存在"));
     }
 }
