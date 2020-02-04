@@ -15,10 +15,10 @@ import javax.validation.constraints.Size;
 @Data
 public class LoginParam {
     @NotBlank(message = "用户名或邮箱不能为空")
-    @Size(max = 50, message = "用户名或邮箱的字符长度不能超过 {max}")
+    @Size(min = 8, max = 50, message = "请输入正确格式的用户名，长度{min}~{max}字符之间")
     private String username;
 
     @NotBlank(message = "登录密码不能为空")
-    @Size(max = 50, message = "用户密码字符长度不能超过 {max}")
+    @Size(min = 8, max = 50, message = "请输入正确格式的密码，长度{min}~{max}字符之间")
     private String password;
 }
