@@ -68,4 +68,6 @@ public class RecruitmentController {
     //TODO apply the recruitment api.
     //TODO add the candidate table.
     //TODO add more user info into user entity,eg:age,sex,skills,education and so on.
+    //TODO fix the exception messages
+    //TODO fix the cross origin
 }

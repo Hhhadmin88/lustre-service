@@ -124,7 +124,7 @@ public class UserServiceImpl extends AbstractCrudService<User, Integer> implemen
     public String convertUserIdToName(Integer userId) {
         Optional<User> userOptional = userRepository.findById(userId);
         return userOptional.map(User::getNickName)
-                .orElseThrow(()->new NotFoundException("当前查找userId:"+userId+"对应的用户不存在"));
+                .orElseThrow(() -> new NotFoundException("当前查找userId:" + userId + "对应的用户不存在"));
     }
 
     @NonNull
@@ -134,12 +134,12 @@ public class UserServiceImpl extends AbstractCrudService<User, Integer> implemen
                 .getAuthentication()).getUserDetail().getUser();
     }
 
-    private void checkRoleParam(@NonNull String role) {
+    private void checkRoleParam(@NonNull Integer role) {
         if (RoleEnum.ADMIN.getRole().equals(role)) {
             log.error("User can not register to be an admin.");
             throw new BadRequestException("无法通过注册成为管理员，请从后台添加");
         }
-        if (Integer.parseInt(role) > Integer.parseInt(RoleEnum.ADMIN.getRole())) {
+        if (role > RoleEnum.ADMIN.getRole()) {
             log.error("User role param is illegal.");
             throw new BadRequestException("用户角色标识参数不合法，请重新填写");
         }

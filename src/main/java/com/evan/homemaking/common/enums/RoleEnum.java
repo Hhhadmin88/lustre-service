@@ -16,9 +16,9 @@ public enum RoleEnum {
     /**
      * Role of user.
      */
-    EMPLOYEE("1", "employee"),
-    EMPLOYER("2", "employer"),
-    ADMIN("3", "admin");
-    private String role;
+    EMPLOYEE(1, "employee"),
+    EMPLOYER(2, "employer"),
+    ADMIN(3, "admin");
+    private Integer role;
     private String description;
 }
