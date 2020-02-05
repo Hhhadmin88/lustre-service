@@ -29,6 +29,9 @@ public class User {
     @Column(name = "nickName", columnDefinition = "varchar(50)")
     private String nickName;
 
+    @Column(name = "gender", columnDefinition = "int(1) not null")
+    private Integer gender;
+
     @Column(name = "address", columnDefinition = "varchar(255) not null")
     private String address;
 
@@ -40,8 +43,8 @@ public class User {
     /**
      * This Role is the foreign key of the RoleId in the Role entity.
      */
-    @Column(name = "role", columnDefinition = "varchar(50) not null")
-    private String role;
+    @Column(name = "role", columnDefinition = "int(1) not null")
+    private Integer role;
 
     @Column(name = "averageScore", columnDefinition = "double(2,1) default null")
     private Double averageScore;
