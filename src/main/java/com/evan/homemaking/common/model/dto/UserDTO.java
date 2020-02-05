@@ -18,13 +18,15 @@ public class UserDTO implements OutputConverter<UserDTO, User> {
 
     private String nickName;
 
+    private Integer gender;
+
     private String address;
 
     private String phoneNumber;
 
     private String email;
 
-    private String role;
+    private Integer role;
 
     private Double averageScore;
 }
