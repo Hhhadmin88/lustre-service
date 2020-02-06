@@ -5,6 +5,6 @@ branches:
   only:
     - master
     - dev
-script: ./build.sh
+script: ./docker-build.sh
 services:
   - docker
