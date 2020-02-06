@@ -5,9 +5,6 @@ branches:
   only:
     - master
     - dev
-jobs:
-  include:
-    - stage: build
-      script: ./build.sh
+script: ./build.sh
 services:
   - docker
