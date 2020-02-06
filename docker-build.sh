@@ -4,4 +4,4 @@ mvn clean package -Dmaven.test.skip=true -U
 
 docker build -t homemaking-service .
 
-docker push registry.cn-hangzhou.aliyuncs.com/homemaking/homemaking-service
+docker push registry.cn-hangzhou.aliyuncs.com/homemaking/homemaking-service[1.0.0]
