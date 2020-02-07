@@ -1,14 +1,9 @@
-FROM adoptopenjdk/openjdk8-openj9
+#!/usr/bin/env bash
 
-MAINTAINER Evan Wang wangmingmis@163.com
+mvn clean package -Dmaven.test.skip=true -U
 
-ARG PORT=8090
-ARG TIME_ZONE=Asia/Shanghai
-ENV TZ=${TIME_ZONE}
-ENV JAVA_OPTS="-Xms256m -Xmx256m"
-
-ADD target/*.jar homemaking-service.jar
-
-EXPOSE ${PORT}
-
-ENTRYPOINT java ${JAVA_OPTS} -Djava.security.egd=file:/dev/./urandom -server -jar homemaking-service.jar
+docker build -t homemaking-service .
+echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin registry.cn-hangzhou.aliyuncs.com
+docker images
+docker tag homemaking-service registry.cn-hangzhou.aliyuncs.com/homemaking/homemaking-service:1.0.0-SNAPSHOT
+docker push registry.cn-hangzhou.aliyuncs.com/homemaking/homemaking-service:1.0.0-SNAPSHOT
