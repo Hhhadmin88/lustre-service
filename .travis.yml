@@ -5,6 +5,9 @@ branches:
   only:
     - master
     - dev
-script: ./docker-build.sh
+jobs:
+  include:
+    - stage: Build Docker Image for Master
+      script: ./docker-build.sh
 services:
   - docker
