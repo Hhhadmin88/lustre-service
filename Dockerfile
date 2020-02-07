@@ -11,4 +11,4 @@ ADD target/*.jar homemaking-service.jar
 
 EXPOSE ${PORT}
 
-ENTRYPOINT java ${JAVA_OPTS} -Djava.security.egd=file:/dev/./urandom -server -jar homemaking-service
+ENTRYPOINT java ${JAVA_OPTS} -Djava.security.egd=file:/dev/./urandom -server -jar homemaking-service.jar
