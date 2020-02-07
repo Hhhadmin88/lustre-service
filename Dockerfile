@@ -1,9 +1,14 @@
-FROM hub.c.163.com/library/java:8-alpine
+FROM adoptopenjdk/openjdk8-openj9
 
 MAINTAINER Evan Wang wangmingmis@163.com
 
+ARG PORT=8090
+ARG TIME_ZONE=Asia/Shanghai
+ENV TZ=${TIME_ZONE}
+ENV JAVA_OPTS="-Xms256m -Xmx256m"
+
 ADD target/*.jar homemaking-service.jar
 
-EXPOSE 8090
+EXPOSE ${PORT}
 
-ENTRYPOINT ["java", "-jar", "/homemaking-service"]
+ENTRYPOINT java ${JAVA_OPTS} -Djava.security.egd=file:/dev/./urandom -server -jar homemaking-service.jar
