@@ -4,5 +4,5 @@
 
 <p align="center">
 <a href="#"><img alt="JDK" src="https://img.shields.io/badge/JDK-1.8-yellow.svg?style=flat-square"/></a>
-<a href="https://travis-ci.com/wangming2674/homemaking-service"><img alt="Travis CI" src="https://travis-ci.com/wangming2674/homemaking-service.svg?token=ph9tPLhpySxNSB8N7UAm&branch=dev"/></a>
+<a href="https://travis-ci.com/wangming2674/homemaking-service"><img alt="Travis CI" src="https://travis-ci.com/wangming2674/homemaking-service.svg?token=ph9tPLhpySxNSB8N7UAm&branch=master"/></a>
 </p>
