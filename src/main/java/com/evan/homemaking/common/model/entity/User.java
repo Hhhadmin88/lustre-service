@@ -46,6 +46,6 @@ public class User {
     @Column(name = "role", columnDefinition = "int(1) not null")
     private Integer role;
 
-    @Column(name = "averageScore", columnDefinition = "double(2,1) default null")
+    @Column(name = "averageScore", columnDefinition = "double(2) default 0")
     private Double averageScore;
 }
