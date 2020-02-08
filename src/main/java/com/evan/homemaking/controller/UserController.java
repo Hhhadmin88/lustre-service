@@ -31,6 +31,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/user")
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
+@CrossOrigin
 @Api(tags = "User Module Interface")
 public class UserController {
     /**
