@@ -30,6 +30,7 @@ public class WebMvcAutoConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(loginInterceptor)
                 .excludePathPatterns("/error")
-                .excludePathPatterns("/swagger-resources/**", "/webjars/**", "/swagger-ui.html/**");
+                .excludePathPatterns("/swagger-resources/**", "/webjars/**", "/swagger-ui.html/**")
+                .excludePathPatterns("/h2-console");
     }
 }
