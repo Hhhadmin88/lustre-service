@@ -46,14 +46,24 @@ public class UserServiceImpl extends AbstractCrudService<User, Integer> implemen
 
     @Override
     @NonNull
-    public User getByAccountId(@NonNull String accountId) {
+    public Optional<User> getByAccountId(@NonNull String accountId) {
         return userRepository.findByAccountId(accountId);
     }
 
     @Override
     @NonNull
-    public User getByEmail(@NonNull String email) {
+    public Optional<User> getByEmail(@NonNull String email) {
         return userRepository.findByEmail(email);
+    }
+
+    @Override
+    public User getByAccountIdOfNonNull(String accountId) {
+        return getByAccountId(accountId).orElseThrow(() -> new NotFoundException("当前账号不存在"));
+    }
+
+    @Override
+    public User getByEmailOfNonNull(String email) {
+        return getByEmail(email).orElseThrow(() -> new NotFoundException("当前邮箱不存在"));
     }
 
     @Override
@@ -112,7 +122,8 @@ public class UserServiceImpl extends AbstractCrudService<User, Integer> implemen
 
     @Override
     public User getCurrentRequestUser(@NonNull String userName) {
-        return Validator.isEmail(userName) ? getByEmail(userName) : getByAccountId(userName);
+        return Validator.isEmail(userName) ? getByEmailOfNonNull(userName) :
+                getByAccountIdOfNonNull(userName);
     }
 
     @Override

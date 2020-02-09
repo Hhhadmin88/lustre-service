@@ -7,6 +7,8 @@ import com.evan.homemaking.common.model.param.UserParam;
 import com.evan.homemaking.service.base.CrudService;
 import org.springframework.lang.NonNull;
 
+import java.util.Optional;
+
 /**
  * @ClassName UserService
  * @Description
@@ -20,19 +22,36 @@ public interface UserService extends CrudService<User, Integer> {
      * Gets user by accountId.
      *
      * @param accountId accountId of user.
-     * @return an user.
+     * @return an optional user.
      */
     @NonNull
-    User getByAccountId(@NonNull String accountId);
+    Optional<User> getByAccountId(@NonNull String accountId);
 
     /**
      * Gets user by email.
      *
      * @param email email of user.
+     * @return an optional user.
+     */
+    @NonNull
+    Optional<User> getByEmail(@NonNull String email);
+
+    /**
+     * Get an user by account id.
+     *
+     * @param accountId account id must not be null.
      * @return an user.
      */
     @NonNull
-    User getByEmail(@NonNull String email);
+    User getByAccountIdOfNonNull(@NonNull String accountId);
+
+    /**
+     * Get an user by email.
+     *
+     * @param accountId email must not be null.
+     * @return an user.
+     */
+    User getByEmailOfNonNull(@NonNull String accountId);
 
     /**
      * Register an user.

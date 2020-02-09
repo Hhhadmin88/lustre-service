@@ -4,6 +4,8 @@ import com.evan.homemaking.common.model.entity.User;
 import com.evan.homemaking.repository.base.BaseRepository;
 import org.springframework.lang.NonNull;
 
+import java.util.Optional;
+
 /**
  * @ClassName UserRepository
  * @Description User information repository.
@@ -14,22 +16,22 @@ import org.springframework.lang.NonNull;
 public interface UserRepository extends BaseRepository<User, Integer> {
 
     /**
-     * Get an user by username.
+     * Get an user by accountId.
      *
-     * @param username username must not be blank
+     * @param accountId accountId must not be null.
      * @return an user
      */
     @NonNull
-    User findByAccountId(@NonNull String username);
+    Optional<User> findByAccountId(@NonNull String accountId);
 
     /**
      * Get an user by email.
      *
-     * @param email email must not be blank
+     * @param email email must not be blank.
      * @return an user.
      */
     @NonNull
-    User findByEmail(@NonNull String email);
+    Optional<User> findByEmail(@NonNull String email);
 
     /**
      * Get an user by nick name.
