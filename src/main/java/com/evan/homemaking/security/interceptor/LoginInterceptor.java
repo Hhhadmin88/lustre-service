@@ -1,4 +1,4 @@
-package com.evan.homemaking.interceptor;
+package com.evan.homemaking.security.interceptor;
 
 import com.evan.homemaking.common.cache.UserCache;
 import com.evan.homemaking.common.exception.BadRequestException;
@@ -55,7 +55,7 @@ public class LoginInterceptor implements HandlerInterceptor {
 
         return Optional.of(userName).map(name -> {
             //Get the current requesting user.
-            User currentRequestUser = Optional.ofNullable(userService.getCurrentRequestUser(userName))
+            User currentRequestUser = Optional.ofNullable(userService.getOneUser(userName))
                     .orElseThrow(() -> new NotFoundException("当前请求的用户不存在"));
             String cachedToken = userCache.getMultiple(SecurityUtil.buildAccessTokenKey(currentRequestUser), String.class)
                     .orElseThrow(() -> new NotLoginException("当前用户" + userName + "还未登录，请先进行登录"));

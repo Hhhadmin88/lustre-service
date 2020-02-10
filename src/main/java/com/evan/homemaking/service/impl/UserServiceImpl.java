@@ -121,7 +121,7 @@ public class UserServiceImpl extends AbstractCrudService<User, Integer> implemen
     }
 
     @Override
-    public User getCurrentRequestUser(@NonNull String userName) {
+    public User getOneUser(@NonNull String userName) {
         return Validator.isEmail(userName) ? getByEmailOfNonNull(userName) :
                 getByAccountIdOfNonNull(userName);
     }

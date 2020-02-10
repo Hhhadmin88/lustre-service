@@ -1,6 +1,6 @@
 package com.evan.homemaking.common.config;
 
-import com.evan.homemaking.interceptor.LoginInterceptor;
+import com.evan.homemaking.security.interceptor.LoginInterceptor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
