@@ -86,20 +86,20 @@ public interface UserService extends CrudService<User, Integer> {
     void setEncryptedPassword(@NonNull User user);
 
     /**
-     * Get the user who is currently sending the request.
+     * Get currently logged in user from SecurityContextHolder.
      *
-     * @param userName the username.
-     * @return optional user
-     */
-    User getCurrentRequestUser(@NonNull String userName);
-
-    /**
-     * Get currently logged in user into SecurityContextHolder.
-     *
-     * @return a user that current has been logged in.
+     * @return an user that current has been logged in.
      */
     @NonNull
     User getCurrentUser();
+
+    /**
+     * Get an user.
+     *
+     * @param userName accountId or email.
+     * @return an user.
+     */
+    User getOneUser(String userName);
 
     /**
      * Put the currently logged in user from SecurityContextHolder.

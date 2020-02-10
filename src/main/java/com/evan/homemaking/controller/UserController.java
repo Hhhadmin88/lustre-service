@@ -2,6 +2,8 @@ package com.evan.homemaking.controller;
 
 import com.evan.homemaking.common.annotation.Authentication;
 import com.evan.homemaking.common.enums.RoleEnum;
+import com.evan.homemaking.common.model.dto.UserDTO;
+import com.evan.homemaking.common.model.entity.User;
 import com.evan.homemaking.common.model.param.LoginParam;
 import com.evan.homemaking.common.model.param.RegisterParam;
 import com.evan.homemaking.common.model.param.UserParam;
@@ -11,6 +13,7 @@ import com.evan.homemaking.service.AuthenticateService;
 import com.evan.homemaking.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,6 +64,12 @@ public class UserController {
     public ResponseEntity<ResponseVO> logout() {
         authenticateService.clearToken();
         return ResponseUtil.successResponse();
+    }
+
+    @GetMapping("{userName}")
+    @ApiOperation("Get the information of the currently logged in user")
+    public ResponseEntity<ResponseVO> getCurrentLoggedUser(@PathVariable("userName") String userName) {
+        return ResponseUtil.successResponse(new UserDTO().convertFrom(userService.getOneUser(userName)));
     }
 
     @PutMapping("{userId:\\d+}")
