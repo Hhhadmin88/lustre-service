@@ -94,12 +94,20 @@ public interface UserService extends CrudService<User, Integer> {
     User getCurrentUser();
 
     /**
-     * Get an user.
+     * Get an user name.
      *
      * @param userName accountId or email.
      * @return an user.
      */
-    User getOneUser(String userName);
+    User getOneUserByUserName(String userName);
+
+    /**
+     * Get an user by user id.
+     *
+     * @param userId user id.
+     * @return an user.
+     */
+    User getOneUserById(@NonNull Integer userId);
 
     /**
      * Put the currently logged in user from SecurityContextHolder.

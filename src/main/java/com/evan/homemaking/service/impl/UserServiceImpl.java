@@ -121,9 +121,14 @@ public class UserServiceImpl extends AbstractCrudService<User, Integer> implemen
     }
 
     @Override
-    public User getOneUser(@NonNull String userName) {
+    public User getOneUserByUserName(@NonNull String userName) {
         return Validator.isEmail(userName) ? getByEmailOfNonNull(userName) :
                 getByAccountIdOfNonNull(userName);
+    }
+
+    @Override
+    public User getOneUserById(@NonNull Integer userId) {
+        return userRepository.findById(userId).orElseThrow(() -> new NotFoundException("没有找到userId:" + userId + "对应的用户"));
     }
 
     @Override
