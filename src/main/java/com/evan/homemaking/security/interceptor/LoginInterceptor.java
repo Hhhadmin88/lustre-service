@@ -3,7 +3,6 @@ package com.evan.homemaking.security.interceptor;
 import com.evan.homemaking.common.cache.UserCache;
 import com.evan.homemaking.common.exception.BadRequestException;
 import com.evan.homemaking.common.exception.NotFoundException;
-import com.evan.homemaking.common.exception.NotLoginException;
 import com.evan.homemaking.common.exception.UnAuthorizedException;
 import com.evan.homemaking.common.model.entity.User;
 import com.evan.homemaking.common.utils.SecurityUtil;
@@ -58,10 +57,10 @@ public class LoginInterceptor implements HandlerInterceptor {
             User currentRequestUser = Optional.ofNullable(userService.getOneUserByUserName(userName))
                     .orElseThrow(() -> new NotFoundException("当前请求的用户不存在"));
             String cachedToken = userCache.getMultiple(SecurityUtil.buildAccessTokenKey(currentRequestUser), String.class)
-                    .orElseThrow(() -> new NotLoginException("当前用户" + userName + "还未登录，请先进行登录"));
+                    .orElseThrow(() -> new UnAuthorizedException("当前用户" + userName + "还未登录，请先进行登录"));
             String accessToken = request.getHeader(REQUEST_ACCESS_TOKEN);
             if (StringUtils.isBlank(accessToken)) {
-                throw new BadRequestException("请求中缺少token验证信息");
+                throw new UnAuthorizedException("请求中缺少token验证信息");
             }
             if (accessToken.equals(cachedToken)) {
                 userService.storeCurrentUser(currentRequestUser);
