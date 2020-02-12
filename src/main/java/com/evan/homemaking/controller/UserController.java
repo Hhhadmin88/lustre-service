@@ -66,11 +66,12 @@ public class UserController {
         return ResponseUtil.successResponse();
     }
 
-    @GetMapping("{userName}")
+    @GetMapping("current")
     @ApiOperation("Get the information of the currently logged in user")
-    public ResponseEntity<ResponseVO> getCurrentLoggedUser(@PathVariable("userName") String userName) {
-        return ResponseUtil.successResponse(new UserDTO().convertFrom(userService.getOneUser(userName)));
+    public ResponseEntity<ResponseVO> getCurrentLoggedUser() {
+        return ResponseUtil.successResponse(new UserDTO().convertFrom(userService.getCurrentUser()));
     }
+
 
     @PutMapping("{userId:\\d+}")
     public ResponseEntity<ResponseVO> updateOne(@PathVariable("userId") Integer userId, @RequestBody UserParam userParam) {

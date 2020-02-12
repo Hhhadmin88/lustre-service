@@ -47,8 +47,7 @@ public class AuthenticateServiceImpl implements AuthenticateService {
         String userName = loginParam.getUsername();
         final User user;
         try {
-            user = Validator.isEmail(userName) ? userService.getByEmailOfNonNull(userName) :
-                    userService.getByAccountIdOfNonNull(userName);
+            user = userService.getOneUserByUserName(userName);
         } catch (NotFoundException e) {
             log.error("Failed to find user by userName: " + userName, e);
             throw new BadRequestException(mismatchTip);

@@ -16,6 +16,8 @@ public class UserDTO implements OutputConverter<UserDTO, User> {
 
     private Integer id;
 
+    private String accountId;
+
     private String nickName;
 
     private Integer gender;
