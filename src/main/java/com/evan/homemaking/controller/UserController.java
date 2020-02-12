@@ -72,6 +72,18 @@ public class UserController {
         return ResponseUtil.successResponse(new UserDTO().convertFrom(userService.getCurrentUser()));
     }
 
+    @GetMapping("name/{userName}")
+    @ApiOperation("Get the information of the currently logged in user")
+    public ResponseEntity<ResponseVO> getUserByUserName(@PathVariable("userName") String userName) {
+        return ResponseUtil.successResponse(new UserDTO().convertFrom(userService.getOneUserByUserName(userName)));
+    }
+
+    @GetMapping("id/{userId:\\d+}")
+    @ApiOperation("Get the information of the currently logged in user")
+    public ResponseEntity<ResponseVO> getUserByUserId(@PathVariable("userId") Integer userId) {
+        return ResponseUtil.successResponse(new UserDTO().convertFrom(userService.getOneUserById(userId)));
+    }
+
 
     @PutMapping("{userId:\\d+}")
     public ResponseEntity<ResponseVO> updateOne(@PathVariable("userId") Integer userId, @RequestBody UserParam userParam) {
