@@ -26,7 +26,6 @@ import javax.validation.Valid;
 @RequestMapping("/api/recruitment")
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 @Api(tags = "Recruitment Module Interface")
-@Authentication(RoleEnum.ADMIN)
 public class RecruitmentController {
     /**
      * 信息查询模块：招聘信息的增删改查
@@ -35,6 +34,7 @@ public class RecruitmentController {
 
     @PostMapping("publish")
     @ApiOperation("Publish a recruitment")
+    @Authentication(RoleEnum.ADMIN)
     public ResponseEntity<ResponseVO> publish(@RequestBody @Valid RecruitmentParam recruitmentParam) {
         recruitmentService.create(recruitmentParam);
         return ResponseUtil.successResponse();
@@ -42,6 +42,7 @@ public class RecruitmentController {
 
     @PutMapping("{recruitmentId:\\d+}")
     @ApiOperation("Update a recruitment")
+    @Authentication(RoleEnum.ADMIN)
     public ResponseEntity<ResponseVO> updateOne(@PathVariable Integer recruitmentId,
                                                 @RequestBody @Valid RecruitmentParam recruitmentParam) {
         return ResponseUtil.successResponse(recruitmentService.updateOne(recruitmentId, recruitmentParam));
@@ -49,6 +50,7 @@ public class RecruitmentController {
 
     @DeleteMapping("{recruitmentId:\\d+}")
     @ApiOperation("Delete a recruitment")
+    @Authentication(RoleEnum.ADMIN)
     public ResponseEntity<ResponseVO> delete(@PathVariable Integer recruitmentId) {
         recruitmentService.deleteOne(recruitmentId);
         return ResponseUtil.successResponse();
