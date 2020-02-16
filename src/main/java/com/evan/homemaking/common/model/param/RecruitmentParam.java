@@ -27,6 +27,7 @@ public class RecruitmentParam implements InputConverter<Recruitment> {
     /**
      * 0 no constraint,1 male,2 female
      */
+    @NotNull(message = "性别不能为空")
     @Max(value = 2, message = "性别标识字符不能大于 {value}")
     @Min(value = 0, message = "性别标识字符不能小于 {value}")
     private Integer genderConstraint;
