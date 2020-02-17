@@ -7,8 +7,8 @@ ARG TIME_ZONE=Asia/Shanghai
 ENV TZ=${TIME_ZONE}
 ENV JAVA_OPTS="-Xms256m -Xmx256m"
 
-ADD target/*.jar homemaking-service.jar
+ADD target/*.jar lustre-service.jar
 
 EXPOSE ${PORT}
 
-ENTRYPOINT java ${JAVA_OPTS} -Djava.security.egd=file:/dev/./urandom -server -jar homemaking-service.jar
+ENTRYPOINT java ${JAVA_OPTS} -Djava.security.egd=file:/dev/./urandom -server -jar lustre-service.jar
