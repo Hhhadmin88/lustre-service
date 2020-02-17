@@ -9,9 +9,9 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.evan</groupId>
-    <artifactId>homemaking</artifactId>
+    <artifactId>lustre</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>homemaking</name>
+    <name>lustre</name>
     <description>Homemaking service management system.</description>
 
     <properties>
