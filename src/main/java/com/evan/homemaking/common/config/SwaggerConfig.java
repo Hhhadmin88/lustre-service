@@ -36,7 +36,7 @@ public class SwaggerConfig {
         return new ApiInfoBuilder()
                 .title("家政服务管理系统")
                 .description("接口文档")
-                .contact(new Contact("From EvanWang", "http://evanwang.blog.csdn.net/", "wangmingmis@163.com"))
+                .contact(new Contact("Evan Wang", "http://evanwang.blog.csdn.net/", "wangmingmis@163.com"))
                 .version("1.0.0")
                 .build();
     }

@@ -6,7 +6,7 @@ spring:
 
     # H2 Database 配置
     driver-class-name: org.h2.Driver
-    url: jdbc:h2:file:~/.homemaking/db/homemaking
+    url: jdbc:h2:file:~/.lustre/db/lustre
     username: admin
     password: 123456
   h2:
@@ -18,6 +18,6 @@ spring:
 
     # MySQL 配置
   #    driver-class-name: com.mysql.cj.jdbc.Driver
-  #    url: jdbc:mysql://localhost:3306/homemaking?useUnicode=yes&characterEncoding=UTF-8&useInformationSchema=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+  #    url: jdbc:mysql://localhost:3306/lustre?useUnicode=yes&characterEncoding=UTF-8&useInformationSchema=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
   #    username: root
   #    password: 123456
