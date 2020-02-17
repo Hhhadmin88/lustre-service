@@ -36,5 +36,5 @@ management:
         include: ['httptrace', 'metrics','env','logfile','health']
 logging:
   level:
-    com.evan.homemaking: DEBUG
+    com.evan.lustre: DEBUG
   file: ${user.home}/.lustre/logs/log

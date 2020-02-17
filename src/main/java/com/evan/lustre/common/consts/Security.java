@@ -11,12 +11,12 @@ public class Security {
     /**
      * Access token cache prefix.
      */
-    public static final String ACCESS_TOKEN_CACHE_PREFIX = "homemaking.user.access.token.";
+    public static final String ACCESS_TOKEN_CACHE_PREFIX = "lustre.user.access.token.";
 
     /**
      * Refresh token cache prefix.
      */
-    public final static String REFRESH_TOKEN_CACHE_PREFIX = "homemaking.user.refresh.token.";
+    public final static String REFRESH_TOKEN_CACHE_PREFIX = "lustre.user.refresh.token.";
 
     /**
      * Token expire time.
