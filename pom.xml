@@ -12,7 +12,7 @@
     <artifactId>lustre</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>lustre</name>
-    <description>Homemaking service management system.</description>
+    <description>Lustre,an homemaking service management system.</description>
 
     <properties>
         <java.version>1.8</java.version>

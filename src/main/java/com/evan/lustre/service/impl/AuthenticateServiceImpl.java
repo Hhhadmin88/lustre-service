@@ -5,7 +5,7 @@ import com.evan.lustre.common.exception.BadRequestExceptionAbstract;
 import com.evan.lustre.common.exception.NotFoundExceptionAbstract;
 import com.evan.lustre.common.model.entity.User;
 import com.evan.lustre.common.model.param.LoginParam;
-import com.evan.lustre.common.utils.HomemakingUtil;
+import com.evan.lustre.common.utils.LustreUtil;
 import com.evan.lustre.common.utils.SecurityUtil;
 import com.evan.lustre.security.token.AuthToken;
 import com.evan.lustre.service.AuthenticateService;
@@ -78,9 +78,9 @@ public class AuthenticateServiceImpl implements AuthenticateService {
         // Generate new token
         AuthToken token = new AuthToken();
 
-        token.setAccessToken(HomemakingUtil.randomUUIDWithoutDash());
+        token.setAccessToken(LustreUtil.randomUUIDWithoutDash());
         token.setExpiredIn(ACCESS_TOKEN_EXPIRED_SECONDS);
-        token.setRefreshToken(HomemakingUtil.randomUUIDWithoutDash());
+        token.setRefreshToken(LustreUtil.randomUUIDWithoutDash());
 
         userCache.putMultiple(SecurityUtil.buildAccessTokenKey(user), token.getAccessToken(), ACCESS_TOKEN_EXPIRED_SECONDS);
         return token;

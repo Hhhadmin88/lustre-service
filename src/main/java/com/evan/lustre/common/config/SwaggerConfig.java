@@ -27,7 +27,7 @@ public class SwaggerConfig {
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(buildApiInf())
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.evan.homemaking.controller"))
+                .apis(RequestHandlerSelectors.basePackage("com.evan.lustre.controller"))
                 .paths(PathSelectors.any())
                 .build();
     }
