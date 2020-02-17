@@ -1,7 +1,6 @@
 package com.evan.homemaking.event;
 
-import cn.hutool.core.io.FileUtil;
-import cn.hutool.core.util.CharsetUtil;
+import cn.hutool.core.io.resource.InputStreamResource;
 import com.evan.homemaking.common.model.entity.Role;
 import com.evan.homemaking.common.utils.JsonUtil;
 import com.evan.homemaking.repository.RoleRepository;
@@ -11,8 +10,8 @@ import org.springframework.context.event.ContextClosedEvent;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 
-import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 /**
@@ -33,8 +32,9 @@ public class InsertRoleEvent extends ContextClosedEvent {
         ClassPathResource classPathResource = new ClassPathResource("init/role.json");
         List<Role> roleList = null;
         try {
-            File roleJsonFile = classPathResource.getFile();
-            String roleJson = FileUtil.readString(roleJsonFile, CharsetUtil.UTF_8);
+            InputStream inputStream = classPathResource.getInputStream();
+            InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
+            String roleJson = inputStreamResource.readUtf8Str();
             roleList = JsonUtil.jsonArrayToList(roleJson, Role.class);
         } catch (IOException e) {
             log.error("Read init role.json is failed");
