@@ -63,7 +63,7 @@
 
   
 
-## 🔧 快速上手
+## 🔍 快速上手
 ### 使用前须知(`必读`)：
 1. 本项目由于使用SpringDataJpa作为持久层orm框架，所以并没有建表sql，项目目录中自然也就没有sql脚本文件，所以请不要奇怪没有sql文件项目该如何启动了。
 2. 默认配置使用的数据库为h2。h2是一款内存数据库，轻盈便利，适合轻量级项目使用，且方便测试。
@@ -199,10 +199,139 @@ cat ~/.lustre/logs/log
 
   
 
-## 📔 进一步了解和使用
+## 📔 进阶了解和使用
 看到这里，首先恭喜你部署完成，下面开始关于lustre的进一步使用，感谢你的耐心。
 由于lustre是个主要为学习开发而生的项目，所以一般用ip和端口号访问即可满足需求，这里就暂不介绍配置域名了。后续我会在我的博客中写一篇关于部署后配置域名的文章供大家参考。
-
+>地址：待补充
 ### 熟悉接口
 当我们要使用一个项目进行开发时，首当其冲的是要了解它的交互方式和接口。
-（文档待续...）
+lustre基于前后端分离的架构，后端为前端提供RestfulAPI，前后端通过json进行数据传递。
+
+项目中整合了<b>swagger</b>，当项目启动成功后，可以通过访问了解项目的接口信息：
+> http://localhost:8090/swagger-ui.html
+
+<b>关于swagger的更多资料，请访问</b>
+> https://swagger.io/
+
+
+### 示例 json
+#### Request:
+当登录成功后会返回token作为登录凭证，每次请求需要在header中附加token和用户名用来验证登录状态和登录身份。
+> 登录和注册无需在header中附带User-Account和User-Authorization。
+
+
+> url: http://localhost:8090/api/evaluation/create
+> type: post
+> header :
+>{
+>  Content-Type:application/json
+>  User-Account:12345678
+>  User-Authorization:55151e8146134a18be4e47b8379e929b
+>}
+
+这里以发布评价为例，展示json格式及其内容。
+
+请求json:
+```json
+{
+  "taskId": 1,
+  "employerId": 5,
+  "employeeId": 1,
+  "content": "很不错的清洁师傅，态度好，工作细心。",
+  "score": 10
+}
+```
+
+#### Response:
+为了方便前端处理请求和异常信息，这里我们使用了统一异常处理，并将响应封装成固定格式json。
+
+> code:状态码
+> message:请求状态信息 (ok或错误信息)
+> data:响应主体内容
+> success: 请求成功表示(成功为true，失败为false)
+
+这里以查看留言为例，展示json格式及其内容。
+
+响应json:
+```json
+{
+    "code": 200,
+    "message": "OK",
+    "data": {
+        "id": 1,
+        "senderId": 1,
+        "senderName": "李明",
+        "receiverId": 3,
+        "receiverName": "珍妮",
+        "content": "厨房有顽固污渍，麻烦帮忙重点清理一下",
+        "createTime": "2020-01-12 14:12:30",
+        "updateTime": "2020-01-17 02:07:11"
+    },
+    "success": true
+}
+```
+#### 接口文件:
+这里虽然整合了swagger，并且了解swagger的小伙伴都知道，简单的说swagger就是为了方便开发写作查看接口而生。
+但是，我仍然打算为小伙伴们提供接口文件，这样就省去了你们去测试摸索接口的过程，可以一目了然的了解项目。我认为，学习的时间应该花在刀刃上，而不是对于工具的无用摸索。
+了解postman的小伙伴儿都知道，postman可以将测试过的接口信息以文件的形式导出。然后分享给其他人他就可以导入你分享的文件，从而使用测试接口。
+
+获取接口文件：
+>地址：待补充
+
+如何使用postman导入并使用，请查看我的博文：
+>地址：待补充
+
+  
+
+## 🔧 开发及辅助工具
+* 开发IDE:<b>IDEA 2019.3.3 Ultimate</b> 可以选择不用这么新的版本。
+* 构建工具:<b>Maven 3.6.2</b>  这个就不用多介绍了，想必大家比我更了解。
+* 持续集成工具:<b>Travis</b> 用来持续集成、自动构建和自动执行测试，类似jenkins。
+* Devops:<b>docker</b> 当前火热的容器化技术。travis整合docker实现项目高度自动化。
+> 如果你想简单的了解docker，我推荐:
+> 官网:https://www.docker.com/
+> 慕课网课程:https://www.imooc.com/learn/824
+
+
+### 关于持续集成工具Travis
+<b>了解lustre的构建详情: https://travis-ci.org/wangming2674/lustre-service</b>
+
+我为什么不选择Jenkins呢？
+因为lustre是个开源项目，且相对简易，用不到<b>jenkins</b>很多强大的功能。且Travis对开源项目永久免费，且更加简单易上手。
+
+> 关于Travis的更多资料，请访问：
+> 针对开源项目: https://travis-ci.org/
+> 针对非开源项目: https://travis-ci.com/ 
+
+  
+
+## 😄 感谢
+首先，感谢大家的使用与支持。
+如果你从lustre学到了一些知识，麻烦您帮忙点一个star。
+因为这就是对我写代码和为小伙伴们解答问题最好的鼓励了。
+
+无论是多厉害的大牛，总是从不会到会，从小白到独当一面。
+项目还有很多的不足之处，欢迎大家指出，包括我自己也是在不断学习的途中，不断的在开发的道路上一步步前进着。
+
+我的博客中也有不少关于开发内容的文章，另外关于项目中一些踩过的坑，博客中也有相关介绍。
+
+如果你渴望更进一步，请访问我的博客或我的个人网站：
+>https://evanwang.blog.csdn.net
+>http://evanwang.top
+
+  
+  
+## 📣 招募
+另外我在寻觅着那些喜欢技术，热爱并且想着能做一款属于自己的产品的有志青年。
+
+如果你也有这样的想法， 无论你有强大的技术，或者很好的想法，都可以联系我，甚至你只有一颗赤诚的心。
+
+且lustre的前端也在开发当中，如果你有兴趣，同样可以联系我。
+
+请在验证信息中标明来意，例如github招募。
+
+<b>mail: wangmingmis@163.com</b>
+
+<b>QQ: 925076243</b>
+
+
