@@ -10,9 +10,9 @@
     </parent>
     <groupId>com.evan</groupId>
     <artifactId>lustre</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.0-SNAPSHOT</version>
     <name>lustre</name>
-    <description>Lustre,an homemaking service management system.</description>
+    <description>Lustre,a homemaking service management system.</description>
 
     <properties>
         <java.version>1.8</java.version>

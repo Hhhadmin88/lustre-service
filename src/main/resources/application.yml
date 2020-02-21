@@ -14,7 +14,7 @@ spring:
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
 
-    # H2 Database 配置
+    # H2 Database配置
     driver-class-name: org.h2.Driver
     url: jdbc:h2:file:~/.lustre/db/lustre
     username: admin
@@ -26,7 +26,7 @@ spring:
       path: /h2-console
       enabled: false
 
-    # MySQL 配置
+    # MySQL配置 如果要启用MySQL，请将上方H2 Database配置下内容注释，然后将MySQL配置下内容放开。
   #    driver-class-name: com.mysql.cj.jdbc.Driver
   #    url: jdbc:mysql://localhost:3306/lustre?useUnicode=yes&characterEncoding=UTF-8&useInformationSchema=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
   #    username: root

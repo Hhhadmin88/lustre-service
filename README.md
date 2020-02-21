@@ -1,13 +1,13 @@
 <h1 align="center"><a href="https://github.com/wangming2674/lustre-service" target="_blank">Lustre</a></h1>
-
 > 这是一款基于springboot 2.1.8.RELEASE，Vue.js的前后端分离的家政服务管理系统。
 
 <p align="center">
 <a href="https://travis-ci.org/wangming2674/lustre-service"><img alt="Travis CI" src="https://api.travis-ci.org/wangming2674/lustre-service.svg?branch=master"/></a>
 <a href="#"><img alt="VERSION" src="https://img.shields.io/badge/version-v1.0.0-brightgreen"/></a>
 <a href="#"><img alt="JDK" src="https://img.shields.io/badge/JDK-1.8-yellow.svg?style=flat-square"/></a>
-<a href="#"><img alt="LICENSE" src="https://img.shields.io/github/license/wangming2674/lustre-service"/></a>
+<a href="https://github.com/wangming2674/lustre-service/blob/master/LICENSE"><img alt="LICENSE" src="https://img.shields.io/github/license/wangming2674/lustre-service"/></a>
 <a href="#"><img alt="STARS" src="https://img.shields.io/github/stars/wangming2674/lustre-service"/></a>
+<a href="#"><img alt="FORKS" src="https://img.shields.io/github/forks/wangming2674/lustre-service"/></a>
 <a href="#"><img alt="ISSUE" src="https://img.shields.io/github/issues/wangming2674/lustre-service"/></a>
 <a href="#"><img alt="SWAGGER" src="https://img.shields.io/badge/swagger-available-brightgreen"/></a>
 </p>
@@ -63,12 +63,30 @@
   
 
 ## 🔧 快速上手
-### 使用前须知：
+### 使用前须知(必读)：
 1. 本项目由于使用SpringDataJpa作为持久层orm框架，所以并没有建表sql，项目目录中自然也就没有sql脚本文件，所以请不要奇怪没有sql文件项目该如何启动了。
 2. 默认配置使用的数据库为h2。h2是一款内存数据库，轻盈便利，适合轻量级项目使用，且方便测试。
 可通过配置文件修改使用的数据库，后面会有详细介绍。
 3. 为了方便排查问题，lustre把日志和h2的数据库文件，默认输出到"~/.lustre"文件夹下，如果是windows一般情况在"C:\Users\admin"的位置下。如果没有，你也可以在C盘下直接搜索".lustre"即可找到。
 如果是linux则在root目录下，由于在linux下，以'.'开头的文件夹默认为隐藏文件夹，所以如果你使用了shell工具，请设置显示隐藏文件。
+4. 由于默认使用的是内存数据库，使用者无法直接查看数据库内相关内容，如果想查看数据库内容，请将application.yml文件内配置修改如下。然后访问'ip:8090/h2-console'即可。默认username:admin,password:123456。这些都可以通过yml配置文件得知。
+```yaml
+h2:
+   console:
+    settings:
+      #允许通过web查看
+      web-allow-others: true
+    path: /h2-console
+    #启用web查看
+    enabled: true
+```
+5. 启用MySQL数据库，你需要将application.yml中H2 database的配置注释，放开MySQL配置。然后创建名称为：lustre的数据库，字符集utf8mb4，排序规则utf8mb4_general_ci。如果你是想在开发环境下启动lustre，请直接通过在application.yml指定配置文件，然后配置application.yml的MySQL数据库信息。
+```yaml
+#指定配置文件为dev-application.yml，默认为application.yml
+spring:
+  profiles:
+    active: dev
+```
 
 ### 环境要求
 在linux服务器部署时，推荐以下配置。
@@ -90,7 +108,28 @@ sudo yum install java-1.8.0-openjdk -y
 # 检测是否安装成功
 java -version
 ```
-下载lustre的jar包。
-```shell script
+下载lustre的jar包，目前最新版本。
+>1.0.0-SNAPSHOT
 
+```shell script
+# 使用wget命令
+# 例如最新版本为：1.0.0-SNAPSHOT
+# 则命令应该为:wget http://lustre.evanwang.top/snapshot/lustre-1.0.0-SNAPSHOT.jar
+wget http://lustre.evanwang.top/snapshot/lustre-{{version}}.jar
 ```
+
+验证是否能启动成功，如果看到如下日志即证明项目可以启动成功。
+com.evan.lustre.LustreApplication        : Started LustreApplication in 20.7 seconds (JVM running for 21.633)
+```shell script
+#具体版本号请根据下载的jar进行更改。
+java -jar lustre-{{version}}.jar
+```
+
+正式启动项目
+```shell script
+#使用nhoup命令后台启动项目
+nhoup java -jar lustre-{{version}}.jar
+```
+    
+#### 2.使用docker的方式部署
+
